@@ -1,0 +1,5 @@
+NAME=foundation-perl-XML-Writer
+VERSION=0.600
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=XML-Writer

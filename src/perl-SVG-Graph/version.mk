@@ -1,0 +1,5 @@
+NAME=foundation-perl-SVG-Graph
+VERSION=0.01
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=SVG-Graph

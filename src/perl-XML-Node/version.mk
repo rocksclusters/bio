@@ -1,0 +1,5 @@
+NAME=foundation-perl-XML-Node
+VERSION=0.11
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=XML-Node

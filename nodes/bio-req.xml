@@ -1,0 +1,17 @@
+<kickstart>
+	<description>
+	This contains the build requirements for the
+	bio roll
+	</description>
+
+	<package>foundation-python</package>
+	<package>foundation-python-extras</package>
+	<package>flex</package>
+	<package>xorg-x11-devel</package>
+	<package>readline</package>
+	<package>readline-devel</package>
+	<package>gd</package>
+	<package>gd-devel</package>
+	<package>blas</package>
+	<package>lapack</package>
+</kickstart>

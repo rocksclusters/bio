@@ -1,0 +1,25 @@
+diff -Naur T-COFFEE_distribution_Version_5.05/html/t_coffee4html.cgi T-COFFEE_distribution/html/t_coffee4html.cgi
+--- T-COFFEE_distribution_Version_5.05/html/t_coffee4html.cgi	2007-04-20 03:55:02.000000000 -0700
++++ T-COFFEE_distribution/html/t_coffee4html.cgi	2007-06-14 12:10:34.000000000 -0700
+@@ -1,9 +1,9 @@
+-#!/igs/local/bin/perl
++#!/opt/rocks/bin/perl
+ #Perl Wrapper for the html version of T-Coffee
+ #Environement variables
+  
+ 
+-
++$HOME="/opt/Bio/t_coffee/"
+ $USER_BIN="$HOME/bin/";
+ 
+ 
+@@ -11,8 +11,7 @@
+       use Env qw(HOME);
+       if ( $HOME eq ""){$HOME=`pwd`;chop ($HOME);$HOME=~s/public_html.*//;}
+ 
+-      $USER_BIN="$HOME/bin/";
+-      $WWW_HOME="http://igs-server.cnrs-mrs.fr/~cnotred/";
++      $WWW_HOME="t_coffee/";
+       $WWW_FILE_HOME="$HOME/public_html/";
+       $USER_BIN="$HOME/bin/";
+       $html_page="/t_coffee.html";

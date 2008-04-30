@@ -1,0 +1,116 @@
+<section id=mrbayes_usage xreflabel="Using MrBayes">
+<title>MrBayes</title>
+<section><title>About</title>
+<para>MrBayes is a program used for bayesian inference of phylogeny. MrBayes is cowritten by John Huelsenbeck and Fredrik Ronquist.</para> 
+<para>The version of MrBayes included with this version of Rocks is MPI enabled, and can be used in either
+parallel or serial modes of execution.</para>
+</section>
+<section><title>Usage</title>
+<para>MrBayes uses the NEXUS file format for input. To use MrBayes in interactive mode, just type mb at the command line</para>
+<screen>
+<![CDATA[
+[nostromo@xxx mrbayes]$ mb
+MrBayes v3.1.2
+
+                      (Bayesian Analysis of Phylogeny)
+
+                             (Parallel version)
+                         (1 processors available)
+
+                                     by
+
+                  Fredrik Ronquist and John P. Huelsenbeck
+
+                       School of Computational Science
+                           Florida State University
+                            ronquist@csit.fsu.edu 
+
+                 Section of Ecology, Behavior and Evolution
+                       Division of Biological Sciences
+                     University of California, San Diego
+                           johnh@biomail.ucsd.edu
+
+              Distributed under the GNU General Public License
+
+               Type "help" or "help <command>" for information
+                     on the commands that are available.
+
+
+MrBayes >
+]]>
+</screen>
+<para>To use MrBayes in the parallel version, you'll need to use it in non-interactive mode. It can be invoked as shown.
+</para>
+<screen>
+<![CDATA[
+[nostromo@xxx ~]$ /opt/openmpi/bin/mpirun -np 4 /opt/Bio/mrbayes/mb /opt/Bio/mrbayes/primates.nex > ~/log.txt
+[nostromo@xxx ~]$ cat log.txt 
+                               MrBayes v3.1.2
+
+                      (Bayesian Analysis of Phylogeny)
+
+                             (Parallel version)
+                         (4 processors available)
+
+                                     by
+
+                  John P. Huelsenbeck and Fredrik Ronquist
+
+                 Section of Ecology, Behavior and Evolution
+                       Division of Biological Sciences
+                     University of California, San Diego
+                           johnh@biomail.ucsd.edu
+
+                       School of Computational Science
+                           Florida State University
+                            ronquist@csit.fsu.edu 
+
+              Distributed under the GNU General Public License
+
+               Type "help" or "help <command>" for information
+                     on the commands that are available.
+
+
+
+   Executing file "/opt/Bio/mrbayes/primates.nex"
+   UNIX line termination
+   Longest line length = 915
+   Parsing file
+   Expecting NEXUS formatted file
+   Reading data block
+      Allocated matrix
+      Matrix has 12 taxa and 898 characters
+      Data is Dna
+      Data matrix is not interleaved
+      Gaps coded as -
+      Setting default partition (does not divide up characters).
+      Taxon  1 -> Tarsius_syrichta
+      Taxon  2 -> Lemur_catta
+      Taxon  3 -> Homo_sapiens
+      Taxon  4 -> Pan
+      Taxon  5 -> Gorilla
+      Taxon  6 -> Pongo
+      Taxon  7 -> Hylobates
+      Taxon  8 -> Macaca_fuscata
+      Taxon  9 -> M_mulatta
+      Taxon 10 -> M_fascicularis
+      Taxon 11 -> M_sylvanus
+      Taxon 12 -> Saimiri_sciureus
+      Setting output file names to "/opt/Bio/mrbayes/primates.nex.run<i>.<p/t>"
+      Successfully read matrix
+   Exiting data block
+   Reached end of file
+
+   Tasks completed, exiting program because mode is noninteractive
+   To return control to the command line after completion of file processing, 
+   set mode to interactive with 'mb -i <filename>' (i is for interactive)
+   or use 'set mode=interactive'
+
+[nostromo@xxx ~]$
+]]>
+</screen>
+</section>
+<section><title>Further Information</title>
+<para>A wealth of information about MrBayes is available at the <ulink url="http://mrbayes.csit.fsu.edu/index.php">MrBayes Home Page</ulink> and at the <ulink url="http://mrbayes.scs.fsu.edu/wiki/index.php/Manual">MrBayes Wiki</ulink></para>
+</section>
+</section>

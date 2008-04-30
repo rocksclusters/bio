@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="no"?>
+
+<graph>
+
+
+	<description>
+	The Bio-Informatics Roll
+
+	This roll contains utilities like the NCBI Blast, hmmer, BioPython,
+	BioPerl, etc that provide BioInformatics tools and development
+	libraries.
+	</description>
+
+	<changelog>
+	$Log: bio.xml,v $
+	Revision 1.6  2006/07/13 18:02:50  anoop
+	Cleaned up the code a bit.
+	Build requirements have their own xml file
+	ReportLab changed to reportlab to avoid naming conflicts
+	reportlab is now added as a build requirement for biopython
+	
+	Revision 1.5  2006/03/14 02:50:50  mjk
+	fix XML syntax error
+	
+	Revision 1.4  2006/03/09 22:06:04  anoop
+	*** empty log message ***
+	
+	Revision 1.3  2005/12/20 21:07:34  anoop
+	*** empty log message ***
+	
+	Revision 1.2  2005/12/14 03:11:04  mjk
+	added cvs tags back, roll builds
+	
+	</changelog>
+
+	<edge from="compute">
+		<to>bio-base</to>
+	</edge>
+	
+	<edge from="hpc-server">
+		<to>bio-head</to>
+	</edge>
+
+	<edge from="bio-head">
+		<to>bio-base</to>
+	</edge>
+	
+	<edge from="bio-base">
+		<to>bio-req</to>
+	</edge>
+
+</graph>

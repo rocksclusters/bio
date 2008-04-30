@@ -1,0 +1,5 @@
+NAME=foundation-perl-GD
+VERSION=2.34
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=GD

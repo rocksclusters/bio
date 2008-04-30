@@ -1,0 +1,28 @@
+<section id=glimmer_usage xreflabel="Using Glimmer">
+<title>Glimmer</title>
+<section><title>About</title>
+<para>Glimmer is a system for finding genes in microbial DNA, especially the
+genomes of bacteria, archaea, and viruses. Glimmer was developed at the Centre
+for BioInformatics and Computational Biology. The version that is distributed
+with Rocks is Glimmer v3.02.
+</para>
+</section>
+<section><title>Using Glimmer</title>
+<para>Glimmer is installed at /opt/Bio/glimmer/. Glimmer is run in 2 stages.
+</para>
+<itemizedlist><listitem><para>Glimmer is trained on a particular training set
+of similar species to recognize genes</para>
+</listitem>
+<listitem><para>Glimmer
+is then run on an input DNA sequence to find
+genes</para></listitem></itemizedlist>
+</section>
+<section><title>Further Information</title>
+<para>Further information about the usage of Glimmer can be found in the
+release notes of the software, available <ulink
+url="http://www.cbcb.umd.edu/software/glimmer/glim302notes.pdf">here</ulink>.
+This file is also available on the frontend of your cluster at
+/opt/Bio/glimmer/glim302notes.pdf
+</para>
+</section>
+</section>

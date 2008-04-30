@@ -1,0 +1,33 @@
+<section id=gromacs_usage xreflabel="Using Gromacs">
+<title>GROMACS</title>
+<section><title>About</title>
+<para>GROMACS - Groningen MAchine for Chemical Simulation - is a
+software suite meant for molecular dynamics simulation. </para>
+<para>The version of GROMACS included with the distribution is
+version 3.3.1. It is available at <ulink
+url="http://www.gromacs.org"></ulink> under the GNU General Public
+Licence v2.0.</para>
+</section>
+<section><title>Usage</title>
+<para>
+GROMACS is setup in /opt/Bio/gromacs directory. The version
+included in this distribution is compiled with mpi support. OpenMPI v1.2.6
+is used as the MPI library.
+</para>
+<para>
+To get more help on using GROMACS, please refer to the following resources:
+<itemizedlist>
+<listitem><para><ulink url="http://www.gromacs.org/">GROMACS Home
+Page</ulink></para></listitem>
+<listitem><para><ulink url="http://www.gromacs.org/gromacs/documentation/documentation.html">
+GROMACS Documentation</ulink></para></listitem>
+<listitem><para><ulink url="/gromacs/online.html">GROMACS Online
+Reference Manual</ulink></para></listitem>
+<listitem><para><ulink url="/gromacs/gmxfaq.html">GROMACS
+FAQ</ulink></para></listitem>
+<listitem><para>Tutorials available on your machines at
+/opt/Bio/gromacs/share/tutor</para></listitem>
+</itemizedlist>
+</para>
+</section>
+</section>

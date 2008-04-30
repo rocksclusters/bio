@@ -1,0 +1,16 @@
+<section id=bioperl_usage xreflabel="Using Bioperl">
+<title>Bioperl</title>
+<section><title>About</title>
+<para>Bioperl is a set of perl modules for Bio-informatics computation.</para>
+</section>
+<section><title>Usage</title>
+<para>Bioperl modules can be used to supplement already existing applications
+such as t_coffee, clustalw, and blast. For information on how to use the
+library, please refer to the <ulink url="http://doc.bioperl.org/">API
+Docs</ulink>.</para>
+</section>
+<section><title>Further Information</title>
+<para>Further information about bioperl is available at <ulink
+url="http://www.bioperl.org/">the Bioperl home page</ulink></para>
+</section>
+</section>

@@ -1,0 +1,5 @@
+NAME=foundation-perl-MIME-Base64
+VERSION=3.07
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=MIME-Base64

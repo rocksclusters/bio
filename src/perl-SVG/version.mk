@@ -1,0 +1,5 @@
+NAME=foundation-perl-SVG
+VERSION=2.33
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=SVG

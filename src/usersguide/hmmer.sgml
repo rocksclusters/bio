@@ -1,0 +1,40 @@
+<section id=hmmer_usage xreflabel="Using Hmmer">
+<title>HMMER</title>
+<section><title>About</title>
+<para>HMMER is an implementation of profile HMM methods for
+sensitive database searches using multiple sequence alignments as
+queries.</para>
+<para>The version of HMMER that is distributed with this version
+of Rocks was obtained from <ulink
+url="http://hmmer.wustl.edu/">here</ulink>. The version as of
+code freeze is v2.3.2 and is distributed by WU, St.Louis under
+the GNU General Public License v2.0.</para>
+</section>
+<section><title>Usage</title>
+<para>
+HMMER is setup in the /opt/Bio/hmmer directory. The HMMER
+execution environment is setup automatically by the login scripts.
+The environment contains HMMER_DB variable which points to the
+directory containing the hmmer databases. By default, this is set
+to /share/bio/hmmer/db/. 
+</para>
+<para>
+HMMER has many modes of execution. Please run
+<screen>
+$ man hmmer
+</screen>
+for a description of all the executables that come with
+HMMER.</para><para>You
+may also refer to the Users Guide present <ulink
+url="ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/CURRENT/Userguide.pdf">
+here</ulink>. This guide is also available on your rocks
+installation at /opt/Bio/hmmer/Userguide.pdf
+</para>
+<para>There is also a tutorial available on your cluster at
+/opt/Bio/hmmer/tutorial/ . The description of how to use the
+tutorial is given in the Userguide.pdf file. 
+</para>
+<para>
+</para>
+</section>
+</section>

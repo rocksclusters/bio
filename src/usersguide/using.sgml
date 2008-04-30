@@ -1,0 +1,83 @@
+<chapter id="using" xreflabel="Using the Bio Roll">
+<title>Using</title>
+<section id=pkglist xreflabel="List of Packages">
+<title>List of packages present in the Bio Roll</title>
+<para>
+The Bio Roll contains a suite of  Bio-informatics applications,
+most commonly in use by the bio-informatics community. The list of
+applications is as follows:
+</para>
+<para>
+<itemizedlist mark=opencircle>
+	<listitem><simpara>HMMER - From Washington University at St. Louis - <ulink url="http://hmmer.wustl.edu/">http://hmmer.wustl.edu/</ulink></simpara></listitem>
+	<listitem><simpara>NCBI BLAST - From National Center for Biotechnology Information - <ulink url="http://www.ncbi.nlm.nih.gov/BLAST/">www.ncbi.nlm.nih.gov/BLAST/</ulink></simpara></listitem>
+	<listitem><simpara>MpiBLAST - From Los Alamos National Laboratory - <ulink url="http://mpiblast.lanl.gov/">http://mpiblast.lanl.gov/</ulink></simpara></listitem>
+	<listitem><simpara>biopython - <ulink url="www.biopython.org">www.biopython.org</ulink></simpara></listitem>
+	<listitem><simpara>ClustalW - From the European BioInformatics Institute - <ulink url="http://www.ebi.ac.uk/clustalw/">http://www.ebi.ac.uk/clustalw/</ulink></simpara></listitem>
+	<listitem><simpara>MrBayes - From School of Computational Science at the Florida State University - <ulink url="http://mrbayes.csit.fsu.edu/">http://mrbayes.csit.fsu.edu/</ulink></simpara></listitem>
+	<listitem><simpara>T_Coffee - From Information Genomique et Structurale at Centre National de la Recherche Scientifique - <ulink url="http://www.igs.cnrs-mrs.fr/~cnotred/Projects_home_page/t_coffee_home_page.html">The T-Coffee Home Page</ulink></simpara></listitem>
+	<listitem><simpara>Emboss - From European Molecular Biology Institute - <ulink url="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/</ulink></simpara></listitem>
+	<listitem><simpara>Phylip - From the Dept. of Biology at the University of Washington - <ulink url="http://evolution.genetics.washington.edu/phylip.html">http://evolution.genetics.washington.edu/phylip.html</ulink></simpara></listitem>
+	<listitem><simpara>fasta - From the University of Virginia - <ulink url="http://fasta.bioch.virginia.edu/">http://fasta.bioch.virginia.edu/</ulink></simpara></listitem>
+	<listitem><simpara>Glimmer - From Center for Bioinformatics and Computational Biology at the University of Maryland - <ulink url="http://www.cbcb.umd.edu/software/glimmer/"></ulink></simpara></listitem>
+	<listitem><para>All the perl utilities mentioned below are from CPAN</para></listitem>
+	<listitem><simpara>perl-bioperl</simpara></listitem>
+	<listitem><simpara>perl-bioperl-run</simpara></listitem>
+	<listitem><simpara>perl-bioperl-gui</simpara></listitem>
+	<listitem><simpara>perl-bioperl-db</simpara></listitem>
+</itemizedlist>
+</para>
+	<para>All the packages that appear below are dependencies
+	and are already present in the base and OS Rolls. They are
+	installed automatically during system installation.</para>
+<para>	<simplelist columns=4>
+	<member>foundation-python</member>
+	<member>foundation-python-extras</member>
+	<member>ReportLab</member>
+	<member>flex</member>
+	<member>xorg-x11-devel</member>
+	<member>readline</member>
+	<member>readline-devel</member>
+	<member>gd</member>
+	<member>gd-devel</member>
+	<member>perl-Data-Stag</member>
+	<member>perl-Digest-MD5</member>
+	<member>perl-File-Temp</member>
+	<member>perl-GD</member>
+	<member>perl-GD-SVG</member>
+	<member>perl-Graph</member>
+	<member>perl-HTML-Parser</member>
+	<member>perl-HTML-Tagset</member>
+	<member>perl-IO-String</member>
+	<member>perl-IO-stringy</member>
+	<member>perl-libnet</member>
+	<member>perl-libwww-perl</member>
+	<member>perl-MIME-Base64</member>
+	<member>perl-Module-Signature</member>
+	<member>perl-PathTools</member>
+	<member>perl-Scalar-List-Utils</member>
+	<member>perl-SOAP-Lite</member>
+	<member>perl-Storable</member>
+	<member>perl-Text-Shellwords</member>
+	<member>perl-XML-DOM</member>
+	<member>perl-XML-Twig</member>
+	<member>perl-XML-Writer</member>
+	</simplelist>
+</para>
+</section>
+
+&source_hmmer;
+&source_blast;
+&source_clustalw;
+&source_emboss;
+&source_glimmer;
+&source_fasta;
+&source_mrbayes;
+&source_phylip;
+&source_t_coffee;
+&source_mpiblast;
+&source_gromacs;
+&source_bioperl;
+&source_biopython;
+</chapter>
+

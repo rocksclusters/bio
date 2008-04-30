@@ -1,0 +1,48 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+	<!ENTITY % entities SYSTEM "entities.sgml">
+        %entities;
+]>
+
+<book>
+<bookinfo>
+
+	<title> Bio Roll: Users Guide </title>
+	<subtitle>
+	<msgtext>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="images/dna.png">
+			</imageobject>
+		</mediaobject>
+	</msgtext>
+	</subtitle>
+	<edition>Version &document_version;</edition>
+
+	<pubdate>&document_pubdate;</pubdate>
+
+	<copyright id="copyright" xreflabel="copyright">
+		<year>&document_year;</year>
+		<holder>&document_copyright;</holder>
+	</copyright>
+
+	<releaseinfo>
+		<ulink url="roll-bio-usersguide.pdf">(PDF version)</ulink>
+	</releaseinfo>
+
+        <legalnotice>
+                <para>
+                This document is subject to the Rocks License 
+                (see <xref linkend="rocks-copyright">).
+                </para>
+        </legalnotice>
+
+
+</bookinfo>
+
+&source_preface;
+&source_roll-overview;
+&source_installing;
+&source_using;
+&source_appendix;
+
+</book>

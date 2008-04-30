@@ -1,0 +1,17 @@
+<section id=biopython_usage xreflabel="Using Biopython">
+<title>Biopython</title>
+<section><title>About</title>
+<para>Biopython is a set of python modules for Bio-informatics computation.</para>
+</section>
+<section><title>Usage</title>
+<para>Biopython modules can be used to supplement already existing applications
+such as blast. For information on how to use the
+library, please refer to the <ulink
+url="http://www.biopython.org/documentation/">biopython
+documentation</ulink>.</para>
+</section>
+<section><title>Further Information</title>
+<para>Further information about biopython is available at <ulink
+url="http://www.biopython.org/">the Biopython home page</ulink></para>
+</section>
+</section>

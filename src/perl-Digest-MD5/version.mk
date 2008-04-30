@@ -1,0 +1,5 @@
+NAME=foundation-perl-Digest-MD5
+VERSION=2.36
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=Digest-MD5

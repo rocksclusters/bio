@@ -1,0 +1,102 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+	<description>
+
+	Bio Roll frontend configuration
+
+	</description>
+
+	<changelog>
+	$Log: bio-head.xml,v $
+	Revision 1.6  2006/07/12 20:46:09  anoop
+	Moved user guide from compute nodes to frontend
+	
+	Revision 1.5  2006/05/25 20:44:30  anoop
+	Changed the export directory for the blast databases from /share/apps/bio
+	to /share/bio
+	
+	Revision 1.4  2006/03/17 23:48:35  anoop
+	Error regarding sudo
+	
+	Revision 1.3  2006/03/16 02:52:09  anoop
+	Lots of changes to the roll
+	
+	Upgraded T_coffee
+	modified mrbayes to work better
+	modified phylip to work better
+	upgraded fasta to install and work correctly
+	Put in a little more documentation
+	
+	Revision 1.2  2006/03/10 00:03:54  anoop
+	Added elph support to glimmer
+	Changes to glimmer shell scripts through patches.
+	
+	Revision 1.1  2006/03/09 22:06:45  anoop
+	*** empty log message ***
+	
+	</changelog>
+
+	<package>roll-bio-usersguide</package>
+<post>
+<!--
+	Add user biouser
+ -->
+
+USERADD=/usr/sbin/useradd
+BIO_UID=404
+
+$USERADD -c "Bio Roll User" -u $BIO_UID \
+	-r -d /share/bio biouser 2> /dev/null
+
+mkdir -p /export/bio 
+mkdir -m0755 -p /export/bio/ncbi/db
+mkdir -m0755 -p /export/bio/hmmer/db
+chown -R biouser /export/bio
+
+chown biouser /export/bio
+<!--
+	Allow all users to sudo to 
+	the user biouser
+ -->
+
+echo "ALL     ALL=(ALL)       NOPASSWD: /bin/su - biouser" >> /etc/sudoers
+
+<!--
+ 	Here we setup the t_coffee directory and
+	the t_coffee cgi script
+ -->
+
+ln -s /opt/Bio/t_coffee/html /var/www/html/t_coffee
+chmod a+x /opt/Bio/t_coffee/html/t_coffee4html.cgi
+
+<!--
+	Here we setup the ncbi blast web utilities.
+	A lot of setup is required for this to function
+	correctly. The database directories should be 
+	standardised. The *.REAL programs should be symlinked
+	into the same directory as the CGI scripts, because the 
+	CGI scripts dont actually look for the executables in the
+	$PATH. All the symlink creations below are to setup the right 
+	directories without having to copy the repetitive ones.
+ -->
+
+ln -s /opt/Bio/ncbi/network/wwwblast /var/www/html/blast
+mkdir -m0777 /var/www/html/blast/TmpGifs
+ln -s /opt/Bio/ncbi/bin/*.REAL /var/www/html/blast/
+ln -s /opt/Bio/ncbi/bin/*.cgi /var/www/html/blast/
+mv /var/www/html/blast/db/* /share/bio/ncbi/db/
+rm -rf /var/www/html/blast/db/
+ln -s /share/bio/ncbi/db/ /var/www/html/blast/
+rm -rf /var/www/html/blast/data
+ln -s /opt/Bio/ncbi/data /var/www/html/blast
+mkdir -m0777 /var/www/html/blast/output/
+
+chmod +x /var/www/html/blast/config_setup.pl
+/var/www/html/blast/config_setup.pl /share/bio/ncbi/db/ /var/www/html/blast/output/
+
+chown -R biouser /export/bio
+
+</post>
+</kickstart> 

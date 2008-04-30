@@ -1,0 +1,9 @@
+<section id=phylip_usage xreflabel="Using Phylip">
+<title>Phylip</title>
+<section><title>About</title>
+<para>Phylip - Phylogeny Inference Package - is a package of programs for inferring phylogenies or evolutionary trees. The version distributed with Rocks is v3.67.</para>
+</section>
+<section><title>Further Information</title>
+<para>Furtherinformation about Phylip is available at <ulink url="http://evolution.genetics.washington.edu/phylip.html">the Phylip home page</ulink>.</para>
+</section>
+</section>

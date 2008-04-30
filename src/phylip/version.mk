@@ -1,0 +1,4 @@
+NAME = phylip
+VERSION = 3.67
+RELEASE = 1
+ROLL = Bio

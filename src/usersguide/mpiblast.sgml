@@ -1,0 +1,132 @@
+<section id=mpiblast_usage xreflabel="Using MPI-Blast">
+<title>MPI-Blast</title>
+<section><title>About</title>
+<para>
+MPI-Blast is a program from <ulink url="http://www.lanl.gov/">LANL</ulink>
+which parallelizes the NCBI Blast algorithms using Message Passing Interface
+library. The version of MPI-Blast included with Rocks is v1.5.0-pio patched
+and compiled against NCBI Blast 2.2.18.
+</para>
+</section>
+<section><title>Usage</title>
+<para>MPI-Blast is used in a similar manner to NCBI-Blast. MPI-Blast uses the
+same variables that are available for NCBI-Blast.</para>
+<para> There are 3 steps to running  MPI-Blast.</para>
+<itemizedlist>
+<listitem><para>Download a FASTA database to $BLASTDB. For this example we
+will download the ecoli nucleotide database.</para>
+<screen>
+[nostromo@xxx ~]$ sudo su - biouser
+-bash-3.00$ cd $BLASTDB
+-bash-3.00$ wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/ecoli.nt.gz
+--17:06:23--  ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/ecoli.nt.gz
+           => `ecoli.nt.gz'
+Resolving ftp.ncbi.nlm.nih.gov... 165.112.7.10
+Connecting to ftp.ncbi.nlm.nih.gov|165.112.7.10|:21... connected.
+Logging in as anonymous ... Logged in!
+==> SYST ... done.    ==> PWD ... done.
+==> TYPE I ... done.  ==> CWD /blast/db/FASTA ... done.
+==> PASV ... done.    ==> RETR ecoli.nt.gz ... done.
+Length: 1,438,199 (1.4M) (unauthoritative)
+
+100%[========================================================>] 1,438,199
+610.14K/s             
+
+17:06:27 (607.91 KB/s) - `ecoli.nt.gz' saved [1438199]
+</screen>
+</listitem>
+<listitem><para>Format the database using mpiformatdb as follows. A good rule
+is to format the database to atleast 4 processors, as follows.</para>
+<screen>
+-bash-3.00$ gunzip ecoli.nt.gz 
+-bash-3.00$ ls
+ecoli.nt
+-bash-3.00$ mpiformatdb --nfrags=4 -i ecoli.nt -pF --quiet
+Reading input file
+Done, read 58882 lines
+Reordering 400 sequence entries
+Breaking ecoli.nt into 4 fragments
+Executing: formatdb -p F -i /tmp/reorderncq8B1 -N 4 -n /share/bio/ncbi/db/ecoli.nt -o T 
+Removed /tmp/reorderncq8B1
+Created 4 fragments.
+Changing permissions of /share/bio/ncbi/db//ecoli.nt.mbf
+-bash-3.00$ ls
+ecoli.nt          ecoli.nt.000.nsq  ecoli.nt.001.nsq  ecoli.nt.002.nsq  ecoli.nt.003.nsq
+ecoli.nt.000.nhr  ecoli.nt.001.nhr  ecoli.nt.002.nhr  ecoli.nt.003.nhr  ecoli.nt.mbf
+ecoli.nt.000.nin  ecoli.nt.001.nin  ecoli.nt.002.nin  ecoli.nt.003.nin  ecoli.nt.nal
+ecoli.nt.000.nnd  ecoli.nt.001.nnd  ecoli.nt.002.nnd  ecoli.nt.003.nnd  formatdb.log
+ecoli.nt.000.nni  ecoli.nt.001.nni  ecoli.nt.002.nni  ecoli.nt.003.nni
+ecoli.nt.000.nsd  ecoli.nt.001.nsd  ecoli.nt.002.nsd  ecoli.nt.003.nsd
+ecoli.nt.000.nsi  ecoli.nt.001.nsi  ecoli.nt.002.nsi  ecoli.nt.003.nsi
+</screen>
+</listitem>
+<listitem><para>Now, as a normal user, create a test sequence file and run mpiblast on the
+sequence against the formatted database.</para>
+<screen>
+[nostromo@xxx ~]$ cat > test.txt
+>Test
+AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC
+TTCTGAACTGGTTACCTGCCGTGAGTAAATTAAAATTTTATTGACTTAGGTCACTAAATACTTTAACCAA
+TATAGGCATAGCGCACAGACAGATAAAAATTACAGAGTACACAACATCCATGAAACGCATTAGCACCACC
+ATTACCACCACCATCACCATTACCACAGGTAACGGTGCGGGCTGACGCGTACAGGAAACACAGAAAAAAG
+CCCGCACCTGACAGTGCGGGCTTTTTTTTTCGACCAAAGGTAACGAGGTAACAACCATGCGAGTGTTGAA
+GTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGTGTTGCCGATATTCTGGAAAGCAATGCC
+AGGCAGGGGCAGGTGGCCACCGTCCTCTCTGCCCCCGCCAAAATCACCAACCACCTGGTGGCGATGATTG
+AAAAAACCATTAGCGGCCAGGATGCTTTACCCAATATCAGCGATGCCGAACGTATTTTTGCCGAACTTTT
+
+[nostromo@xxx mpiblast]$ /opt/openmpi/bin/mpirun -np 4 /opt/Bio/mpiblast/bin/mpiblast -d ecoli.nt -i $HOME/test.txt -p blastn -o $HOME/result.txt
+</screen>
+<para>After mpirun terminates, result.txt contains the result of your computation.</para>
+</listitem>
+</itemizedlist>
+</section>
+<section>
+<title>Running MPI Blast and SGE</title>
+<para> This section gives a brief overview of running MPI Blast with SGE</para>
+<itemizedlist>
+<listitem><para>Create a simple SGE submission scripts called mpiblast_sge.sh with the following contents
+<screen>
+#!/bin/bash
+
+#$ -cwd
+#$ -j y
+#$ -S /bin/bash
+
+export MPI_DIR=/opt/openmpi/
+export BLASTDB=/share/bio/ncbi/db/
+export BLASTMAT=/opt/Bio/ncbi/data/
+
+$MPI_DIR/bin/mpirun -np $NSLOTS \
+	/opt/Bio/mpiblast/bin/mpiblast \
+	-d ecoli.nt -i $HOME/test.txt \
+	-p blastn -o $HOME/result.txt
+</screen>
+</para>
+</listitem>
+<listitem>
+<para>Run
+<screen>
+[nostromo@xxx ~]$ qsub -pe orte 4 mpiblast_sge.sh 
+Your job 11 ("mpiblast_sge.sh") has been submitted
+</screen>
+</para>
+</listitem>
+<listitem><para>The results of your computation will be present in 
+$HOME/result.txt</para>
+</listitem>
+</itemizedlist>
+<note><para>Please note that an MPI blast job requires atleast 3 processors to run. The argument
+for mpirun specifying the number of processors should be factor of the number of pieces the
+blast database was divided into. If you're running on a cluster with 2 processors, SGE, by default,
+will not schedule a job which requires more than 2 slots to run.</para></note>
+</section>
+<section><title>Further Information</title>
+<para>
+Further information about using mpiblast can be found at <ulink
+url="http://mpiblast.lanl.gov/">the MPI-Blast home page</ulink>.
+</para>
+<para>For support, please join the <ulink
+url="http://mpiblast.lanl.gov/Support.Lists.html">mpiblast mailing
+list</ulink></para>
+</section>
+</section>

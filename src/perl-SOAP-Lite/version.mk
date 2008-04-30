@@ -1,0 +1,5 @@
+NAME=foundation-perl-SOAP-Lite
+VERSION=0.68
+RELEASE=1
+ROLL=Bio
+ORIG_NAME=SOAP-Lite
