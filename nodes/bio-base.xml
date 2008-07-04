@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.54  2008/07/04 00:23:09  anoop
+	*** empty log message ***
+	
 	Revision 1.53  2008/04/21 17:42:34  anoop
 	Minor bug fix
 	
@@ -165,6 +168,7 @@
 	<package>glimmer</package>
 	<package>gromacs</package>
 	<package>fftw</package>
+	<package>gmap</package>
 	<package>foundation-perl-bioperl</package>
 	<package>foundation-perl-bioperl-run</package>
 	<package>foundation-perl-bioperl-gui</package>
@@ -260,6 +264,9 @@ export PATH=$PATH:$BIOROLL/glimmer/bin:/$BIOROLL/glimmer/scripts
 # gromacs
 export PATH=$PATH:$BIOROLL/gromacs/bin
 
+# gmap
+export PATH=$PATH:$BIOROLL/gmap/bin
+
 # NCBI
 export BLASTDB=/share/bio/ncbi/db
 export BLASTMAT=/opt/Bio/ncbi/data
@@ -285,7 +292,7 @@ fi
 </file>
 
 <file name="/etc/profile.d/bio.csh" perm="0755">
-set path = ( $path /opt/Bio/ncbi/bin /opt/Bio/mpiblast/bin/ /opt/Bio/EMBOSS/bin /opt/Bio/clustalw/bin /opt/Bio/t_coffee/bin /opt/Bio/phylip/exe /opt/Bio/mrbayes /opt/Bio/fasta /opt/Bio/glimmer/bin /opt/Bio/glimmer/scripts /opt/Bio/gromacs/bin/ )
+set path = ( $path /opt/Bio/ncbi/bin /opt/Bio/mpiblast/bin/ /opt/Bio/EMBOSS/bin /opt/Bio/clustalw/bin /opt/Bio/t_coffee/bin /opt/Bio/phylip/exe /opt/Bio/mrbayes /opt/Bio/fasta /opt/Bio/glimmer/bin /opt/Bio/glimmer/scripts /opt/Bio/gmap/bin /opt/Bio/gromacs/bin/ )
 
 setenv BLASTDB  /share/bio/ncbi/db
 setenv BLASTMAT /opt/Bio/ncbi/data
