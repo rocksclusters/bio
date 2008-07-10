@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.13 2008/04/29 00:16:52 anoop Exp $
+# $Id: Makefile,v 1.14 2008/07/10 17:15:39 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.14  2008/07/10 17:15:39  anoop
+# Bug fixes to the build
+#
 # Revision 1.13  2008/04/29 00:16:52  anoop
 # Modified mpiblast build process to import ncbi tarball
 # and ncbi patch-files from the ncbi-blast source rather
@@ -129,7 +132,7 @@ build:
 		rm -rf ncbi;\
 		gunzip -c $(REDHAT.ROOT)/src/ncbi-blast/$(NCBI).tar.gz | $(TAR) -xf -; \
 		cd ncbi;\
-		patch -p1 < ../patches/ncbi_Oct2006_evalue_pio.patch;\
+		$(PATCH) -p1 < ../patches/ncbi_Oct2006_evalue_pio.patch;\
 	)
 	(\
 		i=$(CURDIR);\

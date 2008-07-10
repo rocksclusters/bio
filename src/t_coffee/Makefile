@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2008/04/02 23:44:24 anoop Exp $
+# $Id: Makefile,v 1.12 2008/07/10 17:15:39 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.12  2008/07/10 17:15:39  anoop
+# Bug fixes to the build
+#
 # Revision 1.11  2008/04/02 23:44:24  anoop
 # Upgraded t_coffee
 #
@@ -131,7 +134,7 @@ build:
 	gunzip -c $(PACKAGE_NAME).tar.gz | $(TAR) -xf -
 	( \
 		cd $(PACKAGE_NAME); \
-		patch -p1 < ../patch-files/$(PATCHFILE); \
+		$(PATCH) -p1 < ../patch-files/$(PATCHFILE); \
 		$(MAKE) -C t_coffee_source; \
 	)
 

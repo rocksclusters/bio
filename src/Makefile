@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 2008/04/04 18:20:13 anoop Exp $
+# $Id: Makefile,v 1.10 2008/07/10 17:15:39 anoop Exp $
 #
 # @Copyright@
 # 
@@ -46,6 +46,9 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # $Log: Makefile,v $
+# Revision 1.10  2008/07/10 17:15:39  anoop
+# Bug fixes to the build
+#
 # Revision 1.9  2008/04/04 18:20:13  anoop
 # Fix build bugs
 #
@@ -96,8 +99,10 @@
 SRCDIRS = reportlab ncbi-blast
 
 SRCDIRS += `find * -type d -prune \
-	! -name CVS -not -name .  \
-	! -name reportlab ! -name ncbi-blast`
+	! -name CVS	\
+	! -name .	\
+	! -name reportlab \
+	! -name ncbi-blast`
 
 default:	pkg
 

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 2008/04/02 23:44:02 anoop Exp $
+# $Id: Makefile,v 1.8 2008/07/10 17:15:39 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.8  2008/07/10 17:15:39  anoop
+# Bug fixes to the build
+#
 # Revision 1.7  2008/04/02 23:44:02  anoop
 # Upgraded reportlab
 #
@@ -139,7 +142,7 @@ ROCKSROOT = ../../../../..
 include Rules.mk
 
 build ::
-	tar -xzvf $(NAME)_2_1.tgz
+	gunzip -c $(NAME)_2_1.tgz | $(TAR) -xf -
 	( \
 		cd reportlab_2_1/reportlab; \
 		$(PY.PATH) setup.py $@; \

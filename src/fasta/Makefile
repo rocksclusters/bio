@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 2008/04/02 23:39:04 anoop Exp $
+# $Id: Makefile,v 1.9 2008/07/10 17:15:39 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.9  2008/07/10 17:15:39  anoop
+# Bug fixes to the build
+#
 # Revision 1.8  2008/04/02 23:39:04  anoop
 # Upgraded fasta
 #
@@ -109,7 +112,7 @@ include Rules.mk
 build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	(\
-		patch -p0 < patch_files/$(PATCH_FILE); \
+		$(PATCH)-p0 < patch_files/$(PATCH_FILE); \
 		cd $(NAME)-$(VERSION); \
 		$(MAKE) -f $(MAKEFILE);\
 	)
