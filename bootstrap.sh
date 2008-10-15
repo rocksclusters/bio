@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.10 2008/04/07 20:55:17 anoop Exp $
+# $Id: bootstrap.sh,v 1.11 2008/10/15 20:13:03 mjk Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +58,10 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.11  2008/10/15 20:13:03  mjk
+# - more changes to build outside of the tree
+# - removed some old fds-only targets
+#
 # Revision 1.10  2008/04/07 20:55:17  anoop
 # Fix Build bugs
 #
@@ -95,7 +99,7 @@
 #
 #
 
-. ../etc/bootstrap-functions.sh
+. $ROLLSROOT/etc/bootstrap-functions.sh
 
 install_os_packages bio-req
 compile reportlab
