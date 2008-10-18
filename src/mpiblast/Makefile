@@ -1,10 +1,10 @@
-# $Id: Makefile,v 1.14 2008/07/10 17:15:39 anoop Exp $
+# $Id: Makefile,v 1.15 2008/10/18 00:56:04 mjk Exp $
 #
 # @Copyright@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		            version 5.0 (V)
+# 		           version 5.1  (VI)
 # 
 # Copyright (c) 2000 - 2008 The Regents of the University of California.
 # All rights reserved.	
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.15  2008/10/18 00:56:04  mjk
+# copyright 5.1
+#
 # Revision 1.14  2008/07/10 17:15:39  anoop
 # Bug fixes to the build
 #

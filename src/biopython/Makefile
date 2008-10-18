@@ -1,10 +1,10 @@
-# $Id: Makefile,v 1.20 2008/04/02 23:37:31 anoop Exp $
+# $Id: Makefile,v 1.21 2008/10/18 00:56:03 mjk Exp $
 #
 # @Copyright@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		            version 5.0 (V)
+# 		           version 5.1  (VI)
 # 
 # Copyright (c) 2000 - 2008 The Regents of the University of California.
 # All rights reserved.	
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.21  2008/10/18 00:56:03  mjk
+# copyright 5.1
+#
 # Revision 1.20  2008/04/02 23:37:31  anoop
 # Upgraded Biopython
 #
