@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.55  2008/11/26 21:37:35  anoop
+	Merged back from changes in the mercurial repository
+	
 	Revision 1.54  2008/07/04 00:23:09  anoop
 	*** empty log message ***
 	
@@ -154,52 +157,64 @@
 	
 	</changelog>
 	
-	<package>hmmer</package>
-	<package>ncbi</package>
-	<package>mpiblast</package>
-	<package>biopython</package>
-	<package>ReportLab</package>
-	<package>clustalw</package>
-	<package>mrbayes</package>
-	<package>t_coffee</package>
-	<package>EMBOSS</package>
-	<package>phylip</package>
-	<package>fasta</package>
-	<package>glimmer</package>
-	<package>gromacs</package>
-	<package>fftw</package>
-	<package>gmap</package>
-	<package>foundation-perl-bioperl</package>
-	<package>foundation-perl-bioperl-run</package>
-	<package>foundation-perl-bioperl-gui</package>
-	<package>foundation-perl-bioperl-db</package>
-	<package>foundation-perl-Data-Stag</package>
-	<package>foundation-perl-Digest-MD5</package>
-	<package>foundation-perl-File-Temp</package>
-	<package>foundation-perl-GD</package>
-	<package>foundation-perl-GD-SVG</package>
-	<package>foundation-perl-Graph</package>
-	<package>foundation-perl-HTML-Parser</package>
-	<package>foundation-perl-HTML-Tagset</package>
-	<package>foundation-perl-IO-String</package>
-	<package>foundation-perl-IO-stringy</package>
-	<package>foundation-perl-libnet</package>
-	<package>foundation-perl-libwww-perl</package>
-	<package>foundation-perl-MIME-Base64</package>
-	<package>foundation-perl-PathTools</package>
-	<package>foundation-perl-Scalar-List-Utils</package>
-	<package>foundation-perl-SOAP-Lite</package>
-	<package>foundation-perl-Storable</package>
-	<package>foundation-perl-Text-Shellwords</package>
-	<package>foundation-perl-Text-Iconv</package>
-	<package>foundation-perl-URI</package>
-	<package>foundation-perl-XML-DOM</package>
-	<package>foundation-perl-XML-Node</package>
-	<package>foundation-perl-XML-Parser</package>
-	<package>foundation-perl-XML-Twig</package>
-	<package>foundation-perl-XML-Writer</package>
-	<package>foundation-perl-XML-Quote</package>
+	<package os="linux">hmmer</package>
+	<package os="linux">ncbi</package>
+	<package os="linux">mpiblast</package>
+	<package os="linux">biopython</package>
+	<package os="linux">ReportLab</package>
+	<package os="linux">clustalw</package>
+	<package os="linux">mrbayes</package>
+	<package os="linux">tcoffee</package>
+	<package os="linux">EMBOSS</package>
+	<package os="linux">phylip</package>
+	<package os="linux">fasta</package>
+	<package os="linux">glimmer</package>
+	<package os="linux">gromacs</package>
+	<package os="linux">fftw</package>
+	<package os="linux">gmap</package>
+	<package os="linux">foundation-perl-bioperl</package>
+	<package os="linux">foundation-perl-bioperl-run</package>
+	<package os="linux">foundation-perl-bioperl-gui</package>
+	<package os="linux">foundation-perl-bioperl-db</package>
+	<package os="linux">foundation-perl-Data-Stag</package>
+	<package os="linux">foundation-perl-Digest-MD5</package>
+	<package os="linux">foundation-perl-File-Temp</package>
+	<package os="linux">foundation-perl-GD</package>
+	<package os="linux">foundation-perl-GD-SVG</package>
+	<package os="linux">foundation-perl-Graph</package>
+	<package os="linux">foundation-perl-HTML-Parser</package>
+	<package os="linux">foundation-perl-HTML-Tagset</package>
+	<package os="linux">foundation-perl-IO-String</package>
+	<package os="linux">foundation-perl-IO-stringy</package>
+	<package os="linux">foundation-perl-libnet</package>
+	<package os="linux">foundation-perl-libwww-perl</package>
+	<package os="linux">foundation-perl-MIME-Base64</package>
+	<package os="linux">foundation-perl-PathTools</package>
+	<package os="linux">foundation-perl-Scalar-List-Utils</package>
+	<package os="linux">foundation-perl-SOAP-Lite</package>
+	<package os="linux">foundation-perl-Storable</package>
+	<package os="linux">foundation-perl-Text-Shellwords</package>
+	<package os="linux">foundation-perl-Text-Iconv</package>
+	<package os="linux">foundation-perl-URI</package>
+	<package os="linux">foundation-perl-XML-DOM</package>
+	<package os="linux">foundation-perl-XML-Node</package>
+	<package os="linux">foundation-perl-XML-Parser</package>
+	<package os="linux">foundation-perl-XML-Twig</package>
+	<package os="linux">foundation-perl-XML-Writer</package>
+	<package os="linux">foundation-perl-XML-Quote</package>
 
+	<package os="sunos">ROCKShmmer</package>
+	<package os="sunos">ROCKSncbi</package>
+	<package os="sunos">ROCKSmpiblast</package>
+	<package os="sunos">ROCKSbiopython</package>
+	<package os="sunos">ROCKSReportLab</package>
+	<package os="sunos">ROCKSmrbayes</package>
+	<package os="sunos">ROCKStcoffee</package>
+	<package os="sunos">ROCKSphylip</package>
+	<package os="sunos">ROCKSfasta</package>
+	<package os="sunos">ROCKSgromacs</package>
+	<package os="sunos">ROCKSfftw</package>
+	<package os="sunos">ROCKSgmap</package>
 <post>
 
 <!--
@@ -247,7 +262,7 @@ export PATH=$PATH:$BIOROLL/EMBOSS/bin
 export PATH=$PATH:$BIOROLL/clustalw/bin
 
 # t_coffee
-export PATH=$PATH:$BIOROLL/t_coffee/bin
+export PATH=$PATH:$BIOROLL/tcoffee/bin
 
 # Phylip
 export PATH=$PATH:$BIOROLL/phylip/exe
@@ -315,21 +330,30 @@ if ( ! -e $HOME/.t_coffee/tmp/ ) then
 endif
 
 </file>
+</post>
 
+<post os="linux">
 <file name="/etc/ld.so.conf.d/bio.conf" perm="0444">
 /opt/Bio/ncbi/lib/
 /opt/Bio/EMBOSS/lib/
 /opt/Bio/glimmer/lib/
 /opt/Bio/gromacs/lib/
 </file>
+</post>
 
+<post os="sunos">
+crle -u -l /opt/Bio/ncbi/lib/
+crle -u -l /opt/Bio/EMBOSS/lib/
+crle -u -l /opt/Bio/gromacs/lib/
+</post>
+
+<post>
 <!--
 	This part is to write a wrapper to mpiblast's mpiformatdb.
 	The way I do it is to move the original version to mpiformatdb.REAL
 	and create an mpiformatdb file that calls the original and then changes permissions
 	of the mbf file created by the command. This is necessary to allow everyone to 
 	use the same databases.
--->
 
 mv /opt/Bio/mpiblast/bin/mpiformatdb /opt/Bio/mpiblast/bin/mpiformatdb.REAL
 
@@ -354,6 +378,7 @@ echo "Changing permissions of $sharedloc/$dbname.mbf"
 chmod a+w $sharedloc/$dbname.mbf
 </file>
 chmod 0755 /opt/Bio/mpiblast/bin/mpiformatdb
+-->
 
 <!-- Add /share/bio to the auto.share file -->
 echo "bio <var name="Kickstart_PrivateHostname"/>:/export/&amp;" &gt;&gt; /etc/auto.share

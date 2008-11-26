@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2008/10/18 00:56:04 mjk Exp $
+# $Id: Makefile,v 1.11 2008/11/26 21:37:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.11  2008/11/26 21:37:36  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.10  2008/10/18 00:56:04  mjk
 # copyright 5.1
 #
@@ -103,7 +106,6 @@
 
 PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -114,12 +116,12 @@ build:
 		cd patch-files;\
 		find . -type f | grep -v CVS | cpio -pduv ../$(NAME)$(VERSION);\
 		cd ../$(NAME)$(VERSION)/src; \
-		$(MAKE); \
+		$(MAKE) SHELL=/bin/bash; \
 	)
 	gunzip -c $(ELPH_ARCHIVE).tar.gz | $(TAR) -xf -
 	(\
 		cd $(ELPHDIR)/sources;\
-		$(MAKE);\
+		$(MAKE) SHELL=/bin/bash;\
 	)
 
 install::
@@ -130,7 +132,7 @@ install::
 	)
 	(\
 		cd $(ELPHDIR)/sources;\
-		install -m0555 elph $(ROOT)/$(PKGROOT)/bin;\
+		$(INSTALL) -m0555 elph $(ROOT)/$(PKGROOT)/bin;\
 	)
 
 clean::

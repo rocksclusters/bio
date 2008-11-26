@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 2008/10/18 00:56:04 mjk Exp $
+# $Id: Makefile,v 1.8 2008/11/26 21:37:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.8  2008/11/26 21:37:36  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.7  2008/10/18 00:56:04  mjk
 # copyright 5.1
 #
@@ -114,19 +117,18 @@
 
 PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
 build:
-	gunzip -c $(NAME)-$(VERSION).tar.gz | tar -xf -
+	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	( \
 		cd $(NAME)-$(VERSION); \
 		./configure \
-			CPPFLAGS="-I/opt/rocks/include -I/opt/openmpi/include"\
-			LDFLAGS="-L/opt/rocks/lib -L/opt/openmpi/lib"\
-			MPICC=/opt/openmpi/bin/mpicc \
+			CPPFLAGS="-I/opt/rocks/include -I$(MPIROOT)/include"\
+			LDFLAGS="-L/opt/rocks/lib -L$(MPIROOT)/lib"\
+			MPICC=$(MPIROOT)/bin/mpicc \
 			--prefix=$(PKGROOT) --enable-float\
 			--enable-mpi; \
 		$(MAKE); \

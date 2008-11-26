@@ -4,14 +4,19 @@
 	bio roll
 	</description>
 
-	<package>foundation-python</package>
-	<package>foundation-python-extras</package>
-	<package>flex</package>
-	<package>xorg-x11-devel</package>
-	<package>readline</package>
-	<package>readline-devel</package>
-	<package>gd</package>
-	<package>gd-devel</package>
-	<package>blas</package>
-	<package>lapack</package>
+	<package os="linux">foundation-python</package>
+	<package os="linux">foundation-python-extras</package>
+	<package os="linux">flex</package>
+	<package os="linux">readline</package>
+	<package os="linux">readline-devel</package>
+	<package os="linux">gd</package>
+	<package os="linux">gd-devel</package>
+
+	<package os="sunos">ROCKSfoundation-python</package>
+	<package os="sunos">ROCKSfoundation-python-extras</package>
+	<package os="sunos">SUNWflexlex</package>
+	<package os="sunos">SUNWflexruntime</package>
+	<package os="sunos">ROCKSfoundation-readline</package>
+	<package os="sunos">SFWgd</package>
+	
 </kickstart>

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2008/10/18 00:56:04 mjk Exp $
+# $Id: Makefile,v 1.12 2008/11/26 21:37:37 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.12  2008/11/26 21:37:37  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.11  2008/10/18 00:56:04  mjk
 # copyright 5.1
 #
@@ -110,27 +113,28 @@
 
 PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
 build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
+	(cd patch-files && find . -type f | grep -v  CVS | cpio -pudv ../$(NAME)-$(VERSION))
 	( \
 		cd $(NAME)-$(VERSION); \
 		$(MAKE) MPI=yes \
-			CC=/opt/openmpi/bin/mpicc \
-			LDFLAGS+=-L/opt/rocks/lib \
-			CPPFLAGS=-I/opt/rocks/include; \
+			CC=$(MPIROOT)/bin/mpicc \
+			LDFLAGS+="-L/opt/rocks/lib -L/opt/sfw/lib"\
+			CPPFLAGS+=-I/opt/rocks/include; \
 	)
 
 install::
+	mkdir -p $(ROOT)/$(PKGROOT)/
 	( \
 		cd $(NAME)-$(VERSION); \
-		$(INSTALL) -D mb $(ROOT)/$(PKGROOT)/mb; \
+		$(INSTALL) mb $(ROOT)/$(PKGROOT)/mb; \
 		cp -rf *.nex $(ROOT)/$(PKGROOT);\
-		$(INSTALL) -D gpl.txt $(ROOT)/$(PKGROOT)/gpl.txt;\
+		$(INSTALL) gpl.txt $(ROOT)/$(PKGROOT)/gpl.txt;\
 	)
 
 clean::

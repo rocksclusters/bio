@@ -498,7 +498,7 @@ mpiblastsrc = blastjob.cpp db_spec.cpp db_spec.hpp blast_hooks.c blast_hooks.h \
 
 mpiblast_SOURCES = $(mpiblastsrc)
 EXTRA_mpiblast_SOURCES = getopt.c getopt.h getopt1.c
-mpiblast_LDADD = @GETOPT_LONG_SYSTEM@ @CONFIG_NCBIDIR@/build/ncbithr.o  -lmyncbitool -lblastcompadj -lmyncbiobj -lmyncbi -L. -L@CONFIG_NCBIDIR@/lib/ $(MPE_LIBS) -lm -lpthread -ldl -lncbitool -lncbiobj @LINK_FLAGS@
+mpiblast_LDADD = @GETOPT_LONG_SYSTEM@ @CONFIG_NCBIDIR@/build/ncbithr.o -L. -lmyncbitool -lmyncbiobj -lmyncbi -L@CONFIG_NCBIDIR@/lib/ -lncbitool -lncbiobj -lncbi -lblastcompadj $(MPE_LIBS) -lm -lpthread -ldl @LINK_FLAGS@
 mpiblast_DEPENDENCIES = @GETOPT_LONG_SYSTEM@
 mpiblast_CPPFLAGS = -DUSING_MPI -DMPICH_IGNORE_CXX_SEEK
 mpiformatdbsrc = mpiformatdb.cpp mpiblast_config.cpp mpiblast_config.hpp \
@@ -507,11 +507,11 @@ mpiformatdbsrc = mpiformatdb.cpp mpiblast_config.cpp mpiblast_config.hpp \
 				mpiblast_formatdb.c mpi_util.c mpi_util.h virtual_files.cpp virtual_files.hpp
 
 mpiformatdb_SOURCES = $(mpiformatdbsrc)
-mpiformatdb_LDADD = @GETOPT_LONG_SYSTEM@ @CONFIG_NCBIDIR@/build/ncbithr.o  -lncbitool -lblastcompadj -lncbiobj -lncbi -L. -L@CONFIG_NCBIDIR@/lib/ $(MPE_LIBS) -lm -lpthread -ldl @LINK_FLAGS@
+mpiformatdb_LDADD = @GETOPT_LONG_SYSTEM@ @CONFIG_NCBIDIR@/build/ncbithr.o  -L. -L@CONFIG_NCBIDIR@/lib/ -lncbitool -lblastcompadj -lncbiobj -lncbi $(MPE_LIBS) -lm -lpthread -ldl @LINK_FLAGS@
 mpiformatdb_DEPENDENCIES = @GETOPT_LONG_SYSTEM@
 mpiblast_cleanupsrc = mpiblast_cleanup.cpp mpiblast_config.cpp file_util.cpp mpiblast_util.cpp fragment_list.cpp mpi_util.c mpi_util.h virtual_files.cpp virtual_files.hpp
 mpiblast_cleanup_SOURCES = $(mpiblast_cleanupsrc)
-mpiblast_cleanup_LDADD = @CONFIG_NCBIDIR@/build/ncbithr.o  -lncbitool -lblastcompadj -lncbiobj -lncbi -L. -L@CONFIG_NCBIDIR@/lib/ $(MPE_LIBS) -lm -lpthread -ldl @LINK_FLAGS@
+mpiblast_cleanup_LDADD = @CONFIG_NCBIDIR@/build/ncbithr.o  -L. -L@CONFIG_NCBIDIR@/lib/ -lncbitool -lblastcompadj -lncbiobj -lncbi $(MPE_LIBS) -lm -lpthread -ldl @LINK_FLAGS@
 mpiformatdb_INCLUDES = -I$(top_srcdir)/include/ -I@CONFIG_NCBIDIR@/include/ $(MPE_INCS)
 INCLUDES = -I$(top_srcdir)/include/ -I@CONFIG_NCBIDIR@/include/ $(MPE_INCS) -I@CONFIG_NCBIDIR@/corelib/
 all: config.h

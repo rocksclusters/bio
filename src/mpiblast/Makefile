@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.15 2008/10/18 00:56:04 mjk Exp $
+# $Id: Makefile,v 1.16 2008/11/26 21:37:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.16  2008/11/26 21:37:36  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.15  2008/10/18 00:56:04  mjk
 # copyright 5.1
 #
@@ -123,12 +126,11 @@
 
 PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-build:
+patch:
 	gunzip -c $(ARCHIVE)-$(VERSION)-$(RELEASE).tgz | $(TAR) -xf -
 	(\
 		cd $(NAME)-$(VERSION)-$(RELEASE); \
@@ -147,13 +149,20 @@ build:
 		find . -type f | grep -v CVS | \
 			cpio -pudv ../$(NAME)-$(VERSION)-$(RELEASE);\
 	)
+	
+build:
+MPICC	= $(MPIROOT)/bin/mpicc
+MPICXX	= $(MPIROOT)/bin/mpicxx
+build: patch
 	( \
 		cd $(NAME)-$(VERSION)-$(RELEASE); \
-		./configure LINK_FLAGS="-lncbiobj -lncbitool" \
-			--with-mpi=$(MPIROOT) --prefix=$(PKGROOT); \
+		./configure CC=$(MPICC) CXX=$(MPICXX)\
+		CONFIG_LIBC=$(CONFIG_LIBC)	\
+		--with-mpi=$(MPIROOT) \
+		--prefix=$(PKGROOT); \
 		$(MAKE); \
 	)
-
+	
 install::
 	( \
 		cd $(NAME)-$(VERSION)-$(RELEASE); \

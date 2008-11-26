@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2008/07/10 17:15:39 anoop Exp $
+# $Id: Makefile,v 1.11 2008/11/26 21:37:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -46,6 +46,9 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # $Log: Makefile,v $
+# Revision 1.11  2008/11/26 21:37:36  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.10  2008/07/10 17:15:39  anoop
 # Bug fixes to the build
 #
@@ -96,13 +99,8 @@
 # added cvs tags back, roll builds
 #
 
-SRCDIRS = reportlab ncbi-blast
-
-SRCDIRS += `find * -type d -prune \
-	! -name CVS	\
-	! -name .	\
-	! -name reportlab \
-	! -name ncbi-blast`
+-include $(shell $(ROCKSROOT)/bin/os).mk
+-include $(shell $(ROCKSROOT)/bin/arch).mk
 
 default:	pkg
 

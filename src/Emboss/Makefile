@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2008/10/18 00:56:03 mjk Exp $
+# $Id: Makefile,v 1.11 2008/11/26 21:37:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.11  2008/11/26 21:37:36  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.10  2008/10/18 00:56:03  mjk
 # copyright 5.1
 #
@@ -108,20 +111,9 @@
 
 PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-
-build:
-	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
-	( \
-		cd $(NAME)-$(VERSION); \
-		./configure --prefix=$(PKGROOT) \
-			--with-java=$(JAVA_HOME)/include \
-			--with-javaos=$(JAVA_HOME)/include/linux/; \
-		$(MAKE); \
-	)
 
 install::
 	( \

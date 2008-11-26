@@ -1,4 +1,4 @@
-#$Id: Makefile,v 1.12 2008/10/18 00:56:05 mjk Exp $
+#$Id: Makefile,v 1.13 2008/11/26 21:37:38 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.13  2008/11/26 21:37:38  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.12  2008/10/18 00:56:05  mjk
 # copyright 5.1
 #
@@ -100,7 +103,6 @@
 
 #PKGROOT = /opt/Bio
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk

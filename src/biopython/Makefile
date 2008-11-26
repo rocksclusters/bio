@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.21 2008/10/18 00:56:03 mjk Exp $
+# $Id: Makefile,v 1.22 2008/11/26 21:37:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.22  2008/11/26 21:37:36  anoop
+# Merged back from changes in the mercurial repository
+#
 # Revision 1.21  2008/10/18 00:56:03  mjk
 # copyright 5.1
 #
@@ -146,7 +149,6 @@
 
 PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
-ROCKSROOT = ../../../../..
 BIOPYTHON_SOURCE_HOME = $(CURDIR)/$(NAME)
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
