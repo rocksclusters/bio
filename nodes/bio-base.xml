@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.57  2008/12/09 20:03:52  anoop
+	Solaris doesn't like '_' in the name
+	
 	Revision 1.56  2008/12/09 19:55:43  anoop
 	Added the TIGR Assembler to the bio roll
 	
@@ -175,7 +178,7 @@
 	<package os="linux">gromacs</package>
 	<package os="linux">fftw</package>
 	<package os="linux">gmap</package>
-	<package os="linux">TIGR_Assembler</package>
+	<package os="linux">tigr</package>
 
 	<package os="linux">foundation-perl-bioperl</package>
 	<package os="linux">foundation-perl-bioperl-run</package>
@@ -220,7 +223,7 @@
 	<package os="sunos">ROCKSgromacs</package>
 	<package os="sunos">ROCKSfftw</package>
 	<package os="sunos">ROCKSgmap</package>
-	<package os="sunos">ROCKSTIGR_Assembler</package>
+	<package os="sunos">ROCKStigr</package>
 <post>
 
 <!--
@@ -289,7 +292,7 @@ export PATH=$PATH:$BIOROLL/gromacs/bin
 export PATH=$PATH:$BIOROLL/gmap/bin
 
 # TIGR
-export PATH=$PATH:$BIOROLL/TIGR_Assembler/bin
+export PATH=$PATH:$BIOROLL/tigr/bin
 
 # NCBI
 export BLASTDB=/share/bio/ncbi/db
@@ -347,7 +350,7 @@ endif
 /opt/Bio/EMBOSS/lib/
 /opt/Bio/glimmer/lib/
 /opt/Bio/gromacs/lib/
-/opt/Bio/TIGR_Assembler/obj/
+/opt/Bio/tigr/obj/
 </file>
 </post>
 
@@ -355,7 +358,7 @@ endif
 crle -u -l /opt/Bio/ncbi/lib/
 crle -u -l /opt/Bio/EMBOSS/lib/
 crle -u -l /opt/Bio/gromacs/lib/
-crle -u -l /opt/Bio/TIGR_Assembler/obj/
+crle -u -l /opt/Bio/tigr/obj/
 </post>
 
 <!--
