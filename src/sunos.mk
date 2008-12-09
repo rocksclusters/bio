@@ -4,4 +4,4 @@ SRCDIRS = reportlab biopython	\
 	  gromacs hmmer		\
 	  mpiblast mrbayes	\
 	  ncbi-blast phylip	\
-	  t_coffee
+	  t_coffee tigr
