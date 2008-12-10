@@ -1,4 +1,4 @@
 NAME = gromacs
-VERSION	= 3.3.3
+VERSION	= 4.0.2
 RELEASE = 1
 ROLL = Bio

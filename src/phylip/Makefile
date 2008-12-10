@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.12 2008/11/26 21:37:38 anoop Exp $
+# $Id: Makefile,v 1.13 2008/12/10 03:29:36 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.13  2008/12/10 03:29:36  anoop
+# BioRoll Upgrade
+#
 # Revision 1.12  2008/11/26 21:37:38  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -122,7 +125,7 @@ build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	(\
 		cd $(NAME)-$(VERSION)/src; \
-		$(MAKE) CC=$(CC) install; \
+		$(MAKE) CC=$(CC) DFLAGS=$(DFLAGS) install; \
 	)
 
 install::

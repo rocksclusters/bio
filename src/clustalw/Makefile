@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.13 2008/11/26 21:37:36 anoop Exp $
+# $Id: Makefile,v 1.14 2008/12/10 03:29:23 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.14  2008/12/10 03:29:23  anoop
+# BioRoll Upgrade
+#
 # Revision 1.13  2008/11/26 21:37:36  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -128,6 +131,8 @@ include Rules.mk
 
 build:
 	gunzip -c $(NAME)-$(VERSION)-src.tar.gz | $(TAR) -xf -
+	-(cd patch-files/$(OS) && find $(NAME)-$(VERSION) -type f \
+		| grep -v CVS | cpio -pudv ../../)
 	(\
 		cd $(NAME)-$(VERSION);		\
 		./configure --prefix=$(PKGROOT);\

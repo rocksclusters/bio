@@ -1,4 +1,5 @@
 NAME = ReportLab
-VERSION	= 2.1
+VERSION	= 2.2
 RELEASE = 1
 ROLL = Bio
+ARCHIVE_NAME=ReportLab_2_2

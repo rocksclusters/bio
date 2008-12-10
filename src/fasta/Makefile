@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2008/11/26 21:37:36 anoop Exp $
+# $Id: Makefile,v 1.12 2008/12/10 03:29:23 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.12  2008/12/10 03:29:23  anoop
+# BioRoll Upgrade
+#
 # Revision 1.11  2008/11/26 21:37:36  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -116,18 +119,22 @@ include Rules.mk
 
 build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
+	-(cd patch-files && find $(NAME)-$(VERSION) | grep -v CVS | cpio -pudv ../)
 	(\
-		$(PATCH) -p0 < patch_files/$(PATCH_FILE); \
-		cd $(NAME)-$(VERSION); \
-		$(MAKE) -f $(MAKEFILE);\
+		cd $(NAME)-$(VERSION)/src/; \
+		$(MAKE) -f ../make/$(MAKEFILE);\
 	)
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT); 
 	mkdir -p $(ROOT)/opt/rocks/man/man1
 	(\
-		cd $(NAME)-$(VERSION);\
-		$(MAKE) XDIR=$(ROOT)/$(PKGROOT) -f $(MAKEFILE) install; \
+		cd $(NAME)-$(VERSION)/src/;\
+		$(MAKE) XDIR=$(ROOT)/$(PKGROOT) \
+			-f ../make/$(MAKEFILE) install; \
+	)
+	(\
+		cd $(NAME)-$(VERSION);	\
 		find ./ -type f ! -name Makefile\* \
 			! -name \*.c ! -name \*.o \
 			! -name \*.h ! -name [rR]eadme\* \
@@ -143,4 +150,3 @@ install::
 
 clean::
 	rm -rf $(NAME)-$(VERSION)
-	rm -rf $(NAME).spec.in

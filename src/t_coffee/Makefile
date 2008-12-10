@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2008/11/26 21:37:38 anoop Exp $
+# $Id: Makefile,v 1.15 2008/12/10 03:29:37 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.15  2008/12/10 03:29:37  anoop
+# BioRoll Upgrade
+#
 # Revision 1.14  2008/11/26 21:37:38  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -137,9 +140,9 @@ include Rules.mk
 
 build:
 	gunzip -c $(PACKAGE_NAME).tar.gz | $(TAR) -xf -
+	-(cd patch-files && find $(PACKAGE_NAME) -type f | grep -v CVS | cpio -pudv ../)
 	( \
 		cd $(PACKAGE_NAME); \
-		$(PATCH) -p1 < ../patch-files/$(PATCHFILE); \
 		$(MAKE) -C t_coffee_source; \
 	)
 

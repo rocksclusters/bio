@@ -1,6 +1,6 @@
 #!/bin/csh -f
 #
-# $Id: makedis.csh,v 1.1 2008/04/28 23:10:23 anoop Exp $
+# $Id: makedis.csh,v 1.2 2008/12/10 03:29:36 anoop Exp $
 #
 ##                            PUBLIC DOMAIN NOTICE                          
 #               National Center for Biotechnology Information
@@ -390,7 +390,7 @@ if ( "$HAVE_MOTIF" == 1 ) then
 		VIBLIBS=\"$NCBI_DISTVIBLIBS\" \
 		OGLLIBS=\"$OGL_LIBS $PNG_LIBS\" \
 		VIBFLAG=\"$NCBI_VIBFLAG\" \
-		VIB=\"Psequin sbtedit Nentrez udv ddv blastcl3 \
+		VIB=\"Psequin sbtedit Nentrez udv ddv blastcl3 taxblast \
 		idfetch bl2seq asn2gb tbl2asn gene2xml entrez2 gbseqget \
 		$WWWBLAST $OGL_TARGETS\") 
 else if ( "$HAVE_MAC" == 1 ) then
@@ -412,8 +412,8 @@ else if ( "$HAVE_MAC" == 1 ) then
 		VIBLIBS=\"$NCBI_DISTVIBLIBS\" \
 		OGLLIBS=\"$OGL_LIBS $PNG_LIBS\" \
 		VIBFLAG=\"$NCBI_VIBFLAG\" \
-		VIB_POST_LINK=\"/Developer/Tools/Rez -t APPL ../link/macmet/Carbon.r -o\" \
-		VIB=\"Psequin sbtedit udv ddv blastcl3 \
+		VIB_POST_LINK=\"../make/make-mac-bundle\" \
+		VIB=\"Psequin sbtedit udv ddv blastcl3 taxblast \
 		idfetch bl2seq asn2gb tbl2asn gene2xml entrez2 gbseqget $WWWBLAST \") 
 else # no Motif, build only ascii-based applications
     set OGL_NCBI_LIBS=""
@@ -423,7 +423,7 @@ else # no Motif, build only ascii-based applications
 
 	set ALL_VIB=()
 	set DEMO_VIB=()
-	set NET_VIB=(VIB=\"blastcl3 idfetch bl2seq asn2gb tbl2asn gene2xml $NONVIBWWWBLAST \") 
+	set NET_VIB=(VIB=\"blastcl3 taxblast idfetch bl2seq asn2gb tbl2asn gene2xml $NONVIBWWWBLAST \") 
 endif
 
 set CMD='make $MFLG \
@@ -461,7 +461,7 @@ set demo_stat = $status
 #  Might repeat what is done above on some platforms.
 #
 
-set mtapps = "blast blastall blastall_old blastpgp seedtop megablast rpsblast blastclust"
+set mtapps = "blastall blastpgp seedtop megablast rpsblast blastclust"
 
 rm -f $mtapps
 
@@ -522,11 +522,14 @@ else
         getmesh getpub getseq gil2bin idfetch impala indexpub makemat makeset \
 	megablast ncbisort netentcf rpsblast seedtop seqtest sequin entrez2 \
 	tbl2asn gene2xml test_regexp testcore testobj testval udv vecscreen Cn3D \
-	blast debruijn $WWWBLAST )
+	blast debruijn taxblast $WWWBLAST )
 	if ( -x ./$i ) then
-		rm -f ../bin/$i
+		rm -rf ../bin/$i ../bin/$i.app
 		if ( $os == "Darwin" ) then
 			/Developer/Tools/Rez Carbon.r -o $i
+			if ( -x ./$i.app ) then
+				cp -pr ./$i.app ../bin/
+			endif
 		endif
 		ln ./$i ../bin/
 	endif

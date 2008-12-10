@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2008/11/26 21:37:38 anoop Exp $
+# $Id: Makefile,v 1.11 2008/12/10 03:29:37 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.11  2008/12/10 03:29:37  anoop
+# BioRoll Upgrade
+#
 # Revision 1.10  2008/11/26 21:37:38  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -147,19 +150,17 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 build ::
-	gunzip -c $(NAME)_2_1.tgz | $(TAR) -xf -
+	gunzip -c $(ARCHIVE_NAME).tgz | $(TAR) -xf -
 	( \
-		cd reportlab_2_1/reportlab; \
+		cd $(ARCHIVE_NAME); \
 		$(PY.PATH) setup.py $@; \
 	)
 
 install test::
 	( \
-		cd reportlab_2_1/reportlab; \
+		cd $(ARCHIVE_NAME); \
 		$(PY.PATH) setup.py $@ --root=$(ROOT)/ ; \
 	)
 
 clean::
-	rm -f $(NAME).spec.in
-	rm -rf $(NAME)
-	rm -rf reportlab_2_1
+	rm -rf $(ARCHIVE_NAME)

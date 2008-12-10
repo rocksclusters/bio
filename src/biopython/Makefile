@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.22 2008/11/26 21:37:36 anoop Exp $
+# $Id: Makefile,v 1.23 2008/12/10 03:29:22 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.23  2008/12/10 03:29:22  anoop
+# BioRoll Upgrade
+#
 # Revision 1.22  2008/11/26 21:37:36  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -158,14 +161,14 @@ build ::
 	( \
 		cd $(NAME)-$(VERSION); \
 		export BIOPYTHON_SOURCE_HOME=$(CURDIR)/$(NAME)-$(VERSION)/;\
-		$(PY.PATH) setup.py $@ < ../config_input; \
+		$(PY.PATH) setup.py $@; \
 	)
 
 install test::
 	( \
 		cd $(NAME)-$(VERSION); \
 		export BIOPYTHON_SOURCE_HOME=$(CURDIR)/$(NAME)/;\
-		$(PY.PATH) setup.py $@ --root=$(ROOT)/ < ../config_input; \
+		$(PY.PATH) setup.py $@ --root=$(ROOT)/ ; \
 	)
 
 clean::

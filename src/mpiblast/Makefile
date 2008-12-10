@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.16 2008/11/26 21:37:36 anoop Exp $
+# $Id: Makefile,v 1.17 2008/12/10 03:29:27 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.17  2008/12/10 03:29:27  anoop
+# BioRoll Upgrade
+#
 # Revision 1.16  2008/11/26 21:37:36  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -136,7 +139,9 @@ patch:
 		cd $(NAME)-$(VERSION)-$(RELEASE); \
 		rm -rf ncbi;\
 		gunzip -c $(REDHAT.ROOT)/src/ncbi-blast/$(NCBI).tar.gz | $(TAR) -xf -; \
-		cd ncbi;\
+	)
+	(\
+		cd $(NAME)-$(VERSION)-$(RELEASE)/ncbi;\
 		$(PATCH) -p1 < ../patches/ncbi_Oct2006_evalue_pio.patch;\
 	)
 	(\

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2008/11/26 21:37:36 anoop Exp $
+# $Id: Makefile,v 1.12 2008/12/10 03:29:25 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.12  2008/12/10 03:29:25  anoop
+# BioRoll Upgrade
+#
 # Revision 1.11  2008/11/26 21:37:36  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -112,11 +115,11 @@ include Rules.mk
 
 build:
 	gunzip -c $(ARCHIVE).tar.gz | $(TAR) -xf -
+	-(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../$(NAME)$(VERSION); )
+		
 	( \
-		cd patch-files;\
-		find . -type f | grep -v CVS | cpio -pduv ../$(NAME)$(VERSION);\
-		cd ../$(NAME)$(VERSION)/src; \
-		$(MAKE) SHELL=/bin/bash; \
+		cd $(NAME)$(VERSION)/src; \
+		$(MAKE) CC=gcc CXX=g++ SHELL=/bin/bash; \
 	)
 	gunzip -c $(ELPH_ARCHIVE).tar.gz | $(TAR) -xf -
 	(\

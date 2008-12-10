@@ -1,6 +1,6 @@
 SRCDIRS = reportlab biopython	\
 	  fasta	fftw		\
-	  gmap	Emboss		\
+	  glimmer gmap Emboss	\
 	  gromacs hmmer		\
 	  mpiblast mrbayes	\
 	  ncbi-blast phylip	\
