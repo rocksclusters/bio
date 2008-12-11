@@ -5,7 +5,7 @@
 MPI-Blast is a program from <ulink url="http://www.lanl.gov/">LANL</ulink>
 which parallelizes the NCBI Blast algorithms using Message Passing Interface
 library. The version of MPI-Blast included with Rocks is v1.5.0-pio patched
-and compiled against NCBI Blast 2.2.18.
+and compiled against NCBI Blast 2.2.19.
 </para>
 </section>
 <section><title>Usage</title>
