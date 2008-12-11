@@ -20,7 +20,7 @@ applications is as follows:
 	<listitem><simpara>Phylip - From the Dept. of Biology at the University of Washington - <ulink url="http://evolution.genetics.washington.edu/phylip.html">http://evolution.genetics.washington.edu/phylip.html</ulink></simpara></listitem>
 	<listitem><simpara>fasta - From the University of Virginia - <ulink url="http://fasta.bioch.virginia.edu/">http://fasta.bioch.virginia.edu/</ulink></simpara></listitem>
 	<listitem><simpara>Glimmer - From Center for Bioinformatics and Computational Biology at the University of Maryland - <ulink url="http://www.cbcb.umd.edu/software/glimmer/"></ulink></simpara></listitem>
-	<listitem><simpara>TIGR Assembler - From the J. Craig Venter Institute - <ulink url="http://www.jcvi.org/cms/research/software/"/></simpara></listitem>
+	<listitem><simpara>TIGR Assembler - From the J. Craig Venter Institute - <ulink url="http://www.jcvi.org/cms/research/software/"></ulink></simpara></listitem>
 	<listitem><para>All the perl utilities mentioned below are from CPAN</para></listitem>
 	<listitem><simpara>perl-bioperl</simpara></listitem>
 	<listitem><simpara>perl-bioperl-run</simpara></listitem>

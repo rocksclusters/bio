@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.15 2008/12/10 03:29:37 anoop Exp $
+# $Id: Makefile,v 1.16 2008/12/11 04:09:48 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.16  2008/12/11 04:09:48  anoop
+# Bug fix
+#
 # Revision 1.15  2008/12/10 03:29:37  anoop
 # BioRoll Upgrade
 #
@@ -155,6 +158,7 @@ install::
 	 	cp -rf example $(ROOT)/$(PKGROOT)/;\
 	 	cp -rf html $(ROOT)/$(PKGROOT)/;\
 	 	cp -rf license.txt $(ROOT)/$(PKGROOT)/;\
+		cp -rf t_coffee_source/t_coffee $(ROOT)/$(PKGROOT)/bin; \
 	)
 
 clean::
