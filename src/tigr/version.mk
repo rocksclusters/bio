@@ -2,3 +2,4 @@ NAME	=	tigr
 VERSION	=	v2
 RELEASE	=	1
 ARCHIVE_NAME	= TIGR_Assembler
+ROLL	=	Bio
