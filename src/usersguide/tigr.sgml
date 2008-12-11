@@ -1,0 +1,19 @@
+<section id="tigr_usage" xreflabel="Using the TIGR Assembler">
+<title>TIGR Assembler v2</title>
+<section><title>About</title>
+<para>
+The TIGR Assembler is a  tool to assemble large shotgun
+sequencing projects. The version included with this distribution
+of Rocks is v2
+</para>
+</section>
+<section><title>Usage</title>
+<para>
+TIGR is used for assembling large shotgun DNA sequences. It is installed at /opt/Bio/tigr on the Rocks Distribution.
+To use TIGR, just type TIGR_Assembler at the command line for a list of all possible parameters that can be used.
+</para>
+</section>
+<section><title>Further Information</title>
+<para>Further information is available at the <ulink url="http://www.jcvi.org/cms/publications/listing/abstract/article/tigr-assembler-a-new-tool-for-assembling-large-shotgun-sequencing-projects/">JCVI TIGR Assembler page</ulink></para>
+</section>
+</section>
