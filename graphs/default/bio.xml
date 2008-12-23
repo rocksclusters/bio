@@ -13,6 +13,9 @@
 
 	<changelog>
 	$Log: bio.xml,v $
+	Revision 1.7  2008/12/23 00:28:50  mjk
+	added bio cond attr
+	
 	Revision 1.6  2006/07/13 18:02:50  anoop
 	Cleaned up the code a bit.
 	Build requirements have their own xml file
@@ -33,11 +36,11 @@
 	
 	</changelog>
 
-	<edge from="compute">
+	<edge from="client" cond="bio">
 		<to>bio-base</to>
 	</edge>
 	
-	<edge from="hpc-server">
+	<edge from="server">
 		<to>bio-head</to>
 	</edge>
 
@@ -48,5 +51,7 @@
 	<edge from="bio-base">
 		<to>bio-req</to>
 	</edge>
+
+	<order head="database-security" tail="bio-head"/>
 
 </graph>

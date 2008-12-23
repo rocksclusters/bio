@@ -10,6 +10,9 @@
 
 	<changelog>
 	$Log: bio-head.xml,v $
+	Revision 1.7  2008/12/23 00:28:50  mjk
+	added bio cond attr
+	
 	Revision 1.6  2006/07/12 20:46:09  anoop
 	Moved user guide from compute nodes to frontend
 	
@@ -98,5 +101,8 @@ chmod +x /var/www/html/blast/config_setup.pl
 
 chown -R biouser /export/bio
 
+/opt/rocks/bin/rocks set appliance attr compute bio true
+
 </post>
+
 </kickstart> 
