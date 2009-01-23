@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.58  2009/01/23 21:09:40  bruno
+	change var tags to entities
+	
 	Revision 1.57  2008/12/09 20:03:52  anoop
 	Solaris doesn't like '_' in the name
 	
@@ -395,6 +398,6 @@ chmod 0755 /opt/Bio/mpiblast/bin/mpiformatdb
 
 <post>
 <!-- Add /share/bio to the auto.share file -->
-echo "bio <var name="Kickstart_PrivateHostname"/>:/export/&amp;" &gt;&gt; /etc/auto.share
+echo "bio &Kickstart_PrivateHostname;:/export/&amp;" &gt;&gt; /etc/auto.share
 </post>
 </kickstart>
