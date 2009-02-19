@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.59  2009/02/19 18:45:58  anoop
+	iolib and bioperl-ext to the mix
+	
 	Revision 1.58  2009/01/23 21:09:40  bruno
 	change var tags to entities
 	
@@ -182,11 +185,13 @@
 	<package os="linux">fftw</package>
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
+	<package os="linux">io_lib</package>
 
 	<package os="linux">foundation-perl-bioperl</package>
 	<package os="linux">foundation-perl-bioperl-run</package>
 	<package os="linux">foundation-perl-bioperl-gui</package>
 	<package os="linux">foundation-perl-bioperl-db</package>
+	<package os="linux">foundation-perl-bioperl-ext</package>
 	<package os="linux">foundation-perl-Data-Stag</package>
 	<package os="linux">foundation-perl-Digest-MD5</package>
 	<package os="linux">foundation-perl-File-Temp</package>
