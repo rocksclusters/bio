@@ -1,10 +1,10 @@
 #
-# $Id: linux64.ncbi.mk,v 1.1 2008/04/28 23:10:23 anoop Exp $
+# $Id: linux64.ncbi.mk,v 1.2 2009/04/30 20:32:55 anoop Exp $
 #
 NCBI_DEFAULT_LCL = lnx
 NCBI_MAKE_SHELL = /bin/sh
 NCBI_AR=ar
-NCBI_CC = gcc -pipe
+NCBI_CC = gcc -pipe -D_GNU_SOURCE
 NCBI_CFLAGS1 = -c
 NCBI_LDFLAGS1 = -O3
 NCBI_OPTFLAG = -O3

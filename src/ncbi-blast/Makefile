@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.18 2008/11/26 21:37:37 anoop Exp $
+# $Id: Makefile,v 1.19 2009/04/30 20:32:24 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.19  2009/04/30 20:32:24  anoop
+# Upgraded NCBI Toolbox
+#
 # Revision 1.18  2008/11/26 21:37:37  anoop
 # Merged back from changes in the mercurial repository
 #
@@ -139,7 +142,7 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 build:
-	$(TAR) -xzf $(NAME).tar.gz
+	gunzip -c $(NAME).tar.gz | $(TAR) -xf -
 	(cd patch-files; find . -type f | grep -v CVS | cpio -pudv ../; )
 	-find $(NAME)/ -name *.pl | xargs sed -i -e 's/usr.*.bin.perl/opt\/rocks\/bin\/perl/g'
 	$(NAME)/make/makedis.csh
