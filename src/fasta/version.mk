@@ -1,5 +1,4 @@
 NAME = fasta
-VERSION = 35.4.3
+VERSION = 35.4.7
 RELEASE = 1
 ROLL = Bio
-PATCH_FILE = patch_01Apr2008_v$(VERSION)
