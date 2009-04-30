@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2008/12/10 03:29:37 anoop Exp $
+# $Id: Makefile,v 1.12 2009/04/30 20:36:52 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.12  2009/04/30 20:36:52  anoop
+# Upgraded ReportLab
+#
 # Revision 1.11  2008/12/10 03:29:37  anoop
 # BioRoll Upgrade
 #
@@ -150,7 +153,7 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 build ::
-	gunzip -c $(ARCHIVE_NAME).tgz | $(TAR) -xf -
+	gunzip -c $(ARCHIVE_NAME).tar.gz | $(TAR) -xf -
 	( \
 		cd $(ARCHIVE_NAME); \
 		$(PY.PATH) setup.py $@; \
