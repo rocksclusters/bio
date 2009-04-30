@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2008/12/10 03:29:23 anoop Exp $
+# $Id: Makefile,v 1.15 2009/04/30 19:27:55 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.15  2009/04/30 19:27:55  anoop
+# Upgraded clustalw to 2.0.11
+#
 # Revision 1.14  2008/12/10 03:29:23  anoop
 # BioRoll Upgrade
 #
@@ -130,7 +133,7 @@ HELP = clustalw_help
 include Rules.mk
 
 build:
-	gunzip -c $(NAME)-$(VERSION)-src.tar.gz | $(TAR) -xf -
+	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	-(cd patch-files/$(OS) && find $(NAME)-$(VERSION) -type f \
 		| grep -v CVS | cpio -pudv ../../)
 	(\

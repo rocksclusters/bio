@@ -75,7 +75,7 @@ void FastPairwiseAlign::pairwiseAlign(Alignment *alignPtr, DistMatrix *distMat, 
                 makePPtrs(zza, zzc, _seqIPtr, _seqILength);
             }
             double _score;
-            for (j = jStart + 2; j <= jEnd; ++j)
+	    for (j = jStart + 2 > i+1 ? jStart + 2 : i+1; j <= jEnd; ++j)
             {
                 const vector<int>* _seqJPtr = alignPtr->getSequence(j);
                 int _seqJLength = alignPtr->getSeqLength(j);
@@ -104,7 +104,8 @@ void FastPairwiseAlign::pairwiseAlign(Alignment *alignPtr, DistMatrix *distMat, 
                 }
                 _score = (100.0 - calcScore) / 100.0;
                 distMat->SetAt(i, j, _score);
-                distMat->SetAt(j, i, _score);
+                //distMat->SetAt(j, i, _score); /* distMat symmetric, FS, 2009-04-06 */
+
             
                 if(userParameters->getDisplayInfo())
                 {
@@ -138,6 +139,35 @@ void FastPairwiseAlign::pairwiseAlign(Alignment *alignPtr, DistMatrix *distMat, 
     }    
 }
 
+
+/*
+ * Note: There is a problem with the treatment of DNA/RNA. 
+ * During file reading all residues are encoded as AminoAcids, 
+ * even before it has been established if they are AA or not. 
+ * This is bad and will have to be changed (later). 
+ * 'A' is assigned code 0, C is assigned 2, G = 6, T=18, U=19. 
+ * However, the fast alignment routines require that 
+ * A=0, C=1, G=2, T=U=3. In the best case the results of the 
+ * fast alignment (of DNA) will simply be meaningless, the 
+ * worst case is a core dump. 
+ * As a quick fix I implemented the following mask, that 
+ * (for DNA/RNA) translates 0->0, 2->1, 6->2, 18->3, 19->3. 
+ * This is awfull (it is not OO compliant) but it was quick, 
+ * uses (much) less memory than a second DNA array, and is 
+ * (much) faster than calling a translation function. 
+ * Ideally this will be removed, but this requires changes 
+ * to (i) the sequence encoding during file-reading AND 
+ * (ii) all the DNA substitution matrices. (Fabian, 2009-02-25)
+ *
+ *                A  B  C  D  E  F  G  H  I  K  L  M  0  N  P  Q  R  S 
+ *                T  U  W  X  Y  Z (goodmeasuregoodmeasuregood) */
+int ziAA2DNA[] = {0,-1, 1,-1,-1,-1, 2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+		  3, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+const int ciMaxResID = 3;
+
+
+
+
 void FastPairwiseAlign::pairAlign(const vector<int>* seq, int l1, int l2)
 {
     int pot[8], i, j, l, m, limit, pos, tl1, vn1, vn2, flen, osptr, fs;
@@ -167,7 +197,6 @@ void FastPairwiseAlign::pairAlign(const vector<int>* seq, int l1, int l2)
         }
         limit = (int)pow((double)(_maxAA + 1), (double)_ktup);
     }
-
     tl1 = (l1 + l2) - 1;
 
     for (i = 1; i <= tl1; ++i)
@@ -234,16 +263,31 @@ void FastPairwiseAlign::pairAlign(const vector<int>* seq, int l1, int l2)
     for (i = 1; i <= (l1 - _ktup + 1); ++i)
     {
         encrypt = flag = 0;
-        for (j = 1; j <= _ktup; ++j)
-        {
-            residue = (*seq)[i + j - 1];
-            if ((residue < 0) || (residue > _maxAA))
-            {
-                flag = true;
-                break;
-            }
-            encrypt += ((residue) * pot[j]);
-        }
+	if (_DNAFlag){
+	  for (j = 1; j <= _ktup; ++j)
+	    {
+	      residue = ziAA2DNA[(*seq)[i + j - 1]];
+	      if ((residue < 0) || (residue > ciMaxResID))
+		{
+		  flag = true;
+		  break;
+		}
+	      encrypt += ((residue) * pot[j]);
+	    }
+	}
+	else {
+	  for (j = 1; j <= _ktup; ++j)
+	    {
+	      residue = (*seq)[i + j - 1];
+	      if ((residue < 0) || (residue > _maxAA))
+		{
+		  flag = true;
+		  break;
+		}
+	      encrypt += ((residue) * pot[j]);
+	    }
+	}
+
         if (flag)
         {
             continue;
@@ -452,16 +496,16 @@ void FastPairwiseAlign::makeNPtrs(vector<int>& tptr,vector<int>& pl, const vecto
     {
         code = 0;
         flag = false;
-        for (j = 1; j <= _ktup; ++j)
-        {
-            residue = (*seq)[i + j - 1];
-            if ((residue < 0) || (residue > 4))
-            {
-                flag = true;
-                break;
-            }
-            code += ((residue) * pot[j]); /* DES */
-        }
+	for (j = 1; j <= _ktup; ++j)
+	  {
+	    residue = ziAA2DNA[(*seq)[i + j - 1]];
+	    if ((residue < 0) || (residue > ciMaxResID))
+	      {
+		flag = true;
+		break;
+	      }
+	    code += ((residue) * pot[j]);
+	  }
         if (flag)
         {
             continue;
