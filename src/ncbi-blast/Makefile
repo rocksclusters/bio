@@ -1,12 +1,12 @@
-# $Id: Makefile,v 1.19 2009/04/30 20:32:24 anoop Exp $
+# $Id: Makefile,v 1.20 2009/05/01 19:07:11 mjk Exp $
 #
 # @Copyright@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		           version 5.1  (VI)
+# 		       version 5.2 (Chimichanga)
 # 
-# Copyright (c) 2000 - 2008 The Regents of the University of California.
+# Copyright (c) 2000 - 2009 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.20  2009/05/01 19:07:11  mjk
+# chimi con queso
+#
 # Revision 1.19  2009/04/30 20:32:24  anoop
 # Upgraded NCBI Toolbox
 #
