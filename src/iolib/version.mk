@@ -1,3 +1,4 @@
-NAME = io_lib
+NAME = iolib
 VERSION = 1.11.6
 RELEASE = 1
+ARCHIVE_NAME=io_lib

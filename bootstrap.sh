@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.13 2009/05/01 19:07:10 mjk Exp $
+# $Id: bootstrap.sh,v 1.14 2009/05/22 06:57:43 anoop Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +58,9 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.14  2009/05/22 06:57:43  anoop
+# Bug fix, IoLib is required for bioperl-ext
+#
 # Revision 1.13  2009/05/01 19:07:10  mjk
 # chimi con queso
 #
@@ -111,5 +114,6 @@ install_os_packages bio-req
 compile reportlab
 install ReportLab
 compile_and_install fftw
+compile_and_install iolib
 compile perl-XML-Parser
 install foundation-perl-XML-Parser

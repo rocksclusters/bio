@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.60  2009/05/22 06:57:43  anoop
+	Bug fix, IoLib is required for bioperl-ext
+	
 	Revision 1.59  2009/02/19 18:45:58  anoop
 	iolib and bioperl-ext to the mix
 	
@@ -185,7 +188,7 @@
 	<package os="linux">fftw</package>
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
-	<package os="linux">io_lib</package>
+	<package os="linux">iolib</package>
 
 	<package os="linux">foundation-perl-bioperl</package>
 	<package os="linux">foundation-perl-bioperl-run</package>

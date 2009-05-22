@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2009/05/01 19:07:11 mjk Exp $
+# $Id: Makefile,v 1.3 2009/05/22 06:57:43 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.3  2009/05/22 06:57:43  anoop
+# Bug fix, IoLib is required for bioperl-ext
+#
 # Revision 1.2  2009/05/01 19:07:11  mjk
 # chimi con queso
 #
@@ -68,18 +71,18 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 build:
-	gunzip -c $(NAME)-$(VERSION).$(RELEASE).tar.gz | $(TAR) -xf -
+	gunzip -c $(ARCHIVE_NAME)-$(VERSION).$(RELEASE).tar.gz | $(TAR) -xf -
 	(\
-		cd $(NAME)-$(VERSION); \
+		cd $(ARCHIVE_NAME)-$(VERSION); \
 		./configure --prefix=$(PKGROOT) \
 			CFLAGS=-fPIC;		\
 	);
 
 install::
 	(\
-		cd $(NAME)-$(VERSION);	\
+		cd $(ARCHIVE_NAME)-$(VERSION);	\
 		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
 	);
 
 clean::
-	rm -rf $(NAME)-$(VERSION)
+	rm -rf $(ARCHIVE_NAME)-$(VERSION)
