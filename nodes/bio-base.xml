@@ -7,6 +7,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.61  2009/05/27 22:06:31  anoop
+	Moved fftw to bio-req so that development machines will have it installed
+	
 	Revision 1.60  2009/05/22 06:57:43  anoop
 	Bug fix, IoLib is required for bioperl-ext
 	
@@ -185,7 +188,6 @@
 	<package os="linux">fasta</package>
 	<package os="linux">glimmer</package>
 	<package os="linux">gromacs</package>
-	<package os="linux">fftw</package>
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
 	<package os="linux">iolib</package>
@@ -232,7 +234,6 @@
 	<package os="sunos">ROCKSphylip</package>
 	<package os="sunos">ROCKSfasta</package>
 	<package os="sunos">ROCKSgromacs</package>
-	<package os="sunos">ROCKSfftw</package>
 	<package os="sunos">ROCKSgmap</package>
 	<package os="sunos">ROCKStigr</package>
 <post>
