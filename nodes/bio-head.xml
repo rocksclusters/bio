@@ -10,6 +10,9 @@
 
 	<changelog>
 	$Log: bio-head.xml,v $
+	Revision 1.8  2009/05/27 16:45:28  anoop
+	Bug Fixes
+	
 	Revision 1.7  2008/12/23 00:28:50  mjk
 	added bio cond attr
 	
@@ -56,9 +59,7 @@ $USERADD -c "Bio Roll User" -u $BIO_UID \
 mkdir -p /export/bio 
 mkdir -m0755 -p /export/bio/ncbi/db
 mkdir -m0755 -p /export/bio/hmmer/db
-chown -R biouser /export/bio
 
-chown biouser /export/bio
 <!--
 	Allow all users to sudo to 
 	the user biouser
@@ -71,8 +72,8 @@ echo "ALL     ALL=(ALL)       NOPASSWD: /bin/su - biouser" >> /etc/sudoers
 	the t_coffee cgi script
  -->
 
-ln -s /opt/Bio/t_coffee/html /var/www/html/t_coffee
-chmod a+x /opt/Bio/t_coffee/html/t_coffee4html.cgi
+ln -s /opt/Bio/tcoffee/html /var/www/html/t_coffee
+chmod a+x /opt/Bio/tcoffee/html/t_coffee4html.cgi
 
 <!--
 	Here we setup the ncbi blast web utilities.
@@ -97,7 +98,7 @@ ln -s /opt/Bio/ncbi/data /var/www/html/blast
 mkdir -m0777 /var/www/html/blast/output/
 
 chmod +x /var/www/html/blast/config_setup.pl
-/var/www/html/blast/config_setup.pl /share/bio/ncbi/db/ /var/www/html/blast/output/
+/var/www/html/blast/config_setup.pl /export/bio/ncbi/db/ /var/www/html/blast/output/
 
 chown -R biouser /export/bio
 
