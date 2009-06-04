@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2009/05/01 19:07:13 mjk Exp $
+# $Id: Makefile,v 1.3 2009/06/04 23:24:58 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.3  2009/06/04 23:24:58  anoop
+# Bug Fix
+#
 # Revision 1.2  2009/05/01 19:07:13  mjk
 # chimi con queso
 #
@@ -69,7 +72,7 @@ include Rules.mk
 
 build:
 	gunzip -c $(ARCHIVE_NAME).tar.gz | $(TAR) -xf -
-	(cd patch-files && find . -type f | cpio -pudv ../$(ARCHIVE_NAME))
+	(cd patch-files && find . -type f | grep -v CVS | cpio -pudv ../$(ARCHIVE_NAME))
 	(\
 		cd $(ARCHIVE_NAME);	\
 		$(PERL) Makefile.PL;	\
