@@ -13,6 +13,9 @@
 
 	<changelog>
 	$Log: bio.xml,v $
+	Revision 1.8  2009/06/04 22:54:48  anoop
+	Upgraded Bioperl and it's dependencies
+	
 	Revision 1.7  2008/12/23 00:28:50  mjk
 	added bio cond attr
 	
@@ -50,6 +53,7 @@
 	
 	<edge from="bio-base">
 		<to>bio-req</to>
+		<to>bio-perl</to>
 	</edge>
 
 	<order head="database-security" tail="bio-head"/>

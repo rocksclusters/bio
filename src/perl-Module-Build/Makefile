@@ -1,4 +1,4 @@
-#$Id: Makefile,v 1.15 2009/06/04 22:54:51 anoop Exp $
+#$Id: Makefile,v 1.1 2009/06/04 22:54:49 anoop Exp $ 
 
 # @Copyright@
 # 
@@ -54,80 +54,39 @@
 # @Copyright@
 
 # $Log: Makefile,v $
-# Revision 1.15  2009/06/04 22:54:51  anoop
+# Revision 1.1  2009/06/04 22:54:49  anoop
 # Upgraded Bioperl and it's dependencies
 #
-# Revision 1.14  2009/05/01 19:07:13  mjk
-# chimi con queso
+# Revision 1.2  2006/08/07 19:09:41  anoop
+# *** empty log message ***
 #
-# Revision 1.13  2008/11/26 21:37:38  anoop
-# Merged back from changes in the mercurial repository
-#
-# Revision 1.12  2008/10/18 00:56:05  mjk
-# copyright 5.1
-#
-# Revision 1.11  2008/03/06 23:41:48  mjk
-# copyright storm on
-#
-# Revision 1.10  2007/06/23 04:03:28  mjk
-# mars hill copyright
-#
-# Revision 1.9  2006/12/02 01:04:57  anoop
-# Ridiculously big ass commit.
-# Also known as the week after thanksgiving 2006. Or "The day Anoop
-# broke Rocks".
-#
-# Main Changes.
-#
-# 1. Added a roll-profile.mk file. This is meant as a makefile for building
-# the profile rpm containing all the XML files meant for the roll. This is a
-# breakaway from the spec.in file method of building the profile RPM.
-#
-# 2. The variable PWD is now changed to CURDIR. The main reason for this is
-# PWD is supplied by the shell. CURDIR is the variable supplied by gmake itself.
-# This means we can have a slightly more platform independant way of doing things.
-# Also Solaris was failing to set PWD correctly in the source directories, wreaking
-# havoc on the location of the BUILD and PKG directories.
-#
-# Revision 1.8  2006/09/11 22:47:42  mjk
-# monkey face copyright
-#
-# Revision 1.7  2006/08/10 00:09:59  mjk
-# 4.2 copyright
-#
-# Revision 1.6  2006/08/08 00:09:40  anoop
-# Bug Fixes
-#
-# Revision 1.5  2006/08/02 18:45:51  mjk
-# work for new version
-#
-# Revision 1.4  2006/01/31 21:30:52  anoop
-# Re-adding the perl-* libraries. There were changes in building formats for which
-# I had to redo the whole thing. So here we are.
+# Revision 1.1  2006/02/14 21:19:49  anoop
+# Some utils for moi.
 #
 
 
-#PKGROOT = /opt/Bio
+PKGROOT = /opt/$(ROLL)/$(NAME)
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
 
-build:
-	tar -xzvf BioPerl-$(VERSION).tar.gz
-	(								\
-		cd BioPerl-$(VERSION);					\
-		$(PERL) Makefile.PL < ../config_input;			\
-		make;							\
+build::
+	tar -xzvf $(ORIG_NAME)-$(VERSION).tar.gz
+	( \
+		cd $(ORIG_NAME)-$(VERSION);\
+		$(PERL) Makefile.PL < ../config_input; \
+		make;\
 	)
 
-install::
-	(								\
-		cd BioPerl-$(VERSION);					\
-		make install DESTDIR=$(ROOT);		\
+install test::
+	(\
+		cd $(ORIG_NAME)-$(VERSION);\
+		make $@ DESTDIR=$(ROOT)/; \
 	)
 
 clean::
-	rm -rf BioPerl-$(VERSION)
+	rm -f $(NAME).spec.in
+	rm -rf $(ORIG_NAME)-$(VERSION)
 

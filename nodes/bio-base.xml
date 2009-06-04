@@ -1,3 +1,5 @@
+<?xml version="1.0" standalone="no"?>
+
 <kickstart>
 	<description>
 	
@@ -7,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.62  2009/06/04 22:54:48  anoop
+	Upgraded Bioperl and it's dependencies
+	
 	Revision 1.61  2009/05/27 22:06:31  anoop
 	Moved fftw to bio-req so that development machines will have it installed
 	
@@ -191,38 +196,6 @@
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
 	<package os="linux">iolib</package>
-
-	<package os="linux">foundation-perl-bioperl</package>
-	<package os="linux">foundation-perl-bioperl-run</package>
-	<package os="linux">foundation-perl-bioperl-gui</package>
-	<package os="linux">foundation-perl-bioperl-db</package>
-	<package os="linux">foundation-perl-bioperl-ext</package>
-	<package os="linux">foundation-perl-Data-Stag</package>
-	<package os="linux">foundation-perl-Digest-MD5</package>
-	<package os="linux">foundation-perl-File-Temp</package>
-	<package os="linux">foundation-perl-GD</package>
-	<package os="linux">foundation-perl-GD-SVG</package>
-	<package os="linux">foundation-perl-Graph</package>
-	<package os="linux">foundation-perl-HTML-Parser</package>
-	<package os="linux">foundation-perl-HTML-Tagset</package>
-	<package os="linux">foundation-perl-IO-String</package>
-	<package os="linux">foundation-perl-IO-stringy</package>
-	<package os="linux">foundation-perl-libnet</package>
-	<package os="linux">foundation-perl-libwww-perl</package>
-	<package os="linux">foundation-perl-MIME-Base64</package>
-	<package os="linux">foundation-perl-PathTools</package>
-	<package os="linux">foundation-perl-Scalar-List-Utils</package>
-	<package os="linux">foundation-perl-SOAP-Lite</package>
-	<package os="linux">foundation-perl-Storable</package>
-	<package os="linux">foundation-perl-Text-Shellwords</package>
-	<package os="linux">foundation-perl-Text-Iconv</package>
-	<package os="linux">foundation-perl-URI</package>
-	<package os="linux">foundation-perl-XML-DOM</package>
-	<package os="linux">foundation-perl-XML-Node</package>
-	<package os="linux">foundation-perl-XML-Parser</package>
-	<package os="linux">foundation-perl-XML-Twig</package>
-	<package os="linux">foundation-perl-XML-Writer</package>
-	<package os="linux">foundation-perl-XML-Quote</package>
 
 	<package os="sunos">ROCKShmmer</package>
 	<package os="sunos">ROCKSncbi</package>

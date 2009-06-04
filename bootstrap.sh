@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.14 2009/05/22 06:57:43 anoop Exp $
+# $Id: bootstrap.sh,v 1.15 2009/06/04 22:54:48 anoop Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +58,9 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.15  2009/06/04 22:54:48  anoop
+# Upgraded Bioperl and it's dependencies
+#
 # Revision 1.14  2009/05/22 06:57:43  anoop
 # Bug fix, IoLib is required for bioperl-ext
 #
@@ -111,9 +114,15 @@
 . $ROLLSROOT/etc/bootstrap-functions.sh
 
 install_os_packages bio-req
+
 compile reportlab
 install ReportLab
+
 compile_and_install fftw
 compile_and_install iolib
+
+compile perl-Module-Build
+install foundation-perl-Module-Build
+
 compile perl-XML-Parser
 install foundation-perl-XML-Parser

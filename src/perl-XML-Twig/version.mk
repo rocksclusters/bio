@@ -1,5 +1,5 @@
 NAME=foundation-perl-XML-Twig
-VERSION=3.26
+VERSION=3.32
 RELEASE=1
 ROLL=Bio
 ORIG_NAME=XML-Twig

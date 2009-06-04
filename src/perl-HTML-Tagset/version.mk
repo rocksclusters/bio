@@ -1,5 +1,5 @@
 NAME=foundation-perl-HTML-Tagset
-VERSION=3.10
+VERSION=3.20
 RELEASE=1
 ROLL=Bio
 ORIG_NAME=HTML-Tagset

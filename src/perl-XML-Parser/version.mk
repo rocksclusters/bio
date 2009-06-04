@@ -1,5 +1,5 @@
 NAME=foundation-perl-XML-Parser
-VERSION=2.34
+VERSION=2.36
 RELEASE=1
 ROLL=Bio
 ORIG_NAME=XML-Parser

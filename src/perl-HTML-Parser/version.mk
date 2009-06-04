@@ -1,5 +1,5 @@
 NAME=foundation-perl-HTML-Parser
-VERSION=3.55
+VERSION=3.60
 RELEASE=1
 ROLL=Bio
 ORIG_NAME=HTML-Parser
