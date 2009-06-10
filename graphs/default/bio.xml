@@ -13,6 +13,9 @@
 
 	<changelog>
 	$Log: bio.xml,v $
+	Revision 1.9  2009/06/10 22:26:00  anoop
+	fixed broken ordering
+	
 	Revision 1.8  2009/06/04 22:54:48  anoop
 	Upgraded Bioperl and it's dependencies
 	
@@ -56,6 +59,6 @@
 		<to>bio-perl</to>
 	</edge>
 
-	<order head="database-security" tail="bio-head"/>
+	<order head="database-data" tail="bio-head"/>
 
 </graph>
