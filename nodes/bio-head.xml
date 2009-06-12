@@ -10,6 +10,9 @@
 
 	<changelog>
 	$Log: bio-head.xml,v $
+	Revision 1.9  2009/06/12 17:47:14  anoop
+	/share is not present during installation
+	
 	Revision 1.8  2009/05/27 16:45:28  anoop
 	Bug Fixes
 	
@@ -90,7 +93,7 @@ ln -s /opt/Bio/ncbi/network/wwwblast /var/www/html/blast
 mkdir -m0777 /var/www/html/blast/TmpGifs
 ln -s /opt/Bio/ncbi/bin/*.REAL /var/www/html/blast/
 ln -s /opt/Bio/ncbi/bin/*.cgi /var/www/html/blast/
-mv /var/www/html/blast/db/* /share/bio/ncbi/db/
+mv /var/www/html/blast/db/* /export/bio/ncbi/db/
 rm -rf /var/www/html/blast/db/
 ln -s /share/bio/ncbi/db/ /var/www/html/blast/
 rm -rf /var/www/html/blast/data
