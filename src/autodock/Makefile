@@ -1,22 +1,25 @@
-# $Id: Makefile,v 1.1 2009/08/11 00:31:05 anoop Exp $
+# $Id: Makefile,v 1.2 2009/08/11 19:43:25 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.2  2009/08/11 19:43:25  anoop
+# Minor Bug fixes for autodock
+#
 # Revision 1.1  2009/08/11 00:31:05  anoop
 # Added autodock 4.2.1 to the Bio roll
 #
 
 REDHAT.ROOT = $(CURDIR)/../..
-PKGROOT = /opt/$(ROLL)
+PKGROOT = /opt/$(ROLL)/$(NAME)
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
 build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
-	(cd patch-files && find . -type f | cpio -mpudv ../ )
+	(cd patch-files && find . -type f | grep -v CVS | cpio -mpudv ../ )
 	(						\
 		cd $(NAME)-$(VERSION)/src/autodock/;	\
 		./configure --prefix=$(PKGROOT);	\

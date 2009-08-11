@@ -9,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.63  2009/08/11 19:43:25  anoop
+	Minor Bug fixes for autodock
+	
 	Revision 1.62  2009/06/04 22:54:48  anoop
 	Upgraded Bioperl and it's dependencies
 	
@@ -196,6 +199,7 @@
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
 	<package os="linux">iolib</package>
+	<package os="linux">autodocksuite</package>
 
 	<package os="sunos">ROCKShmmer</package>
 	<package os="sunos">ROCKSncbi</package>
@@ -279,6 +283,9 @@ export PATH=$PATH:$BIOROLL/gmap/bin
 # TIGR
 export PATH=$PATH:$BIOROLL/tigr/bin
 
+# Autodock Suite
+export PATH=$PATH:$BIOROLL/autodocksuite/bin
+
 # NCBI
 export BLASTDB=/share/bio/ncbi/db
 export BLASTMAT=/opt/Bio/ncbi/data
@@ -304,7 +311,7 @@ fi
 </file>
 
 <file name="/etc/profile.d/bio.csh" perm="0755">
-set path = ( $path /opt/Bio/ncbi/bin /opt/Bio/mpiblast/bin/ /opt/Bio/EMBOSS/bin /opt/Bio/clustalw/bin /opt/Bio/t_coffee/bin /opt/Bio/phylip/exe /opt/Bio/mrbayes /opt/Bio/fasta /opt/Bio/glimmer/bin /opt/Bio/glimmer/scripts /opt/Bio/gmap/bin /opt/Bio/gromacs/bin/ )
+set path = ( $path /opt/Bio/ncbi/bin /opt/Bio/mpiblast/bin/ /opt/Bio/EMBOSS/bin /opt/Bio/clustalw/bin /opt/Bio/t_coffee/bin /opt/Bio/phylip/exe /opt/Bio/mrbayes /opt/Bio/fasta /opt/Bio/glimmer/bin /opt/Bio/glimmer/scripts /opt/Bio/gmap/bin /opt/Bio/gromacs/bin /opt/Bio/autodocksuite/bin )
 
 setenv BLASTDB  /share/bio/ncbi/db
 setenv BLASTMAT /opt/Bio/ncbi/data
