@@ -1,5 +1,4 @@
 NAME	= ncbi
 VERSION	= 6.1
-ROLL	= Bio
 DESCRIPTION= NCBI Blast
 RELEASE	=	4
