@@ -1,4 +1,3 @@
 NAME	=	autodocksuite
-VERSION	=	4.2.1
+VERSION	=	4.2.2.1
 RELEASE	=	1
-ROLL	=	Bio

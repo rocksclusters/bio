@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.in,v 1.1 2009/08/11 00:31:05 anoop Exp $
+# $Id: Makefile.in,v 1.1 2009/11/19 01:05:02 anoop Exp $
 # 
 # AutoGrid 
 # 
@@ -58,13 +58,15 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_triplet = @build@
+host_triplet = @host@
 bin_PROGRAMS = autogrid4$(EXEEXT)
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in \
 	$(top_srcdir)/../autodock/read_parameter_library.cc \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	depcomp install-sh missing
+	config.guess config.sub depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -89,6 +91,8 @@ am_autogrid4_OBJECTS = autogrid4-main.$(OBJEXT) \
 	autogrid4-distdepdiel.$(OBJEXT)
 autogrid4_OBJECTS = $(am_autogrid4_OBJECTS)
 autogrid4_LDADD = $(LDADD)
+autogrid4_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(autogrid4_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -175,14 +179,22 @@ am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
 bindir = @bindir@
+build = @build@
 build_alias = @build_alias@
+build_cpu = @build_cpu@
+build_os = @build_os@
+build_vendor = @build_vendor@
 builddir = @builddir@
 datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+host = @host@
 host_alias = @host_alias@
+host_cpu = @host_cpu@
+host_os = @host_os@
+host_vendor = @host_vendor@
 htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
@@ -259,10 +271,15 @@ autogrid4_SOURCES = main.cpp \
 BUILT_SOURCES = default_parameters.h
 CLEANFILES = default_parameters.h
 AM_CFLAGS = -Wall -O3 # All warnings, Agressive optimization
-AM_CPPFLAGS = -Wall -O3 -I$(srcdir)/../autodock # All warnings, Agressive optimization
+AM_CPPFLAGS = -Wall -O3 -I$(srcdir)/../autodock -Wno-write-strings # \
+	increase compatibility with pre 4.x compilers for string \
+	handling
 
 # autogrid4_CXXFLAGS = -Wall -O3 -ftree-vectorize # All warnings, Agressive optimization, GCC vectorization in Mac OS X
 autogrid4_CPPFLAGS = $(AM_CPPFLAGS)
+
+# LINKOPT = $(CSTD) $(OPT) -Wl,--stack=0x2000000 # Cygwin, 32MB stacksize
+@WANT_BIGSTACK_TRUE@autogrid4_LDFLAGS = -Wl,--stack,8388608 # Cygwin, 32MB stacksize
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -326,7 +343,7 @@ clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 autogrid4$(EXEEXT): $(autogrid4_OBJECTS) $(autogrid4_DEPENDENCIES) 
 	@rm -f autogrid4$(EXEEXT)
-	$(CXXLINK) $(autogrid4_OBJECTS) $(autogrid4_LDADD) $(LIBS)
+	$(autogrid4_LINK) $(autogrid4_OBJECTS) $(autogrid4_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -881,8 +898,6 @@ uninstall-am: uninstall-binPROGRAMS
 dist-hook:
 	rm -rf `find $(distdir)/Tests -name CVS -o -name '*.glg'` 
 
-# LINKOPT = $(CSTD) $(OPT) -Wl,--stack=0x2000000 # Cygwin, 32MB stacksize
-
 # DBUG = -DNDEBUG # No debugging and no assert code.
 # DBUG = # Use assert code.
 # DBUG = -g # dbx.
@@ -900,8 +915,18 @@ test : autogrid4 $(srcdir)/Tests/test_autogrid4.py
 	@echo " "
 	@echo "Running the Python test_autogrid4.py unit-tests on autogrid4"
 	@echo " "
+# for technical reasons, autogrid must be run in the Tests
+# directory because it writes its maps into its current directory
+# and expects to find AD4.1_bound.dat in that same directory.
 	outputdir=`pwd` ;\
-	cd $(srcdir)/Tests ; chmod u+w . ; python ./test_autogrid4.py -g . -e $$outputdir/autogrid4 -o .
+	umask 0 ;\
+	test -d $$outputdir/Tests || mkdir $$outputdir/Tests ;\
+	cp $(srcdir)/Tests/*.py   $$outputdir/Tests;\
+	cp $(srcdir)/Tests/*.gpf  $$outputdir/Tests;\
+	cp $(srcdir)/Tests/*.dat  $$outputdir/Tests;\
+	cp $(srcdir)/Tests/*.pdbqt  $$outputdir/Tests;\
+	cp $(srcdir)/Tests/*.map*  $$outputdir/Tests;\
+	cd Tests ;  python ./test_autogrid4.py -d . -e ../autogrid4$(EXEEXT) -o .
 #else
 #	@echo " "
 #	@echo "Python version 2.1 or higher needed for 'make test', but not found."

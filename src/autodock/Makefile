@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.2 2009/08/11 19:43:25 anoop Exp $
+# $Id: Makefile,v 1.3 2009/11/19 01:05:01 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.3  2009/11/19 01:05:01  anoop
+# Updated autodock
+#
 # Revision 1.2  2009/08/11 19:43:25  anoop
 # Minor Bug fixes for autodock
 #
@@ -18,7 +21,8 @@ PKGROOT = /opt/$(ROLL)/$(NAME)
 include Rules.mk
 
 build:
-	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
+	mkdir -p $(NAME)-$(VERSION)
+	gunzip -c $(NAME)-$(VERSION)-src.tar.gz | ( cd $(NAME)-$(VERSION) && $(TAR) -xf - )
 	(cd patch-files && find . -type f | grep -v CVS | cpio -mpudv ../ )
 	(						\
 		cd $(NAME)-$(VERSION)/src/autodock/;	\

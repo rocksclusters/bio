@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.in,v 1.1 2009/08/11 00:31:05 anoop Exp $
+# $Id: Makefile.in,v 1.1 2009/11/19 01:05:02 anoop Exp $
 # 
 # AutoDock  
 # 
@@ -122,7 +122,7 @@ libad_a_OBJECTS = $(am_libad_a_OBJECTS)
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
-am_autodock4_OBJECTS = autodock4-main.$(OBJEXT)
+am_autodock4_OBJECTS = main.$(OBJEXT)
 autodock4_OBJECTS = $(am_autodock4_OBJECTS)
 autodock4_DEPENDENCIES = libad.a
 autodock4_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
@@ -458,14 +458,16 @@ libad_a_SOURCES = \
 		weedbonds.h \
 		writePDBQT.h
 
-AM_CXXFLAGS = -Wall -O3 # All warnings, Agressive optimization
+AM_CXXFLAGS = -O3 -Wall -Wno-write-strings # increase compatibility \
+	with pre 4.x compilers for string handling
+
+#AM_CXXFLAGS = -Wall -O3 # All warnings, Agressive optimization
 #AM_CXXFLAGS = -Wall -O3 -ftree-vectorize # All warnings, Agressive optimization + GCC vectorization # MacOSX only?
 AM_CPPFLAGS = -DNOSQRT \
               -DUSE_8A_NBCUTOFF \
               -DWRITEPDBQSTATE \
               -I$(srcdir)/../acro/include # Standard accuracy, but faster; no crossover in quaternion
 
-autodock4_CPPFLAGS = -DVERSION_NUM=\"4.1.1\" $(AM_CPPFLAGS)
 
 #autodock4_CXXFLAGS = -Wall -O3 # All warnings, Agressive optimization
 #autodock4_CXXFLAGS = -Wall -O3 -ftree-vectorize # All warnings, Agressive optimization + GCC vectorization # MacOSX only?
@@ -473,7 +475,7 @@ autodock4_CPPFLAGS = -DVERSION_NUM=\"4.1.1\" $(AM_CPPFLAGS)
 #autodock4_CPPFLAGS = -DUSE_8A_NBCUTOFF \
 #                     -DWRITEPDBQSTATE # Standard accuracy, but faster; no crossover in quaternion
 autodock4_LDADD = libad.a $(COLINY_LDFLAGS) -lm
-@WANT_BIGSTACK_TRUE@autodock4_LDFLAGS = -fno-stack-limit # Cygwin, 32MB stacksize
+@WANT_BIGSTACK_TRUE@autodock4_LDFLAGS = -Wl,--stack,8388608 # Cygwin, big stacksize
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -554,7 +556,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/analysis.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/atom_parameter_manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/autodock4-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/banner.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bestpdb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calculateEnergies.Po@am__quote@
@@ -587,6 +588,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/investigate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/linpack.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ls.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mapping.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/minmeanmax.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mkNewState.Po@am__quote@
@@ -654,20 +656,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-autodock4-main.o: main.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-main.o -MD -MP -MF $(DEPDIR)/autodock4-main.Tpo -c -o autodock4-main.o `test -f 'main.cc' || echo '$(srcdir)/'`main.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/autodock4-main.Tpo $(DEPDIR)/autodock4-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='main.cc' object='autodock4-main.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-main.o `test -f 'main.cc' || echo '$(srcdir)/'`main.cc
-
-autodock4-main.obj: main.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-main.obj -MD -MP -MF $(DEPDIR)/autodock4-main.Tpo -c -o autodock4-main.obj `if test -f 'main.cc'; then $(CYGPATH_W) 'main.cc'; else $(CYGPATH_W) '$(srcdir)/main.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/autodock4-main.Tpo $(DEPDIR)/autodock4-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='main.cc' object='autodock4-main.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-main.obj `if test -f 'main.cc'; then $(CYGPATH_W) 'main.cc'; else $(CYGPATH_W) '$(srcdir)/main.cc'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -963,6 +951,8 @@ uninstall-am: uninstall-binPROGRAMS
 dist-hook:
 	rm -rf `find $(distdir)/Tests -name CVS -o -name '*.dlg'` 
 
+    # if gnu c++ compiler
+
 #
 # If you need to use debugging or profiling, these should also be 
 # modified appropriately:
@@ -1120,7 +1110,15 @@ test : autodock4 $(srcdir)/Tests/test_autodock4.py
 	@echo "Running the Python test_autodock4.py unit-tests on autodock4"
 	@echo " "
 	outputdir=`pwd` ;\
-	cd $(srcdir)/Tests ; chmod u+w . ; python ./test_autodock4.py -d . -e $$outputdir/autodock4 -o $$outputdir/Tests
+	umask 0 ;\
+	test -d $$outputdir/Tests || mkdir $$outputdir/Tests ;\
+    cp $(srcdir)/AD4.1_bound.dat  $$outputdir/Tests;\
+    cp $(srcdir)/AD4_parameters.dat  $$outputdir/Tests;\
+    cp $(srcdir)/Tests/*.py   $$outputdir/Tests;\
+    cp $(srcdir)/Tests/*.dpf  $$outputdir/Tests;\
+    cp $(srcdir)/Tests/*.pdbqt  $$outputdir/Tests;\
+    cp $(srcdir)/Tests/*.map*  $$outputdir/Tests;\
+	cd Tests ;  python ./test_autodock4.py -d . -e ../autodock4$(EXEEXT) -o .
 #else
 #	@echo " "
 #	@echo "Python version 2.1 or higher needed for 'make check', but not found."
