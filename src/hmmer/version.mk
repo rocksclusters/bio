@@ -1,4 +1,3 @@
 NAME = hmmer
 VERSION	= 2.3.2
 RELEASE = 1
-ROLL = Bio
