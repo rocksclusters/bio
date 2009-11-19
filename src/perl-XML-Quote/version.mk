@@ -1,5 +1,0 @@
-NAME=foundation-perl-XML-Quote
-VERSION=1.02
-RELEASE=1
-ROLL=Bio
-ORIG_NAME=XML-Quote
