@@ -9,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.64  2009/11/20 03:36:45  anoop
+	Moved the roll from /opt/Bio to /opt/bio
+	
 	Revision 1.63  2009/08/11 19:43:25  anoop
 	Minor Bug fixes for autodock
 	
@@ -198,9 +201,14 @@
 	<package os="linux">gromacs</package>
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
-	<package os="linux">iolib</package>
 	<package os="linux">autodocksuite</package>
 
+	<!-- Dependencies -->
+	<package os="linux">iolib</package>
+	<package os="linux">bio_libxml2</package>
+	<package os="linux">bio_libxslt</package>
+
+	<!-- SunOS packages -->
 	<package os="sunos">ROCKShmmer</package>
 	<package os="sunos">ROCKSncbi</package>
 	<package os="sunos">ROCKSmpiblast</package>
@@ -213,31 +221,32 @@
 	<package os="sunos">ROCKSgromacs</package>
 	<package os="sunos">ROCKSgmap</package>
 	<package os="sunos">ROCKStigr</package>
+
 <post>
 
 <!--
 	Common NCBI setup
  -->
 
-<file name="/opt/Bio/ncbi/bin/.ncbirc" perm="0444">
+<file name="/opt/bio/ncbi/bin/.ncbirc" perm="0444">
 [NCBI]
-Data=/opt/Bio/ncbi/data/
+Data=/opt/bio/ncbi/data/
 
 [BLAST]
-BLASTDB=/share/bio/ncbi/db/
-BLASTMAT=/opt/Bio/ncbi/data/
+BLASTDB=$HOME/bio/ncbi/db/
+BLASTMAT=/opt/bio/ncbi/data/
 
 [mpiBLAST]
-Shared=/share/bio/ncbi/db/
-Local=/opt/Bio/ncbi/db/
+Shared=$HOME/bio/ncbi/db/
+Local=/opt/bio/ncbi/db/
 </file>
 
-mkdir -p -m0777 /opt/Bio/ncbi/db/
+mkdir -p -m0777 /opt/bio/ncbi/db/
 
 <file name="/etc/man.config" mode="append">
-MANPATH /opt/Bio/ncbi/doc/man/
-MANPATH /opt/Bio/hmmer/man
-MANPATH /opt/Bio/gromacs/man
+MANPATH /opt/bio/ncbi/doc/man/
+MANPATH /opt/bio/hmmer/man
+MANPATH /opt/bio/gromacs/man
 </file>
 <!--
 	Create the login scripts
@@ -245,7 +254,7 @@ MANPATH /opt/Bio/gromacs/man
 
 <file name="/etc/profile.d/bio.sh" perm="0755">
 # Put the bin directories of all the applications into the path.
-export BIOROLL=/opt/Bio
+export BIOROLL=/opt/bio
 
 # NCBI Blast and MPI Blast
 export PATH=$PATH:$BIOROLL/ncbi/bin:$BIOROLL/mpiblast/bin/
@@ -287,47 +296,82 @@ export PATH=$PATH:$BIOROLL/tigr/bin
 export PATH=$PATH:$BIOROLL/autodocksuite/bin
 
 # NCBI
-export BLASTDB=/share/bio/ncbi/db
-export BLASTMAT=/opt/Bio/ncbi/data
-export HMMER_DB=/share/bio/hmmer/db
+export BLASTDB=$HOME/bio/ncbi/db
+export BLASTMAT=/opt/bio/ncbi/data
+export HMMER_DB=$HOME/bio/hmmer/db
 
 # Create the ncbirc file as necessary
 if [ ! -e $HOME/.ncbirc ]; then
 cat &gt; $HOME/.ncbirc &lt;&lt; eof
 [NCBI]
-Data=/opt/Bio/ncbi/data/
+Data=/opt/bio/ncbi/data/
 
 [mpiBLAST]
-Shared=/share/bio/ncbi/db/
-Local=/opt/Bio/ncbi/db/
+Shared=$HOME/bio/ncbi/db/
+Local=/opt/bio/ncbi/db/
 
 eof
+fi
+
+if [ ! -e $HOME/bio/ncbi/db ]; then
+	mkdir -p $HOME/bio/ncbi/db/
+fi
+
+# Create a bio directory to hold HMMER databases
+if [ ! -e $HOME/bio/hmmer/db ]; then
+	mkdir -p $HOME/bio/hmmer/db/
 fi
 
 # Create a .t_coffee directory
 if [ ! -e $HOME/.t_coffee/tmp/ ]; then
-mkdir -p $HOME/.t_coffee/tmp/
+	mkdir -p $HOME/.t_coffee/tmp
 fi
 </file>
 
 <file name="/etc/profile.d/bio.csh" perm="0755">
-set path = ( $path /opt/Bio/ncbi/bin /opt/Bio/mpiblast/bin/ /opt/Bio/EMBOSS/bin /opt/Bio/clustalw/bin /opt/Bio/t_coffee/bin /opt/Bio/phylip/exe /opt/Bio/mrbayes /opt/Bio/fasta /opt/Bio/glimmer/bin /opt/Bio/glimmer/scripts /opt/Bio/gmap/bin /opt/Bio/gromacs/bin /opt/Bio/autodocksuite/bin )
 
-setenv BLASTDB  /share/bio/ncbi/db
-setenv BLASTMAT /opt/Bio/ncbi/data
-setenv HMMER_DB /share/bio/hmmer/db
+setenv BIOROLL /opt/bio
+
+set path = ( $path \
+	$BIOROLL/ncbi/bin \
+	$BIOROLL/mpiblast/bin/ \
+	$BIOROLL/EMBOSS/bin \
+	$BIOROLL/clustalw/bin \
+	$BIOROLL/t_coffee/bin \
+	$BIOROLL/phylip/exe \
+	$BIOROLL/mrbayes \
+	$BIOROLL/fasta \
+	$BIOROLL/glimmer/bin \
+	$BIOROLL/glimmer/scripts \
+	$BIOROLL/gmap/bin \
+	$BIOROLL/gromacs/bin \
+	$BIOROLL/autodocksuite/bin )
+
+setenv BLASTDB  $HOME/bio/ncbi/db
+setenv BLASTMAT $BIOROLL/ncbi/data
+setenv HMMER_DB $HOME/bio/hmmer/db
 
 if ( ! -e $HOME/.ncbirc ) then
 cat &gt; $HOME/.ncbirc &lt;&lt; eof
 [NCBI]
-Data=/opt/Bio/ncbi/data/
+Data=/opt/bio/ncbi/data/
 
 [mpiBLAST]
-Shared=/share/bio/ncbi/db/
-Local=/opt/Bio/ncbi/db/
+Shared=$HOME/bio/ncbi/db/
+Local=/opt/bio/ncbi/db/
 
 eof
 endif
+
+# Create a bio directory to hold NCBI databases
+if ( ! -e $HOME/bio/ncbi/db ) then
+	mkdir -p $HOME/bio/ncbi/db/
+fi
+
+# Create a bio directory to hold HMMER databases
+if ( ! -e $HOME/bio/hmmer/db ) then
+	mkdir -p $HOME/bio/hmmer/db/
+fi
 
 if ( ! -e $HOME/.t_coffee/tmp/ ) then
     mkdir -p $HOME/.t_coffee/tmp/
@@ -338,19 +382,19 @@ endif
 
 <post os="linux">
 <file name="/etc/ld.so.conf.d/bio.conf" perm="0444">
-/opt/Bio/ncbi/lib/
-/opt/Bio/EMBOSS/lib/
-/opt/Bio/glimmer/lib/
-/opt/Bio/gromacs/lib/
-/opt/Bio/tigr/obj/
+/opt/bio/ncbi/lib/
+/opt/bio/EMBOSS/lib/
+/opt/bio/glimmer/lib/
+/opt/bio/gromacs/lib/
+/opt/bio/tigr/obj/
 </file>
 </post>
 
 <post os="sunos">
-crle -u -l /opt/Bio/ncbi/lib/
-crle -u -l /opt/Bio/EMBOSS/lib/
-crle -u -l /opt/Bio/gromacs/lib/
-crle -u -l /opt/Bio/tigr/obj/
+crle -u -l /opt/bio/ncbi/lib/
+crle -u -l /opt/bio/EMBOSS/lib/
+crle -u -l /opt/bio/gromacs/lib/
+crle -u -l /opt/bio/tigr/obj/
 </post>
 
 <!--
