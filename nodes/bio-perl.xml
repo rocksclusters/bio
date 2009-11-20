@@ -9,42 +9,85 @@
 
 	<changelog>
 	$Log: bio-perl.xml,v $
+	Revision 1.2  2009/11/20 03:34:57  anoop
+	BioPerl and supporting infrastructure
+	
 	Revision 1.1  2009/06/04 22:54:48  anoop
 	Upgraded Bioperl and it's dependencies
 	
 	</changelog>
 
-
-	<package os="linux">foundation-perl-bioperl</package>
-	<package os="linux">foundation-perl-bioperl-run</package>
-	<package os="linux">foundation-perl-bioperl-gui</package>
-	<package os="linux">foundation-perl-bioperl-db</package>
-	<package os="linux">foundation-perl-bioperl-ext</package>
-	<package os="linux">foundation-perl-Data-Stag</package>
-	<package os="linux">foundation-perl-Digest-MD5</package>
-	<package os="linux">foundation-perl-File-Temp</package>
-	<package os="linux">foundation-perl-GD</package>
-	<package os="linux">foundation-perl-GD-SVG</package>
-	<package os="linux">foundation-perl-Graph</package>
-	<package os="linux">foundation-perl-HTML-Parser</package>
-	<package os="linux">foundation-perl-HTML-Tagset</package>
-	<package os="linux">foundation-perl-IO-String</package>
-	<package os="linux">foundation-perl-IO-stringy</package>
-	<package os="linux">foundation-perl-libnet</package>
-	<package os="linux">foundation-perl-libwww-perl</package>
-	<package os="linux">foundation-perl-MIME-Base64</package>
-	<package os="linux">foundation-perl-PathTools</package>
-	<package os="linux">foundation-perl-Scalar-List-Utils</package>
-	<package os="linux">foundation-perl-SOAP-Lite</package>
-	<package os="linux">foundation-perl-Storable</package>
-	<package os="linux">foundation-perl-Text-Shellwords</package>
+	<package os="linux">foundation-perl-DBI</package>
 	<package os="linux">foundation-perl-Text-Iconv</package>
-	<package os="linux">foundation-perl-URI</package>
-	<package os="linux">foundation-perl-XML-DOM</package>
-	<package os="linux">foundation-perl-XML-Node</package>
+	<package os="linux">foundation-perl-Parse-RecDescent</package>
+	<package os="linux">foundation-perl-bioperl-ext</package>
+	<package os="linux">foundation-perl-bioperl-db</package>
+	<package os="linux">foundation-perl-Data-Stag</package>
+	<package os="linux">foundation-perl-GD</package>
+	<package os="linux">foundation-perl-XML-LibXML</package>
+	<package os="linux">foundation-perl-Digest-SHA1</package>
+	<package os="linux">foundation-perl-Class-MOP</package>
+	<package os="linux">foundation-perl-Math-Random</package>
+	<package os="linux">foundation-perl-Sub-Name</package>
+	<package os="linux">foundation-perl-DBD-mysql</package>
+	<package os="linux">foundation-perl-bioperl-run</package>
+	<package os="linux">foundation-perl-Devel-GlobalDestruction</package>
+	<package os="linux">foundation-perl-AcePerl</package>
 	<package os="linux">foundation-perl-XML-Parser</package>
+	<package os="linux">foundation-perl-Clone</package>
+	<package os="linux">foundation-perl-XML-LibXSLT</package>
+	<package os="linux">foundation-perl-Test-Exception</package>
+	<package os="linux">foundation-perl-Algorithm-Munkres</package>
 	<package os="linux">foundation-perl-XML-Twig</package>
+	<package os="linux">foundation-perl-Tie-Hash-MultiValue</package>
+	<package os="linux">foundation-perl-BioPerl</package>
+	<package os="linux">foundation-perl-Class-AutoClass</package>
+	<package os="linux">foundation-perl-Sub-Uplevel</package>
+	<package os="linux">foundation-perl-MLDBM</package>
+	<package os="linux">foundation-perl-libxml-perl</package>
+	<package os="linux">foundation-perl-SOAP-Lite</package>
+	<package os="linux">foundation-perl-Set-Scalar</package>
+	<package os="linux">foundation-perl-OLE-Storage_Lite</package>
+	<package os="linux">foundation-perl-XML-XPathEngine</package>
+	<package os="linux">foundation-perl-SVG-Graph</package>
 	<package os="linux">foundation-perl-XML-Writer</package>
-	<package os="linux">foundation-perl-XML-Quote</package>
+	<package os="linux">foundation-perl-Text-Shellwords</package>
+	<package os="linux">foundation-perl-Tree-DAG_Node</package>
+	<package os="linux">foundation-perl-Tie-ToObject</package>
+	<package os="linux">foundation-perl-XML-Simple</package>
+	<package os="linux">foundation-perl-Try-Tiny</package>
+	<package os="linux">foundation-perl-SVG</package>
+	<package os="linux">foundation-perl-XML-NamespaceSupport</package>
+	<package os="linux">foundation-perl-XML-Filter-BufferText</package>
+	<package os="linux">foundation-perl-XML-RegExp</package>
+	<package os="linux">foundation-perl-IPC-Run</package>
+	<package os="linux">foundation-perl-IO-String</package>
+	<package os="linux">foundation-perl-Hash-AutoHash</package>
+	<package os="linux">foundation-perl-Spreadsheet-ParseExcel</package>
+	<package os="linux">foundation-perl-Test-Deep</package>
+	<package os="linux">foundation-perl-IO-stringy</package>
+	<package os="linux">foundation-perl-Module-Build</package>
+	<package os="linux">foundation-perl-Scope-Guard</package>
+	<package os="linux">foundation-perl-Task-Weaken</package>
+	<package os="linux">foundation-perl-GraphViz</package>
+	<package os="linux">foundation-perl-GD-SVG</package>
+	<package os="linux">foundation-perl-Array-Compare</package>
+	<package os="linux">foundation-perl-Test-NoWarnings</package>
+	<package os="linux">foundation-perl-Graph</package>
+	<package os="linux">foundation-perl-Error</package>
+	<package os="linux">foundation-perl-Cache-Cache</package>
+	<package os="linux">foundation-perl-MRO-Compat</package>
+	<package os="linux">foundation-perl-Math-Derivative</package>
+	<package os="linux">foundation-perl-XML-SAX-Writer</package>
+	<package os="linux">foundation-perl-XML-DOM-XPath</package>
+	<package os="linux">foundation-perl-Moose</package>
+	<package os="linux">foundation-perl-Statistics-Descriptive</package>
+	<package os="linux">foundation-perl-Test-Tester</package>
+	<package os="linux">foundation-perl-Hash-AutoHash-Args</package>
+	<package os="linux">foundation-perl-Test-use-ok</package>
+	<package os="linux">foundation-perl-Math-Spline</package>
+	<package os="linux">foundation-perl-XML-SAX</package>
+	<package os="linux">foundation-perl-XML-DOM</package>
+	<package os="linux">foundation-perl-Inline</package>
 
 </kickstart>

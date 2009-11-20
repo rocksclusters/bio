@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.15 2009/06/04 22:54:48 anoop Exp $
+# $Id: bootstrap.sh,v 1.16 2009/11/20 03:35:44 anoop Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +58,9 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.16  2009/11/20 03:35:44  anoop
+# BioPerl and supporting infrastructure
+#
 # Revision 1.15  2009/06/04 22:54:48  anoop
 # Upgraded Bioperl and it's dependencies
 #
@@ -121,8 +124,10 @@ install ReportLab
 compile_and_install fftw
 compile_and_install iolib
 
-compile perl-Module-Build
-install foundation-perl-Module-Build
+compile libxml2
+install bio_libxml2
 
-compile perl-XML-Parser
-install foundation-perl-XML-Parser
+compilte libxslt
+install bio_libxslt
+
+( cd bioperl-support && make bootstrap )
