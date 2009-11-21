@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.1 2009/11/20 03:34:58 anoop Exp $
+# $Id: Makefile,v 1.2 2009/11/21 00:27:00 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.2  2009/11/21 00:27:00  anoop
+# Disable bioperl-support, libxml2, libxslt for SunOS
+#
 # Revision 1.1  2009/11/20 03:34:58  anoop
 # BioPerl and supporting infrastructure
 #
@@ -54,4 +57,5 @@ clean::
 	find * -prune ! -name Makefile		\
 		-a ! -name modules.build	\
 		-a ! -name modules.ignore	\
-		-exec rm -rf {} \;
+		-a ! -name CVS -exec rm -rf {} \;
+	-rm -rf .gnupg

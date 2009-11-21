@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.16 2009/11/20 03:35:44 anoop Exp $
+# $Id: bootstrap.sh,v 1.17 2009/11/21 00:27:00 anoop Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +58,9 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.17  2009/11/21 00:27:00  anoop
+# Disable bioperl-support, libxml2, libxslt for SunOS
+#
 # Revision 1.16  2009/11/20 03:35:44  anoop
 # BioPerl and supporting infrastructure
 #
@@ -122,12 +125,14 @@ compile reportlab
 install ReportLab
 
 compile_and_install fftw
-compile_and_install iolib
 
-compile libxml2
-install bio_libxml2
+if [ `./_os` == "linux" ]; then
+	compile_and_install iolib
+	compile libxml2
+	install bio_libxml2
 
-compilte libxslt
-install bio_libxslt
+	compile libxslt
+	install bio_libxslt
 
-( cd bioperl-support && make bootstrap )
+	( cd src/bioperl-support && gmake bootstrap )
+fi
