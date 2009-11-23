@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.4 2009/11/20 03:34:57 anoop Exp $
+# $Id: Makefile,v 1.5 2009/11/23 20:01:49 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.5  2009/11/23 20:01:49  anoop
+# Minor bug fix
+#
 # Revision 1.4  2009/11/20 03:34:57  anoop
 # BioPerl and supporting infrastructure
 #
@@ -52,4 +55,5 @@ clean::
 	find * -prune ! -name Makefile		\
 		-a ! -name modules.build	\
 		-a ! -name modules.ignore	\
-		-exec rm -rf {} \;
+		-a ! -name CVS -exec rm -rf {} \;
+	-rm -rf .gnupg
