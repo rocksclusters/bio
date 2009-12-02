@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.2 2009/11/21 00:27:00 anoop Exp $
+# $Id: Makefile,v 1.3 2009/12/02 19:24:32 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.3  2009/12/02 19:24:32  anoop
+# Don't force rebuild of Module::Build
+#
 # Revision 1.2  2009/11/21 00:27:00  anoop
 # Disable bioperl-support, libxml2, libxslt for SunOS
 #
@@ -19,7 +22,7 @@ include Rules.mk
 bootstrap:
 	cat modules.build | while read line; do \
 		XMLPREFIX=/opt/bio XSLTPREFIX=/opt/bio	\
-		/opt/rocks/bin/cpan \
+		/opt/rocks/bin/cpan --allow_mb_mismatch 1 \
 		$$line < /dev/null; \
 		done
 
