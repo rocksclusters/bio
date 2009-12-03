@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.3 2009/12/02 19:24:32 anoop Exp $
+# $Id: Makefile,v 1.4 2009/12/03 17:14:07 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.4  2009/12/03 17:14:07  anoop
+# Undo "--allow-mb-mismatch". Does not work from CPAN
+#
 # Revision 1.3  2009/12/02 19:24:32  anoop
 # Don't force rebuild of Module::Build
 #
@@ -22,7 +25,7 @@ include Rules.mk
 bootstrap:
 	cat modules.build | while read line; do \
 		XMLPREFIX=/opt/bio XSLTPREFIX=/opt/bio	\
-		/opt/rocks/bin/cpan --allow_mb_mismatch 1 \
+		/opt/rocks/bin/cpan \
 		$$line < /dev/null; \
 		done
 
