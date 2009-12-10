@@ -9,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.65  2009/12/10 20:18:09  bruno
+	csh requires 'endif' not 'fi'
+	
 	Revision 1.64  2009/11/20 03:36:45  anoop
 	Moved the roll from /opt/Bio to /opt/bio
 	
@@ -366,12 +369,12 @@ endif
 # Create a bio directory to hold NCBI databases
 if ( ! -e $HOME/bio/ncbi/db ) then
 	mkdir -p $HOME/bio/ncbi/db/
-fi
+endif
 
 # Create a bio directory to hold HMMER databases
 if ( ! -e $HOME/bio/hmmer/db ) then
 	mkdir -p $HOME/bio/hmmer/db/
-fi
+endif
 
 if ( ! -e $HOME/.t_coffee/tmp/ ) then
     mkdir -p $HOME/.t_coffee/tmp/
