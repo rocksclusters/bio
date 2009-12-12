@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.17 2009/05/01 19:07:13 mjk Exp $
+# $Id: Makefile,v 1.18 2009/12/12 00:38:08 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.18  2009/12/12 00:38:08  anoop
+# use gcc instead of cc
+#
 # Revision 1.17  2009/05/01 19:07:13  mjk
 # chimi con queso
 #
@@ -149,7 +152,7 @@ build:
 	-(cd patch-files && find $(PACKAGE_NAME) -type f | grep -v CVS | cpio -pudv ../)
 	( \
 		cd $(PACKAGE_NAME); \
-		$(MAKE) -C t_coffee_source; \
+		$(MAKE) CC=gcc -C t_coffee_source; \
 	)
 
 install::

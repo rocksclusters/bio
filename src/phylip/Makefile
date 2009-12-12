@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2009/05/01 19:07:13 mjk Exp $
+# $Id: Makefile,v 1.15 2009/12/12 00:38:08 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.15  2009/12/12 00:38:08  anoop
+# use gcc instead of cc
+#
 # Revision 1.14  2009/05/01 19:07:13  mjk
 # chimi con queso
 #
@@ -128,7 +131,7 @@ build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	(\
 		cd $(NAME)-$(VERSION)/src; \
-		$(MAKE) CC=$(CC) DFLAGS=$(DFLAGS) install; \
+		$(MAKE) CC=gcc DFLAGS=$(DFLAGS) install; \
 	)
 
 install::
