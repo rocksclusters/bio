@@ -6,32 +6,30 @@ sensitive database searches using multiple sequence alignments as
 queries.</para>
 <para>The version of HMMER that is distributed with this version
 of Rocks was obtained from <ulink
-url="http://hmmer.wustl.edu/">here</ulink>. The version as of
-code freeze is v2.3.2 and is distributed by WU, St.Louis under
+url="http://hmmer.janelia.org/#download">here</ulink>. The version as of
+code freeze is v2.3.2 and is distributed under
 the GNU General Public License v2.0.</para>
 </section>
 <section><title>Usage</title>
 <para>
-HMMER is setup in the /opt/Bio/hmmer directory. The HMMER
+HMMER is setup in the /opt/bio/hmmer directory. The HMMER
 execution environment is setup automatically by the login scripts.
 The environment contains HMMER_DB variable which points to the
 directory containing the hmmer databases. By default, this is set
-to /share/bio/hmmer/db/. 
+to $HOME/bio/hmmer/db/. 
 </para>
-<para>
-HMMER has many modes of execution. Please run
+<para>HMMER has many modes of execution. For a description of all
+the executables that come with HMMER.Please run</para>
 <screen>
 $ man hmmer
 </screen>
-for a description of all the executables that come with
-HMMER.</para><para>You
-may also refer to the Users Guide present <ulink
-url="ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/CURRENT/Userguide.pdf">
+<para>You may also refer to the Users Guide present <ulink
+url="ftp://selab.janelia.org/pub/software/hmmer/CURRENT/Userguide.pdf">
 here</ulink>. This guide is also available on your rocks
-installation at /opt/Bio/hmmer/Userguide.pdf
+installation at /opt/bio/hmmer/Userguide.pdf
 </para>
 <para>There is also a tutorial available on your cluster at
-/opt/Bio/hmmer/tutorial/ . The description of how to use the
+/opt/bio/hmmer/tutorial/ . The description of how to use the
 tutorial is given in the Userguide.pdf file. 
 </para>
 <para>

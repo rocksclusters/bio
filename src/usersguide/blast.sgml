@@ -1,4 +1,4 @@
-<section id=blast_usage xreflabel="Using NCBI BLAST">
+<section id="blast_usage" xreflabel="Using NCBI BLAST">
 <title>NCBI BLAST</title>
 <section><title>About</title>
 <para>
@@ -20,9 +20,9 @@ is presented, we must first define some environmental variables.
 	<listitem><para>
 		$BLASTDB - This is the variable which points to
 		the Blast Database. This is set to
-		/share/bio/ncbi/db/. This directory should contain
-		the databases that you would want to search. BLAST
-		by default checks this location and the current working
+		$HOME/bio/ncbi/db/. This directory should contain
+		the databases that you would want to search. BLAST,
+		by default, checks this location and the current working
 		directory for the
 		presence of the databases. This variable is set during
 		login by system login scripts , and may be changed
@@ -32,7 +32,7 @@ is presented, we must first define some environmental variables.
 	<listitem><para>
 		$BLASTMAT - This variable points to the location
 		where the BLAST scoring matricies are present. It is set to
-		/opt/Bio/ncbi/data
+		/opt/bio/ncbi/data.
 		Again, they may be changed to point to a desired
 		location on a per-user basis.
 	</para></listitem>
@@ -44,75 +44,50 @@ is presented, we must first define some environmental variables.
 	dataset is the database that you want to search against.
 	</para>
 	<para> Use the following procedure to run blast
-	<itemizedlist><listitem><para>Download the BLAST database that
-	you want to blast against.
+	<itemizedlist><listitem><para>Download a BLAST database that
+	you want to run the comparison against.
 	The databases can be obtained from the NCBI ftp site at 
 	<ulink
-	url="ftp://ftp.ncbi.nlm.nih.gov/blast/db/">ftp://ftp.ncbi.nlm.nih.gov/blast/db/</ulink>.
-	Note that the databases available here are preformatted.
-	Unformatted databases can be obtained in FASTA format at
+	url="ftp://ftp.ncbi.nlm.nih.gov/blast/db/">ftp://ftp.ncbi.nlm.nih.gov/blast/db/</ulink>.</para>
+
+	<note><para>The databases available on the site mentioned above are pre-formatted.</para>
+	<para>It is recommended that the blast databases be
+	stored at the $BLASTDB location.</para></note>
+
+	<para>Visit <ulink 
+	url="ftp://ftp.ncbi.nlm.nih.gov/blast/db/">ftp://ftp.ncbi.nlm.nih.gov/blast/db/</ulink>
+	in your browser to
+	see a list of available preformatted databases.</para><para>Download
+	one of these on to your cluster using wget.</para>
+
+<screen>[nostromo@xxx ~]$ wget -q ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.08.tar.gz
+[nostromo@xxx ~]$ gunzip -c nt.08.tar.gz | ( cd $BLASTDB/ &amp;&amp; tar -xf -)</screen>
+	</listitem>
+
+	<listitem><para>The above method downloads a formatted database, and untars
+	it into $BLASTDB.</para>
+	<para>Unformatted databases can be obtained in FASTA format at
 	<ulink url="ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/">
 	ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/</ulink>.
-	The databases may also be obtained by running the
-	/opt/Bio/ncbi/doc/blast/update_blastdb.pl script. Run the
-	script without any parameters to view usage.</para>
-	<para>Note that it is recommended that the blast databases be
-	downloaded to the $BLASTDB location. As not everybody has write access
-	to this location, a seperate user called biouser is created who can
-	write to this location. The users of the system may su to this user
-	using the following command.</para><screen>
-[nostromo@xxx ~]$ sudo su - biouser
--bash-3.00$ cd $BLASTDB
--bash-3.00$ /opt/Bio/ncbi/doc/blast/update_blastdb.pl --showall
-Connected to NCBI
-env_nr
-env_nt
-est
-est_human
-est_mouse
-est_others
-gss
-htgs
-human_genomic
-nr
-nt
-other_genomic
-pataa
-patnt
-pdbaa
-pdbnt
-refseq_genomic
-refseq_protein
-refseq_rna
-sts
-swissprot
-taxdb
-wgs
--bash-3.00$ /opt/Bio/ncbi/doc/blast/update_blastdb.pl patnt    
-Connected to NCBI
-Downloading patnt.tar.gz... done.
--bash-3.1$ tar xzf patnt.tar.gz
-	</screen>
-	</listitem>
-	<listitem><para>The above method downloads formatted databases. You can also
-	download unformatted databases from ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/.
-	If you've used the update_db.pl tool or downloaded the databases from 
-	ftp://ftp.ncbi.nlm.nih.gov/blast/db/, then DO NOT run formatdb.</para>
+	</para>
+	<para>Visit <ulink url="ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/">
+	ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/</ulink> in your web browser</para>
+	<note><para>If you've downloaded the databases from 
+	ftp://ftp.ncbi.nlm.nih.gov/blast/db/, then DO NOT run formatdb.</para></note>
 	<para>Run the formatdb
 	command to format the database to the BLAST format. For this example,
 	we'll use the Drosophila Melanogaster (fruitfly) nucleotide database</para>
 	<screen>
--bash-3.1$ wget -q ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/drosoph.nt.gz
--bash-3.1$ gunzip drosoph.nt.gz 
--bash-3.1$ formatdb -p F -V T -i drosoph.nt 
--bash-3.1$ ls drosoph.nt*
+[nostromo@xxx ~]$ cd $BLASTDB
+[nostromo@xxx ~]$ wget -q ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/drosoph.nt.gz
+[nostromo@xxx ~]$ gunzip drosoph.nt.gz 
+[nostromo@xxx ~]$ formatdb -p F -V T -i drosoph.nt 
+[nostromo@xxx ~]$ ls drosoph.nt*
 drosoph.nt  drosoph.nt.nhr  drosoph.nt.nin  drosoph.nt.nsq
--bash-3.1$ 
-	</screen></listitem>
+[nostromo@xxx ~]$ cd $HOME</screen></listitem>
 	<listitem><para>After the database is formatted, create a test input file.</para>
-	<screen>
-[nostromo@xxx ~]$ cat > test.txt
->Test
+	<screen>[nostromo@xxx ~]$ cat &gt; test.txt
+&gt;Test
 AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC
 TTCTGAACTGGTTACCTGCCGTGAGTAAATTAAAATTTTATTGACTTAGGTCACTAAATACTTTAACCAA
 TATAGGCATAGCGCACAGACAGATAAAAATTACAGAGTACACAACATCCATGAAACGCATTAGCACCACC
@@ -194,12 +169,12 @@ gi|10726705|gb|AE003740.2|AE003740 Drosophila melanogaster genom...    34   3.4
 #$ -S /bin/bash
 #$ -j y
 
-export BLASTDB=/share/bio/ncbi/db/
-export BLASTMAT=/opt/Bio/ncbi/data/
+export BLASTDB=$HOME/bio/ncbi/db/
+export BLASTMAT=/opt/bio/ncbi/data/
 
-export PATH=$PATH:/opt/Bio/ncbi/bin
-
-blastall -d drosoph.nt -p blastn -i $HOME/test.txt -o $HOME/result.txt
+/opt/bio/ncbi/bin/blastall -d drosoph.nt \
+        -p blastn -i $HOME/test.txt      \
+        -o $HOME/result.txt
 	</screen>
 </para>
 </listitem>

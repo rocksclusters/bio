@@ -1,20 +1,20 @@
-<section id=clustalw_usage xreflabel="Using ClustalW">
+<section id="clustalw_usage" xreflabel="Using ClustalW">
 <title>ClustalW</title>
 <section><title>About</title>
 <para>
 	ClustalW is a multiple sequence alignment program. The version
-	included with this distribution is v2.0.10.
+	included with this distribution is v2.0.12.
 </para>
 </section>
 <section><title>Using ClustalW</title>
-<para>ClustalW can be run at the command line as 
+<para>ClustalW can be run at the command line as</para>
 <screen>
 [nostromo@xxx ~]$ clustalw2  
 
 
 
  **************************************************************
- ******** CLUSTAL 2.0.10 Multiple Sequence Alignments  ********
+ ******** CLUSTAL 2.0.12 Multiple Sequence Alignments  ********
  **************************************************************
 
 
@@ -31,12 +31,11 @@
 Your choice: 
 
 </screen>
-Choosing the option 'H' brings up the help on clustalW.
-</para>
+<para>Choosing the option 'H' brings up the help on clustalW.</para>
 </section>
 <section><title>Further Information</title>
 <para>Further information on the usage of ClustalW can be obtained from
-clustalw.doc(MS Word Document) available at /opt/Bio/clustalw/doc/clustalw.doc
+clustalw.doc(MS Word Document) available at /opt/bio/clustalw/doc/clustalw.doc
 on the frontend of your cluster.</para>
 </section>
 </section>

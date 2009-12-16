@@ -9,7 +9,7 @@ of Rocks is v2
 </section>
 <section><title>Usage</title>
 <para>
-TIGR is used for assembling large shotgun DNA sequences. It is installed at /opt/Bio/tigr on the Rocks Distribution.
+TIGR is used for assembling large shotgun DNA sequences. It is installed at /opt/bio/tigr on the Rocks Distribution.
 To use TIGR, just type TIGR_Assembler at the command line for a list of all possible parameters that can be used.
 </para>
 </section>

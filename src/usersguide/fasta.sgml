@@ -1,4 +1,4 @@
-<section id=fasta_usage xreflabel="Using Fasta">
+<section id="fasta_usage" xreflabel="Using Fasta">
 <title>Fasta</title>
 <section><title>About Fasta</title>
 <para>FASTA is a program used to search in large Protein or DNA sequence data
@@ -7,7 +7,7 @@ and D.J. Lippman.</para>
 </section>
 <section><title>Usage</title>
 <para>
-FASTA is installed in /opt/Bio/fasta/.
+FASTA is installed in /opt/bio/fasta/.
 FASTA is run in a similar manner to NCBI Blast.
 </para>
 <itemizedlist><listitem><para>First create a test query file</para>
@@ -27,7 +27,7 @@ AAAAAACCATTAGCGGCCAGGATGCTTTACCCAATATCAGCGATGCCGAACGTATTTTTGCCGAACTTTT
 <listitem><para>The next step is to search for this against a database
 sequence. For this, we can download a DNA or protein sequence database or use
 the ones that are provided by the program. For this example, we will use the
-ones present along with the fasta program in /opt/Bio/fasta/.</para>
+ones present along with the fasta program in /opt/bio/fasta/.</para>
 <screen>
 [nostromo@xxx ~]$ fasta35
 # fasta35
@@ -146,7 +146,7 @@ Function used was FASTA [version 35.04 Oct. 7, 2008]
 </section>
 <section><title>Further Information</title>
 <para>Further information about the usage of fasta can be obtained from
-/opt/Bio/fasta/fasta3x.doc present on the frontend of your installation.
+/opt/bio/fasta/fasta3x.doc present on the frontend of your installation.
 </para>
 <para>More information is also available at <ulink
 url="http://fasta.bioch.virginia.edu/">the FASTA home page</ulink>.</para>

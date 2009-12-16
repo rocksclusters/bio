@@ -1,4 +1,4 @@
-<section id=mrbayes_usage xreflabel="Using MrBayes">
+<section id="mrbayes_usage" xreflabel="Using MrBayes">
 <title>MrBayes</title>
 <section><title>About</title>
 <para>MrBayes is a program used for bayesian inference of phylogeny. MrBayes is cowritten by John Huelsenbeck and Fredrik Ronquist.</para> 
@@ -43,7 +43,7 @@ MrBayes >
 </para>
 <screen>
 <![CDATA[
-[nostromo@xxx ~]$ /opt/openmpi/bin/mpirun -np 4 /opt/Bio/mrbayes/mb /opt/Bio/mrbayes/primates.nex > ~/log.txt
+[nostromo@xxx ~]$ /opt/openmpi/bin/mpirun -np 4 /opt/bio/mrbayes/mb /opt/bio/mrbayes/primates.nex > ~/log.txt
 [nostromo@xxx ~]$ cat log.txt 
                                MrBayes v3.1.2
 
@@ -72,7 +72,7 @@ MrBayes >
 
 
 
-   Executing file "/opt/Bio/mrbayes/primates.nex"
+   Executing file "/opt/bio/mrbayes/primates.nex"
    UNIX line termination
    Longest line length = 915
    Parsing file
@@ -96,7 +96,7 @@ MrBayes >
       Taxon 10 -> M_fascicularis
       Taxon 11 -> M_sylvanus
       Taxon 12 -> Saimiri_sciureus
-      Setting output file names to "/opt/Bio/mrbayes/primates.nex.run<i>.<p/t>"
+      Setting output file names to "/opt/bio/mrbayes/primates.nex.run<i>.<p/t>"
       Successfully read matrix
    Exiting data block
    Reached end of file

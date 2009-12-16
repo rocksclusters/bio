@@ -1,4 +1,4 @@
-<section id=bioperl_usage xreflabel="Using Bioperl">
+<section id="bioperl_usage" xreflabel="Using Bioperl">
 <title>Bioperl</title>
 <section><title>About</title>
 <para>Bioperl is a set of perl modules for Bio-informatics computation.</para>

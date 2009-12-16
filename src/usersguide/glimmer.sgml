@@ -8,7 +8,7 @@ with Rocks is Glimmer v3.02.
 </para>
 </section>
 <section><title>Using Glimmer</title>
-<para>Glimmer is installed at /opt/Bio/glimmer/. Glimmer is run in 2 stages.
+<para>Glimmer is installed at /opt/bio/glimmer/. Glimmer is run in 2 stages.
 </para>
 <itemizedlist><listitem><para>Glimmer is trained on a particular training set
 of similar species to recognize genes</para>
@@ -22,7 +22,7 @@ genes</para></listitem></itemizedlist>
 release notes of the software, available <ulink
 url="http://www.cbcb.umd.edu/software/glimmer/glim302notes.pdf">here</ulink>.
 This file is also available on the frontend of your cluster at
-/opt/Bio/glimmer/glim302notes.pdf
+/opt/bio/glimmer/glim302notes.pdf
 </para>
 </section>
 </section>

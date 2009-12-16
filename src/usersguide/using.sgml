@@ -8,14 +8,14 @@ most commonly in use by the bio-informatics community. The list of
 applications is as follows:
 </para>
 <para>
-<itemizedlist mark=opencircle>
-	<listitem><simpara>HMMER - From Washington University at St. Louis - <ulink url="http://hmmer.wustl.edu/">http://hmmer.wustl.edu/</ulink></simpara></listitem>
+<itemizedlist mark="opencircle">
+	<listitem><simpara>HMMER - <ulink url="http://hmmer.janelia.org/">http://hmmer.janelia.org/</ulink></simpara></listitem>
 	<listitem><simpara>NCBI BLAST - From National Center for Biotechnology Information - <ulink url="http://www.ncbi.nlm.nih.gov/BLAST/">www.ncbi.nlm.nih.gov/BLAST/</ulink></simpara></listitem>
 	<listitem><simpara>MpiBLAST - From Los Alamos National Laboratory - <ulink url="http://mpiblast.lanl.gov/">http://mpiblast.lanl.gov/</ulink></simpara></listitem>
 	<listitem><simpara>biopython - <ulink url="www.biopython.org">www.biopython.org</ulink></simpara></listitem>
 	<listitem><simpara>ClustalW - From the European BioInformatics Institute - <ulink url="http://www.ebi.ac.uk/clustalw/">http://www.ebi.ac.uk/clustalw/</ulink></simpara></listitem>
 	<listitem><simpara>MrBayes - From School of Computational Science at the Florida State University - <ulink url="http://mrbayes.csit.fsu.edu/">http://mrbayes.csit.fsu.edu/</ulink></simpara></listitem>
-	<listitem><simpara>T_Coffee - From Information Genomique et Structurale at Centre National de la Recherche Scientifique - <ulink url="http://www.igs.cnrs-mrs.fr/~cnotred/Projects_home_page/t_coffee_home_page.html">The T-Coffee Home Page</ulink></simpara></listitem>
+	<listitem><simpara>T_Coffee - From Information Genomique et Structurale at Centre National de la Recherche Scientifique - <ulink url="http://www.tcoffee.org/Projects_home_page/t_coffee_home_page.html">The T-Coffee Home Page</ulink></simpara></listitem>
 	<listitem><simpara>Emboss - From European Molecular Biology Institute - <ulink url="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/</ulink></simpara></listitem>
 	<listitem><simpara>Phylip - From the Dept. of Biology at the University of Washington - <ulink url="http://evolution.genetics.washington.edu/phylip.html">http://evolution.genetics.washington.edu/phylip.html</ulink></simpara></listitem>
 	<listitem><simpara>fasta - From the University of Virginia - <ulink url="http://fasta.bioch.virginia.edu/">http://fasta.bioch.virginia.edu/</ulink></simpara></listitem>
@@ -23,8 +23,8 @@ applications is as follows:
 	<listitem><simpara>TIGR Assembler - From the J. Craig Venter Institute - <ulink url="http://www.jcvi.org/cms/research/software/"></ulink></simpara></listitem>
 	<listitem><para>All the perl utilities mentioned below are from CPAN</para></listitem>
 	<listitem><simpara>perl-bioperl</simpara></listitem>
+	<listitem><simpara>perl-bioperl-ext</simpara></listitem>
 	<listitem><simpara>perl-bioperl-run</simpara></listitem>
-	<listitem><simpara>perl-bioperl-gui</simpara></listitem>
 	<listitem><simpara>perl-bioperl-db</simpara></listitem>
 </itemizedlist>
 </para>
@@ -41,28 +41,6 @@ applications is as follows:
 	<member>readline-devel</member>
 	<member>gd</member>
 	<member>gd-devel</member>
-	<member>perl-Data-Stag</member>
-	<member>perl-Digest-MD5</member>
-	<member>perl-File-Temp</member>
-	<member>perl-GD</member>
-	<member>perl-GD-SVG</member>
-	<member>perl-Graph</member>
-	<member>perl-HTML-Parser</member>
-	<member>perl-HTML-Tagset</member>
-	<member>perl-IO-String</member>
-	<member>perl-IO-stringy</member>
-	<member>perl-libnet</member>
-	<member>perl-libwww-perl</member>
-	<member>perl-MIME-Base64</member>
-	<member>perl-Module-Signature</member>
-	<member>perl-PathTools</member>
-	<member>perl-Scalar-List-Utils</member>
-	<member>perl-SOAP-Lite</member>
-	<member>perl-Storable</member>
-	<member>perl-Text-Shellwords</member>
-	<member>perl-XML-DOM</member>
-	<member>perl-XML-Twig</member>
-	<member>perl-XML-Writer</member>
 	</simplelist>
 </para>
 </section>
@@ -82,4 +60,3 @@ applications is as follows:
 &source_bioperl;
 &source_biopython;
 </chapter>
-

@@ -1,4 +1,4 @@
-<section id=biopython_usage xreflabel="Using Biopython">
+<section id="biopython_usage" xreflabel="Using Biopython">
 <title>Biopython</title>
 <section><title>About</title>
 <para>Biopython is a set of python modules for Bio-informatics computation.</para>
@@ -7,7 +7,7 @@
 <para>Biopython modules can be used to supplement already existing applications
 such as blast. For information on how to use the
 library, please refer to the <ulink
-url="http://www.biopython.org/documentation/">biopython
+url="http://biopython.org/DIST/docs/tutorial/Tutorial.html">biopython
 documentation</ulink>.</para>
 </section>
 <section><title>Further Information</title>
