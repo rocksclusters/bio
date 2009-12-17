@@ -10,7 +10,7 @@ Licence v2.0.</para>
 </section>
 <section><title>Usage</title>
 <para>
-GROMACS is setup in /opt/Bio/gromacs directory. The version
+GROMACS is setup in /opt/bio/gromacs directory. The version
 included in this distribution is compiled with mpi support. OpenMPI v1.2.6
 is used as the MPI library.
 </para>
@@ -26,7 +26,7 @@ Reference Manual</ulink></para></listitem>
 <listitem><para><ulink url="/gromacs/gmxfaq.html">GROMACS
 FAQ</ulink></para></listitem>
 <listitem><para>Tutorials available on your machines at
-/opt/Bio/gromacs/share/tutor</para></listitem>
+/opt/bio/gromacs/share/tutor</para></listitem>
 </itemizedlist>
 </para>
 </section>
