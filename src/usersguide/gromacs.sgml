@@ -4,14 +4,14 @@
 <para>GROMACS - Groningen MAchine for Chemical Simulation - is a
 software suite meant for molecular dynamics simulation. </para>
 <para>The version of GROMACS included with the distribution is
-version 4.0.2. It is available at <ulink
+version 4.0.5. It is available at <ulink
 url="http://www.gromacs.org"></ulink> under the GNU General Public
 Licence v2.0.</para>
 </section>
 <section><title>Usage</title>
 <para>
 GROMACS is setup in /opt/bio/gromacs directory. The version
-included in this distribution is compiled with mpi support. OpenMPI v1.2.6
+included in this distribution is compiled with mpi support. OpenMPI v1.3.3
 is used as the MPI library.
 </para>
 <para>
