@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.5 2009/11/23 20:01:49 anoop Exp $
+# $Id: Makefile,v 1.6 2010/03/24 21:50:20 anoop Exp $
 
 # @Copyright@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.6  2010/03/24 21:50:20  anoop
+# Bioperl tests are buggy. Skip for this version
+#
 # Revision 1.5  2009/11/23 20:01:49  anoop
 # Minor bug fix
 #
@@ -32,7 +35,7 @@ build:
 		/opt/rocks/bin/cpan2dist		\
 		--format CPANPLUS::Dist::Rocks		\
 		--ignorelist modules.ignore.tmp --force	\
-		--buildprereq --install --verbose	\
+		--buildprereq --skiptest --install --verbose	\
 		$$line < /dev/null;		\
 		( find . -type f -name \*.rpm ! -name \*.src.rpm \
 		  -exec rpm -qp --provides {} \; | grep ^perl\(  \
