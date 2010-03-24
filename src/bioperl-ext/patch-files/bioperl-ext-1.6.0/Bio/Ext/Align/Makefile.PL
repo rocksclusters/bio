@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'	=> 'Bio::Ext::Align',
-    'VERSION'	=> '1.5.1',
+    'VERSION'	=> '1.6.0',
     'LIBS'	=> ['-lm'],   # e.g., '-lm' 
     'DEFINE'	=> '-DPOSIX -DNOERROR',     # e.g., '-DHAVE_SOMETHING' 
     'INC'	=> '-I./libs',     # e.g., '-I/usr/include/other'
@@ -15,7 +15,7 @@ sub MY::postamble{
 '
 $(MYEXTLIB): 
 	DEFINE=\'$(DEFINE)\'; CC=\'$(PERLMAINCC)\'; CFLAGS=\'$(CCFLAGS)\'; export DEFINE INC CC CFLAGS; \
-	cd libs && $(MAKE) CC=\'$(PERLMAINCC)\' CFLAGS=\'-fPIC $(CCFLAGS) $(DEFINE)\' DEFINE=\'$(DEFINE)\' libsw$(LIB_EXT) -e
-
+	cd libs && $(MAKE) CC=\'$(PERLMAINCC)\' CFLAGS=\'$(CCFLAGS) $(DEFINE) $(CCCDLFLAGS)\' DEFINE=\'$(DEFINE)\' libsw$(LIB_EXT) -e ; \
+    $(RANLIB) libsw$(LIB_EXT)
 ';
 }
