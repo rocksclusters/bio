@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 2009/05/01 19:07:10 mjk Exp $
+# $Id: Makefile,v 1.10 2010/06/09 05:00:39 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.10  2010/06/09 05:00:39  anoop
+# disable float only build.
+#
 # Revision 1.9  2009/05/01 19:07:10  mjk
 # chimi con queso
 #
@@ -132,7 +135,7 @@ build:
 			CPPFLAGS="-I/opt/rocks/include -I$(MPIROOT)/include"\
 			LDFLAGS="-L/opt/rocks/lib -L$(MPIROOT)/lib"\
 			MPICC=$(MPIROOT)/bin/mpicc \
-			--prefix=$(PKGROOT) --enable-float\
+			--prefix=$(PKGROOT) \
 			--enable-mpi; \
 		$(MAKE); \
 	)
