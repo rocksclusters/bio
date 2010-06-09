@@ -1,0 +1,1 @@
+BINDIR	=	Linux-amd64

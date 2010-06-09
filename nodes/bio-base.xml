@@ -9,6 +9,10 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.66  2010/06/09 04:57:36  anoop
+	Added the Celera Whole Genome Sequence assembler.
+	Thanks to Brett Whitty for the info.
+	
 	Revision 1.65  2009/12/10 20:18:09  bruno
 	csh requires 'endif' not 'fi'
 	
@@ -205,6 +209,7 @@
 	<package os="linux">gmap</package>
 	<package os="linux">tigr</package>
 	<package os="linux">autodocksuite</package>
+	<package os="linux">wgs</package>
 
 	<!-- Dependencies -->
 	<package os="linux">iolib</package>
@@ -298,6 +303,9 @@ export PATH=$PATH:$BIOROLL/tigr/bin
 # Autodock Suite
 export PATH=$PATH:$BIOROLL/autodocksuite/bin
 
+# WGS Assembler
+export PATH=$PATH:$BIOROLL/wgs/bin
+
 # NCBI
 export BLASTDB=$HOME/bio/ncbi/db
 export BLASTMAT=/opt/bio/ncbi/data
@@ -348,7 +356,8 @@ set path = ( $path \
 	$BIOROLL/glimmer/scripts \
 	$BIOROLL/gmap/bin \
 	$BIOROLL/gromacs/bin \
-	$BIOROLL/autodocksuite/bin )
+	$BIOROLL/autodocksuite/bin \
+	$BIOROLL/wgs/bin )
 
 setenv BLASTDB  $HOME/bio/ncbi/db
 setenv BLASTMAT $BIOROLL/ncbi/data
@@ -390,6 +399,7 @@ endif
 /opt/bio/glimmer/lib/
 /opt/bio/gromacs/lib/
 /opt/bio/tigr/obj/
+/opt/bio/wgs/lib
 </file>
 </post>
 
