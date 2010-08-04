@@ -9,6 +9,13 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.67  2010/08/04 00:33:21  anoop
+	MPIBlast fails if database.mbf file is not readable by user running
+	the job. So use a user specific location instead of a common location on the
+	local filesystem of a compute node. This way database.mbf file is created
+	for every user instead of the first user that runs the job, and all subsequent
+	users failing
+	
 	Revision 1.66  2010/06/09 04:57:36  anoop
 	Added the Celera Whole Genome Sequence assembler.
 	Thanks to Brett Whitty for the info.
@@ -319,7 +326,7 @@ Data=/opt/bio/ncbi/data/
 
 [mpiBLAST]
 Shared=$HOME/bio/ncbi/db/
-Local=/opt/bio/ncbi/db/
+Local=/tmp/$USER/db/
 
 eof
 fi
@@ -370,7 +377,7 @@ Data=/opt/bio/ncbi/data/
 
 [mpiBLAST]
 Shared=$HOME/bio/ncbi/db/
-Local=/opt/bio/ncbi/db/
+Local=/tmp/$USER/db/
 
 eof
 endif
