@@ -1,7 +1,7 @@
 /*************************************************************************
-** Copyright 2008 by Virginia Polytechnic Institute and State University. 
-** All rights reserved. Virginia Polytechnic Institute and State 
-** University (Virginia Tech) owns the mpiBLAST software and its
+** Copyright 2009 by Virginia Polytechnic Institute and State
+** University. All rights reserved. Virginia Polytechnic Institute and
+** State University (Virginia Tech) owns the mpiBLAST software and its
 ** associated documentation ("Software"). You should carefully read the
 ** following terms and conditions before using this software. Your use
 ** of this Software indicates your acceptance of this license agreement
@@ -34,10 +34,9 @@
 ** 
 ** This file is part of mpiBLAST.
 ** 
-** mpiBLAST is free software: you can redistribute it and/or modify it
-** under the terms of the GNU General Public License as published by the
-** Free Software Foundation, either version 2 of the License, or (at
-** your option) any later version of the GNU General Public License.
+** mpiBLAST is free software: you can redistribute it and/or modify it 
+** under the terms of the GNU General Public License version 2 as published 
+** by the Free Software Foundation. 
 ** 
 ** Accordingly, mpiBLAST is distributed in the hope that it will be
 ** useful, but WITHOUT ANY WARRANTY; without even the implied warranty
@@ -46,7 +45,7 @@
 ** 
 ** You should have received a copy of the GNU General Public License
 ** along with mpiBLAST. If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+***************************************************************************/
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/stat.h>
@@ -55,16 +54,10 @@
 #include <mpiblast_tags.hpp>
 #include <mpiblast_writer.hpp>
 #include <mpiblast.hpp>
+#include <query_manager.hpp>
 #include <iostream>
 #include <iterator>
 using namespace std;
-
-static int int_size = sizeof(int);
-static int float_size = sizeof(Nlm_FloatHi);
-static int offset_size = sizeof(MPI_Offset);
-
-// debug !!!!
-static int writing_query = -1;
 
 // get send size for a output record according to the send type 
 static int get_send_record_size(int send_type, OutputRecordPtr orp) {
@@ -265,6 +258,18 @@ static int unpack_record(int send_type, OutputRecordPtr orp, CommRecvStruct* crs
 	if(bit & send_type) { /* send algin_offset */
 		crsp->ExtractData(&(orp->aln_offset), offset_size);
 	}
+
+	// HL-debug-open:
+	if(debug_msg) {
+		if(dump_raw_output) {
+			print_output_record(dbgfp, orp);
+		}
+		// if(orp->rank < 0 || orp->rank > node_count) {
+		if(orp->rank != crsp->GetSource()) {
+			LOG_MSG << "Unpacking records: invalid worker rank" << orp->rank << endl;	
+			throw __FILE__ "Error unpacking records";
+		}
+	}
 	
 	return 0;
 }
@@ -275,27 +280,6 @@ void FileWriter::Write() {
 	double write_track_time = 0;
 
 	write_track_time = MPI_Wtime();
-/*
-	if(!_initialized) {
-		if(_out_off_vec.size() > 0) {
-			throw __FILE__ "The file writer is not initialized";
-		}
-		return;
-	}
-
-	int start_idx = 0, end_idx = 0;
-	// group data entries into smaller writes to avoid writing too large data
-	int i;
-	while(start_idx < _out_off_vec.size()) {
-		// find index range for a single write
-		for(i = start_idx; (i < _out_off_vec.size()) && (_out_off_vec[i] - _out_off_vec[start_idx] < MAX_SINGLE_WRITE); i++);
-		
-		end_idx = i;
-
-		SingleWrite(start_idx, end_idx);
-		start_idx = end_idx;
-	}
-*/
 	
 	if(_out_off_vec.size() == 0) {
 		return;
@@ -311,10 +295,9 @@ void FileWriter::Write() {
 		// ask master for write permission
 		int event_array[2];
 		event_array[0] = WRITE_REQUEST;
-		event_array[1] = -1;
+		event_array[1] = int_size;
 		CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-		cssp_event->AddData(&event_array[0], int_size);
-		cssp_event->AddData(&event_array[1], int_size);
+		cssp_event->AddData(&event_array[0], 2 * int_size);
 		cssp_event->SendData(group_comm, writer_process, EVENT_TYPE);
 		delete cssp_event;
 
@@ -331,11 +314,6 @@ void FileWriter::Write() {
 		}
 	}
 
-	// master shouldn't write when using WRITER_STREAMLINE strategy
-	// if(group_rank == writer_process && output_strategy == WORKER_STREAMLINE) {
-	//	throw __FILE__ "FileWriter::Write -- master shouldn't write in worker_streamline strategy";
-	//}
-	
 	if(_split_write) {
 		SplitWrite(0, _out_off_vec.size());
 	} else {
@@ -346,10 +324,9 @@ void FileWriter::Write() {
 		// ask master for write permission
 		int event_array[2];
 		event_array[0] = WRITE_COMPLETE;
-		event_array[1] = -1;
+		event_array[1] = int_size;
 		CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-		cssp_event->AddData(&event_array[0], int_size);
-		cssp_event->AddData(&event_array[1], int_size);
+		cssp_event->AddData(&event_array[0], 2*int_size);
 		cssp_event->SendData(group_comm, writer_process, EVENT_TYPE);
 		delete cssp_event;
 
@@ -848,6 +825,14 @@ void QueryOutput::AddOutputRecordsToList(ValNodePtr orplist, QueryOutputInfoPtr 
 		}
 	}
 	
+	if(debug_msg) {
+		LOG_MSG << "End adding output records" <<endl;
+	}
+}
+
+void QueryOutput::PruneOutputList() {
+	list <COutputRecord>::iterator it;
+
 	// simple result pruning
 	if(_sorted_output_list.size() > _max_size) {
 		int count = 0;
@@ -856,10 +841,6 @@ void QueryOutput::AddOutputRecordsToList(ValNodePtr orplist, QueryOutputInfoPtr 
 			it++;
 		}
 		_sorted_output_list.erase(it, _sorted_output_list.end());
-	}
-
-	if(debug_msg) {
-		LOG_MSG << "End adding output records" <<endl;
 	}
 }
 
@@ -914,6 +895,17 @@ void QueryOutput::CalculateOutputOffsets(BLAST* blastp, FileWriter* fwp, MPI_Off
 			_stliner->AddOutputEntry(curr_output_pos, _qoip->des_hdr_size, _qoip->des_hdr, true, true);
 
 			_qoip->des_hdr = NULL; _qoip->des_hdr_size = 0;
+		}
+	}
+
+	if(debug_msg) {
+		LOG_MSG << "There are " << _sorted_output_list.size() << " elements in the output list" << endl;
+
+		for(it=_sorted_output_list.begin(); it!=_sorted_output_list.end(); it++) {
+			if((*it)._orp->rank < 0 || (*it)._orp->rank > node_count) {
+				LOG_MSG << "Error: invalid worker rank " << (*it)._orp->rank << endl;
+				throw __FILE__ "Ivalid worker rank!";
+			}
 		}
 	}
 	
@@ -1016,7 +1008,7 @@ void QueryOutput::CalculateOutputOffsets(BLAST* blastp, FileWriter* fwp, MPI_Off
 	if(_sorted_output_list.size() == 0 && blast_align_view == 7) {
 		if(_qoip->no_hits!=NULL) {
 			_stliner->AddOutputEntry(curr_output_pos, _qoip->no_hits_size, _qoip->no_hits, true, true);
-
+			
 			_qoip->no_hits = NULL; _qoip->no_hits_size = 0;
 		}
 	}
@@ -1029,6 +1021,11 @@ void QueryOutput::CalculateOutputOffsets(BLAST* blastp, FileWriter* fwp, MPI_Off
 	}
 
 	if(output_strategy == MASTER_STREAMLINE || output_strategy == WORKER_STREAMLINE) {
+		
+		if(debug_msg) {
+			LOG_MSG << "There are " << workers_with_output.size() << " workers with output" << endl;
+		}
+
 		_stliner->AddWorkerWOutputs(workers_with_output);
 	}
 
@@ -1124,6 +1121,9 @@ void QueryOutput::DebugPrint(FILE* fp) {
 	for(it=_sorted_output_list.begin(); it!=_sorted_output_list.end(); it++) {
 		(*it).DebugPrint(fp);
 	}
+
+	fprintf(fp, "\n");
+	fflush(fp);
 }
 
 void QueryOutput::DebugWriteAsn(FILE* fp) {
@@ -1184,6 +1184,80 @@ void IsendMgr::WaitPendingSends() {
 	}
 }
 
+int IrecvMgr::WaitAnyRecv(CommRecvStruct* &crsp, MPI_Status& status) {
+	// wait a finished recv, remove it from the list
+	int num_reqs = _recv_ops_list.size();
+
+	list <CommRecvStruct*>::iterator lit;
+	
+	MPI_Request* req_array = new MPI_Request[num_reqs];
+	int i=0;
+
+	for(lit=_recv_ops_list.begin(); lit!=_recv_ops_list.end(); lit++) {
+		req_array[i++] = (*lit)->GetReq();
+	}
+
+	int index = -1;
+	MPI_Waitany(num_reqs, req_array, &index, &status);
+	
+	assert(index >= 0);
+
+	lit=_recv_ops_list.begin(); 
+	for(i=0; i<index; i++) {
+		lit++;
+	}
+
+	crsp = *lit;
+	_recv_ops_list.erase(lit);
+	
+	delete req_array;	
+
+	return 0;
+}
+
+int IrecvMgr::TestAnyRecv(CommRecvStruct* &crsp, MPI_Status& status) {
+	// wait a finished recv, remove it from the list
+	int num_reqs = _recv_ops_list.size();
+
+	list <CommRecvStruct*>::iterator lit;
+	
+	MPI_Request* req_array = new MPI_Request[num_reqs];
+	int i=0;
+
+	for(lit=_recv_ops_list.begin(); lit!=_recv_ops_list.end(); lit++) {
+		req_array[i++] = (*lit)->GetReq();
+	}
+
+	int index = -1;
+	int flag = 0;
+	MPI_Testany(num_reqs, req_array, &index, &flag, &status);
+	
+	delete req_array;	
+
+	if(flag) {
+		lit=_recv_ops_list.begin(); 
+		for(i=0; i<index; i++) {
+			lit++;
+		}
+
+		crsp = *lit;
+		_recv_ops_list.erase(lit);
+
+		return 1;
+	}
+
+	return 0;
+}
+
+IrecvMgr::~IrecvMgr() {
+	list <CommRecvStruct*>::iterator lit;
+	for(lit=_recv_ops_list.begin(); lit!=_recv_ops_list.end(); lit++) {
+		(*lit)->Cancel();
+		delete(*lit);
+	}
+	_recv_ops_list.clear();
+}
+
 // debug function, print out a list of output records
 void Writer::PrintOutputsList(FILE *fp) {
 	list <OutputRecordPtr>::iterator it;
@@ -1206,7 +1280,6 @@ void Writer::WaitAllWriteOps() {
 
 		_output_vec[query_id]->_stliner->InitAWrite(query_id, write_segment_id);
 
-		// !!!! working, only send wait notify when this worker has output to send
 		if(debug_msg) {
 			LOG_MSG << "Before wait for writing query " << query_id << " segment " << write_segment_id << endl;
 		}
@@ -1216,10 +1289,9 @@ void Writer::WaitAllWriteOps() {
 				// notify WriterMaster
 				int event_array[2];
 				event_array[0] = WAIT_WRITE_COMPLETE;
-				event_array[1] = -1;
+				event_array[1] = 2*int_size;
 				CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-				cssp_event->AddData(&event_array[0], int_size);
-				cssp_event->AddData(&event_array[1], int_size);
+				cssp_event->AddData(&event_array[0], 2*int_size);
 				cssp_event->IsendData(group_comm, writer_process, EVENT_TYPE);
 				_comm_send.AddPendingSend(cssp_event);
 
@@ -1246,8 +1318,9 @@ void Writer::WaitAllWriteOps() {
 
 			if( output_strategy == WORKER_STREAMLINE ||
 					(output_strategy == MASTER_STREAMLINE && write_segment_id == _output_vec[query_id]->_stliner->GetNumWriteSegments() - 1)) {
-				delete _output_vec[query_id];
-				_output_vec[query_id] = NULL;
+				// delete _output_vec[query_id];
+				// _output_vec[query_id] = NULL;
+				UnloadQuery(query_id);
 				if(_last_written_query < query_id + 1) {
 					_last_written_query = query_id + 1;
 				}
@@ -1294,8 +1367,10 @@ void Writer::ProcessAsyncOutput() {
 						SendWriteAck(query_id, writer_process);
 					}
 
-					delete _output_vec[query_id];
-					_output_vec[query_id] = NULL;
+					// delete _output_vec[query_id];
+					// _output_vec[query_id] = NULL;
+					UnloadQuery(query_id);
+					
 					_last_written_query = query_id + 1;
 					_last_output_query = query_id + 1;
 				}
@@ -1319,8 +1394,9 @@ void Writer::ProcessAsyncOutput() {
 
 				if(_output_vec[query_id]->_stliner->IsWritten() && write_segment_id == _output_vec[query_id]->_stliner->GetNumWriteSegments() - 1) {
 
-					delete _output_vec[query_id];
-					_output_vec[query_id] = NULL;
+					// delete _output_vec[query_id];
+					// _output_vec[query_id] = NULL;
+					UnloadQuery(query_id);
 
 					if(_last_written_query < query_id + 1) {
 						_last_written_query = query_id + 1;
@@ -1349,10 +1425,9 @@ void Writer::SendWriteAck(int query_id, int dst) {
 
 	int event_array[2];
 	event_array[0] = QUERY_WRITE_ACK;
-	event_array[1] = -1;
+	event_array[1] = int_size;
 	CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-	cssp_event->AddData(&event_array[0], int_size);
-	cssp_event->AddData(&event_array[1], int_size);
+	cssp_event->AddData(&event_array[0], 2 * int_size);
 	cssp_event->IsendData(group_comm, writer_process, EVENT_TYPE);
 	_comm_send.AddPendingSend(cssp_event);
 
@@ -1364,9 +1439,34 @@ void Writer::SendWriteAck(int query_id, int dst) {
 
 void Writer::AddWorkingQueries(int segment_id, int start_query, int end_query) {
 	for(int i=start_query; i<end_query; i++) {
+		_assigned_queries++;
 		_working_queries.push_back(i);
-		_query_map[i] = segment_id;
+		InitQueryOutput(segment_id, i);
 	}
+}
+
+void Writer::InitQueryOutput(int segment_id, int query_id) {
+	if(_output_vec.find(query_id) == _output_vec.end()) {
+		if(debug_msg) {
+			LOG_MSG << "Init output structure for query " << query_id << endl;
+		}
+		_query_map[query_id] = segment_id;
+		_output_vec[query_id] = new QueryOutput(_blast->GetMaxShow());
+	}
+}
+
+void Writer::UnloadQuery(int query_id) {
+	if(_output_vec.find(query_id) == _output_vec.end()) {
+		throw __FILE__ " Writer::UnloadQuery -- the query has not been initialized";
+	}
+
+	if(debug_msg) {
+		LOG_MSG << "Unload query " << query_id << endl;
+	}
+	
+	_query_map.erase(query_id);
+	delete _output_vec[query_id];
+	_output_vec.erase(query_id);
 }
 
 void Writer::UpdateDefaultReportInfo(QueryOutputInfoPtr qoip) {
@@ -1380,26 +1480,27 @@ void Writer::UpdateDefaultReportInfo(QueryOutputInfoPtr qoip) {
 
 	// !!!! check what will happen for all output format
 	
+	int copy_len = 0;
 	if(align_view == 0) { 
+		if(qoip->header_size > 0) {
+			// reference
+			find_ptr = strstr(qoip->header, "Query=");
+			copy_len = find_ptr - qoip->header;
+			assert(copy_len > 0);
+			_output_drp->ref_size = copy_len;
+			_output_drp->ref = (char*)malloc(copy_len);
+			CHECK_NULPTR(_output_drp->ref);
+			memcpy(_output_drp->ref, qoip->header, copy_len);
 		
-		assert(qoip->header != NULL);
-		// reference
-		find_ptr = strstr(qoip->header, "Query=");
-		int copy_len = find_ptr - qoip->header;
-		assert(copy_len > 0);
-		_output_drp->ref_size = copy_len;
-		_output_drp->ref = (char*)malloc(copy_len);
-		CHECK_NULPTR(_output_drp->ref);
-		memcpy(_output_drp->ref, qoip->header, copy_len);
-		
-		// db info
-		find_ptr = strstr(qoip->header, "Database:");
-		int start_pos = find_ptr - qoip->header;
-		copy_len = qoip->header_size - start_pos;
-		_output_drp->db_info_size = copy_len;
-		_output_drp->db_info = (char*)malloc(copy_len);
-		CHECK_NULPTR(_output_drp->db_info);
-		memcpy(_output_drp->db_info, find_ptr, copy_len);
+			// db info
+			find_ptr = strstr(qoip->header, "Database:");
+			int start_pos = find_ptr - qoip->header;
+			copy_len = qoip->header_size - start_pos;
+			_output_drp->db_info_size = copy_len;
+			_output_drp->db_info = (char*)malloc(copy_len);
+			CHECK_NULPTR(_output_drp->db_info);
+			memcpy(_output_drp->db_info, find_ptr, copy_len);
+		}
 
 		// no hits
 		if(qoip->no_hits_size > 0) {
@@ -1434,19 +1535,6 @@ void Writer::UpdateDefaultReportInfo(QueryOutputInfoPtr qoip) {
 // sigleton pattern, initialize _instance to NULL
 WriterMasterIndividual* WriterMasterIndividual::_instance = NULL;
 
-// singleton pattern, get instance for this class
-WriterMasterIndividual* WriterMasterIndividual::Instance(BLAST* blast, int query_count, int total_frags, const string& output_file, int send_batch) {
-	if(_instance == NULL) {
-		_instance = new WriterMasterIndividual(blast, query_count, total_frags, output_file, send_batch);
-	} 
-	
-	return _instance;
-}
-
-WriterMasterIndividual* WriterMasterIndividual::Instance() {
-	return _instance;
-}
-
 WriterMasterStreamline* WriterMasterStreamline::_instance = NULL;
 
 // singleton pattern, get instance for this class
@@ -1463,142 +1551,6 @@ WriterMasterStreamline* WriterMasterStreamline::Instance() {
 }
 
 WriterMasterCollective* WriterMasterCollective::_instance = NULL;
-
-// singleton pattern, get instance for this class
-WriterMasterCollective* WriterMasterCollective::Instance(BLAST* blast, int query_count, int total_frags, const string& output_file, int send_batch) {
-	if(_instance == NULL) {
-		_instance = new WriterMasterCollective(blast, query_count, total_frags, output_file, send_batch);
-	} 
-	
-	return _instance;
-}
-
-WriterMasterCollective* WriterMasterCollective::Instance() {
-	return _instance;
-}
-
-int WriterMasterCollective::HandleMessages(MPI_Status &event_status, int* event_array) {
-
-	double track_time = MPI_Wtime();
-
-    MPI_Status probe_status;
-    MPI_Probe( event_status.MPI_SOURCE, event_array[0], group_comm, &probe_status );
-
-    _comm_send.CheckPendingSends();
-
-    int msg_size;
-    MPI_Get_count(&probe_status, MPI_BYTE, &msg_size);
-    CommRecvStruct* crsp = new CommRecvStruct(msg_size);
-    crsp->RecvData(group_comm, probe_status.MPI_SOURCE, probe_status.MPI_TAG);
-
-    switch (probe_status.MPI_TAG) {
-        case PARTIAL_OUTPUTS_DATA:
-            //receive partial outputs
-            RecvPartialOutputs(crsp, probe_status.MPI_SOURCE);
-            break;
-		case COLLECTIVE_READY:
-			ProcessCollRequest(crsp);
-			break;
-		case WRITER_FINALIZED:
-			_complete_worker++;
-			break;
-        default:
-            throw __FILE__ " WriterMasterCollective::HandleMessages -- don't know how to process this tag";
-    }
-
-    if(crsp!=NULL) { // allow crsp to be freed earlier elsewhere to save memory
-        delete crsp;
-    }
-
-	if( WriterWorkerComplete() ) {
-		return 1; // finish outputing all queries
-	}
-
-    return 0;
-}
-
-void WriterMasterCollective::ProcessCollRequest(CommRecvStruct* crsp) {
-	int query_id;
-	crsp->ExtractData(&query_id, int_size);
-
-	_output_vec[query_id]->_ready_workers++;
-
-	if(_output_vec[query_id]->_ready_workers == GetNumWorkers()) {
-		_output_vec[query_id]->_stliner->WriteOutputEntries(_fw, _curr_output_pos);
-		
-		if(dump_raw_output) {
-			_fw->DumpWriteRequests(dbgfp);
-		}
-
-		_fw->CollWrite();
-		delete _output_vec[query_id];
-		_output_vec[query_id] = NULL;
-
-		_last_written_query = query_id + 1;
-	}
-}
-
-void WriterMasterCollective::Finalize(void) {
-	_comm_send.WaitPendingSends();
-
-/*
-	// output html footer
-	char* buffer = (char*) malloc (PRINT_BUFFER_LENGTH);
-	CHECK_NULPTR(buffer);
-	memset(buffer, 0, PRINT_BUFFER_LENGTH);
-	_blast->GetHtmlFooter(buffer);
-	int print_len = strlen(buffer);
-	if(print_len>0) {
-		_fw->AddWriteEntry(_curr_output_pos, print_len, buffer, true); // buffer will be freed by FileWriter
-	} else {
-		free(buffer);
-	}
-	_fw->Write();
-*/
-
-	delete _fw;
-}
-
-// handle writer related messages that received from worker side
-int WriterMasterIndividual::HandleMessages(MPI_Status &event_status, int* event_array) {
-    _comm_send.CheckPendingSends();
-
-    MPI_Status probe_status;
-    MPI_Probe( event_status.MPI_SOURCE, event_array[0], group_comm, &probe_status );
-
-    int msg_size;
-    MPI_Get_count(&probe_status, MPI_BYTE, &msg_size);
-    CommRecvStruct* crsp = new CommRecvStruct(msg_size);
-    crsp->RecvData(group_comm, probe_status.MPI_SOURCE, probe_status.MPI_TAG);
-
-    switch (probe_status.MPI_TAG) {
-        case PARTIAL_OUTPUTS_DATA:
-            //receive partial outputs
-            RecvPartialOutputs(crsp, probe_status.MPI_SOURCE);
-            break;
-		case WRITE_REQUEST:
-			ProcessWriteRequest(probe_status.MPI_SOURCE);
-			break;
-		case WRITE_COMPLETE:
-			ProcessWriteComplete(probe_status.MPI_SOURCE);
-			break;
-		case WRITER_FINALIZED:
-			_complete_worker++;
-			break;
-        default:
-            throw __FILE__ " WriterMasterIndividual::HandleMessages -- don't know how to process this tag";
-    }
-
-    if(crsp!=NULL) { // allow crsp to be freed earlier elsewhere to save memory
-        delete crsp;
-    }
-
-	if( WriterWorkerComplete() ) {
-		return 1; // finish outputing all queries
-	}
-
-    return 0;
-}
 
 // receive partial output records from workers
 /* The format of packed message:
@@ -1622,10 +1574,6 @@ void WriterMaster::RecvPartialOutputs(CommRecvStruct* crsp, int src) {
 	static int blast_align_view = _blast->GetAlignView();
 	static bool blast_html = _blast->GetHtml();
 	
-	if(debug_msg) {
-		LOG_MSG << "Start receiving partial outputs" << endl;
-	}
-	
 	// unpack the partial outputs to a ValNode list
 	int pack_type;
 	crsp->ExtractData(&pack_type, int_size);
@@ -1636,6 +1584,9 @@ void WriterMaster::RecvPartialOutputs(CommRecvStruct* crsp, int src) {
 	
 	for(int i=0; i<num_queries; i++) {
 		crsp->ExtractData(&query_id, int_size);
+		if(debug_msg) {
+			LOG_MSG << "Start receiving partial outputs: query_id " << query_id << " frag_id " << frag_id << " from " << " src " << src << endl;
+		}
 		int num_orps;
 		crsp->ExtractData(&num_orps, int_size);
 		
@@ -1719,23 +1670,33 @@ void WriterMaster::RecvPartialOutputs(CommRecvStruct* crsp, int src) {
 		// insert to the list
 		AddOutputRecords(query_id, orplist, qoip, NULL);
 
+		_output_vec[query_id]->PruneOutputList();
 		_output_vec[query_id]->_stliner->AddSearchedWorker(src);
 		
 		free_query_output_infop(qoip);
 		// free up ValNode list
 		orplist = ValNodeFree(orplist);
 		
-		query_data[query_id].searched_frags++;
-		if(query_data[query_id].searched_frags == _total_frags) { //received all outputs for this query
+		if(query_data.find(query_id) == query_data.end()) {
+			query_data[query_id] = new QueryData(NULL, NULL);
+		}
+		query_data[query_id]->searched_frags++;
+		if(query_data[query_id]->searched_frags == _total_frags) { //received all outputs for this query
+			delete query_data[query_id];
+			query_data.erase(query_id);
+			
 			_output_vec[query_id]->_is_ready = true; // mark this query ready for writing
 
 			double track_time = MPI_Wtime();
-			if(use_brief_report) {
+			if(use_brief_report && _blast->GetAlignView() != 7) {
 				_blast->SynthesizeReport(query_id, _output_drp, _output_vec[query_id]->_qoip);
 			} else {
 				_blast->GetQueryOutputInfo(query_id);
 			}
 			output_info_time += MPI_Wtime() - track_time;
+
+			// unload query data
+			QueryM::Instance()->RemoveQuery(query_id);
 
 			MPI_Offset zero_pos = 0;
 			
@@ -1774,15 +1735,21 @@ void WriterMaster::CheckUnsentOffsets() {
 			LOG_MSG << "Start checking unsent offsets" <<endl;
 		}
 	
-		for(int wrk_idx=_last_sent_offset; wrk_idx<_working_queries.size(); wrk_idx++) {
+		list <int>::iterator lit;
+		// for(int wrk_idx=_last_sent_offset; wrk_idx<_working_queries.size(); wrk_idx++) {
+		for(lit=_working_queries.begin(); lit!=_working_queries.end(); lit++) {
 
-			int curr_query_id = _working_queries[wrk_idx];
+			// int curr_query_id = _working_queries[wrk_idx];
+			int curr_query_id = *lit;
 			
+			if(_output_vec.find(curr_query_id) == _output_vec.end())
+				break;
+	
 			if(!_output_vec[curr_query_id]->_is_ready) 
 				break;
 
 			if(_output_vec[curr_query_id]->_is_offsets_sent) {
-				throw __FILE__ "Offsets haven been sent for this query";
+				throw __FILE__ "Offsets have been sent for this query";
 			}
 		
 			// currently only process one query at a time		
@@ -1792,7 +1759,8 @@ void WriterMaster::CheckUnsentOffsets() {
 			_output_vec[start_query]->AdjustOutputOffsets(_curr_output_pos);
 			if(output_strategy == MASTER_STREAMLINE) {
 
-				_output_vec[start_query]->_stliner->SetWriterLeader(writer_process);
+				//_output_vec[start_query]->_stliner->SetWriterLeader(writer_process);
+				_output_vec[start_query]->_stliner->SetWriterLeader(group_rank);
 				_output_vec[start_query]->_stliner->SetAssignLeader();
 				_output_vec[start_query]->_stliner->PrepareCommWriteData();
 
@@ -1810,9 +1778,11 @@ void WriterMaster::CheckUnsentOffsets() {
 			SendOutputOffsets(start_query, end_query);
 			_output_vec[start_query]->_is_offsets_sent = true;
 
+			QueryM::Instance()->UnloadOldQueries(start_query);
+
             if(output_strategy == MASTER_STREAMLINE || output_strategy == WORKER_COLLECTIVE) {
                 _output_vec[curr_query_id]->CleanupOutputs();
-                _query_to_write = start_query;
+//                _query_to_write = start_query;
             } else {
 				if(output_strategy == WORKER_SPLIT || output_strategy == WORKER_INDIVIDUAL) {
 					// master print
@@ -1826,17 +1796,42 @@ void WriterMaster::CheckUnsentOffsets() {
 				} 
 
                 // clean up query output data
-                delete _output_vec[curr_query_id];
-				_output_vec[curr_query_id] = NULL;
+                // delete _output_vec[curr_query_id];
+				// _output_vec[curr_query_id] = NULL;
+				UnloadQuery(curr_query_id);
             }
-			
+
 			_last_sent_offset++;
 			_offsets_to_send--;
 		}
 
+		_working_queries.erase(_working_queries.begin(), lit);
+
 		if(debug_msg) {
 			LOG_MSG << "After checking unsent offsets" <<endl;
 		}
+	}
+}
+
+void WriterMaster::TellWriterWorkerQuit() {
+	int command = WRITER_QUIT;
+
+	for(int i=0; i<group_node_count; i++) {
+		if(!IsWorker(i)) {
+			continue;
+		}
+
+		// send event
+		int assign_array[3];
+		assign_array[0] = WRITER_EVENT;
+		assign_array[1] = WRITER_QUIT;
+		assign_array[2] = -1;
+		CommSendStruct* cssp_event = new CommSendStruct(3*int_size);
+		cssp_event->AddData(&assign_array[0], 3 * int_size);
+		cssp_event->SendData(group_comm, i, ASSIGNMENT_TYPE);
+		delete cssp_event;
+
+		MPI_Send(&command, 1, MPI_INT, i, WRITER_QUIT, group_comm);
 	}
 }
 
@@ -1862,6 +1857,48 @@ int WriterMasterStreamline::HandleMessages(MPI_Status &event_status, int* event_
 			break;
 		case WRITE_COMPLETE:
 			ProcessWriteComplete(probe_status.MPI_SOURCE);
+			break;
+		case WRITER_FINALIZED:
+			_complete_worker++;
+			break;
+		case QUERY_WRITE_ACK:
+			FinishQuery(crsp);
+			break;
+		case WAIT_WRITE_COMPLETE:
+			ProcessWaitWriteNotification(crsp);
+			break;
+		default:
+			throw __FILE__ "Don't know how to process this tag";
+	}
+
+	if(crsp!=NULL) { // allow crsp to be freed earlier elsewhere to save memory
+		delete crsp;
+	}
+
+	if(!_writing_ops.empty()) {
+		ProcessAsyncOutput();
+	}
+	
+	if(WriterWorkerComplete()) {
+		return 1;
+	}
+
+    return 0;
+}
+
+int WriterMasterStreamline::HandleMessages(CommRecvStruct* crsp, MPI_Status &recv_status) {
+    _comm_send.CheckPendingSends();
+
+	switch (recv_status.MPI_TAG) {
+		case PARTIAL_OUTPUTS_DATA:
+			//receive partial outputs
+			RecvPartialOutputs(crsp, recv_status.MPI_SOURCE);
+			break;
+		case WRITE_REQUEST:
+			ProcessWriteRequest(recv_status.MPI_SOURCE);
+			break;
+		case WRITE_COMPLETE:
+			ProcessWriteComplete(recv_status.MPI_SOURCE);
 			break;
 		case WRITER_FINALIZED:
 			_complete_worker++;
@@ -1923,7 +1960,8 @@ void WriterMasterStreamline::FinishQuery(CommRecvStruct* crsp) {
 
 	_num_written_queries++;
 
-	if( _no_more_queries && _num_written_queries == _working_queries.size() ) {
+	// if( _no_more_queries && _num_written_queries == _working_queries.size() ) {
+	if( _no_more_queries && _num_written_queries == _assigned_queries ) {
 		TellWriterWorkerQuit();
 	}
 }
@@ -1957,28 +1995,6 @@ void WriterMasterStreamline::ProcessWaitWriteNotification(CommRecvStruct* crsp) 
 	}
 
 	_output_vec[wait_query_id]->_stliner->HandleWaitWriteNotify(wait_write_segment_id);
-}
-
-void WriterMasterStreamline::TellWriterWorkerQuit() {
-	int command = WRITER_QUIT;
-
-	for(int i=0; i<group_node_count; i++) {
-		if(!IsWorker(i)) {
-			continue;
-		}
-
-		// send event
-		int assign_array[2];
-		assign_array[0] = WRITER_EVENT;
-		assign_array[1] = WRITER_QUIT;
-		CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-		cssp_event->AddData(&assign_array[0], int_size);
-		cssp_event->AddData(&assign_array[1], int_size);
-		cssp_event->SendData(group_comm, i, ASSIGNMENT_TYPE);
-		delete cssp_event;
-
-		MPI_Send(&command, 1, MPI_INT, i, WRITER_QUIT, group_comm);
-	}
 }
 
 int WriterWorkerStreamline::HandleMessages(MPI_Status &event_status, int* event_array) {
@@ -2086,10 +2102,6 @@ void WriterWorkerStreamline::OutputReadyQueries() {
 		int query_id = _lead_queries.front();
 
 		if(_output_vec[query_id]->_stliner->IsReady()) {
-			
-			// debug !!!!
-			writing_query = query_id;
-			
 			if(debug_msg) {
 				LOG_MSG << "Start gathering outputs for " << query_id <<endl;
 			}
@@ -2102,8 +2114,9 @@ void WriterWorkerStreamline::OutputReadyQueries() {
 				LOG_MSG << "End gathering outputs for " << query_id <<endl;
 			}
 
-			delete _output_vec[query_id];
-			_output_vec[query_id] = NULL;
+			// delete _output_vec[query_id];
+			// _output_vec[query_id] = NULL;
+			UnloadQuery(query_id);
 
 			_lead_queries.pop();
 		} else {
@@ -2114,6 +2127,8 @@ void WriterWorkerStreamline::OutputReadyQueries() {
 
 void WriterMasterStreamline::Finalize(void) {
 	_comm_send.WaitPendingSends();
+	
+	WaitAllWriteOps();
 
 	// output html footer
 	char* buffer = (char*) malloc (PRINT_BUFFER_LENGTH);
@@ -2240,17 +2255,18 @@ void WriterMaster::SendOutputOffsets(int start_query, int end_query) {
 				_output_vec[start_query]->_stliner->AppendWriteLeader(offsets_buf[k]);
 			}
 
+			MPI_Offset msg_size = offsets_buf[k].size()*offset_size;	
+
 			// send event message first
-			int assign_array[2];
+			int assign_array[3];
 			assign_array[0] = WRITER_EVENT;
 			assign_array[1] = OUTPUT_OFFSETS;
-			CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-			cssp_event->AddData(&assign_array[0], int_size);
-			cssp_event->AddData(&assign_array[1], int_size);
+			assign_array[2] = (int)msg_size;
+			CommSendStruct* cssp_event = new CommSendStruct(3*int_size);
+			cssp_event->AddData(&assign_array[0], 3 * int_size);
 			cssp_event->IsendData(group_comm, k, ASSIGNMENT_TYPE);
 			_comm_send.AddPendingSend(cssp_event);
 		
-			MPI_Offset msg_size = offsets_buf[k].size()*offset_size;	
 			CommSendStruct* cssp = new CommSendStruct(msg_size);
 			for(int l=0; l<offsets_buf[k].size(); l++) {
 				cssp->AddData(&(offsets_buf[k][l]), offset_size);
@@ -2278,7 +2294,6 @@ void WriterMaster::ProcessWriteRequest(int src) {
 		}
 		
 		int command = WORKER_WRITE;
-		// MPI_Send(&command, 1, MPI_INT, src, WORKER_WRITE, group_comm);
 		
 		CommSendStruct* cssp_assign = new CommSendStruct(int_size);
 		cssp_assign->AddData(&command, int_size);
@@ -2292,7 +2307,6 @@ void WriterMaster::ProcessWriteComplete(int src) {
 		int dst = _write_request_queue.front();
 		
 		int command = WORKER_WRITE;
-		// MPI_Send(&command, 1, MPI_INT, dst, WORKER_WRITE, group_comm);
 		CommSendStruct* cssp_assign = new CommSendStruct(int_size);
 		cssp_assign->AddData(&command, int_size);
 		cssp_assign->IsendData(group_comm, dst, WORKER_WRITE);
@@ -2305,6 +2319,10 @@ void WriterMaster::ProcessWriteComplete(int src) {
 }
 
 int WriterMasterStreamline::CheckEmptyOutput() {
+
+	throw __FILE__ "WriterMasterStreamline::CheckEmptyOutput -- should never be called now";
+	
+/*
     if(_last_written_query == -1) {
         _last_written_query = 0;
     }
@@ -2333,30 +2351,16 @@ int WriterMasterStreamline::CheckEmptyOutput() {
     } else {
         return 0;
     }
+*/
 }
-
-void WriterMasterIndividual::Finalize(void) {
-	_comm_send.WaitPendingSends();
-
-	// output html footer
-	char* buffer = (char*) malloc (PRINT_BUFFER_LENGTH);
-	CHECK_NULPTR(buffer);
-	memset(buffer, 0, PRINT_BUFFER_LENGTH);
-	_blast->GetHtmlFooter(buffer);
-	int print_len = strlen(buffer);
-	if(print_len>0) {
-		_fw->AddWriteEntry(_curr_output_pos, print_len, buffer, true); // buffer will be freed by FileWriter
-	} else {
-		free(buffer);
-	}
-	_fw->Write();
-	
-	delete _fw;
-}
-
 
 void WriterWorker::AddLocalOutputs(int query_id, int frag_id, ValNodePtr orplist, QueryOutputInfoPtr qoip, ByteStorePtr bs_ptr) {
 	ValNodePtr curr_node = orplist;
+	
+	// HL-debug-open:
+	if(dump_raw_output) {
+		fprintf(dbgfp, "Adding output for query %d, fragment %d, num_records=%d\n", query_id, frag_id, _tmp_output_vec[query_id].size());
+	}
 	
 	// add results to tmporary vec, which buffers the output records to be sent to master writer
 	while(curr_node) {
@@ -2364,13 +2368,20 @@ void WriterWorker::AddLocalOutputs(int query_id, int frag_id, ValNodePtr orplist
 		((OutputRecordPtr)curr_node->data.ptrvalue)->frag_id = frag_id;
 		_tmp_output_vec[query_id].push_back((OutputRecordPtr)curr_node->data.ptrvalue);
 		
+		// HL-debug-open:
+		if(dump_raw_output) {
+			print_output_record(dbgfp, (OutputRecordPtr)curr_node->data.ptrvalue);
+		}
+		
 		curr_node = curr_node->next;
 	}
 	
 	AddOutputRecords(query_id, orplist, qoip, bs_ptr, true);
 
-	// debug
-	// PrintOutputsList(dbgfp);
+	// HL-debug-open:
+	if(dump_raw_output) {
+	    fprintf(dbgfp, "Finish adding output number of records = %d\n", _tmp_output_vec[query_id].size());
+    }
 	
 	_queries_to_processed++;
 }
@@ -2383,19 +2394,6 @@ void WriterWorker::SetStartQuery(int start_query) {
 
 // sigleton pattern, initialize _instance to NULL
 WriterWorkerIndividual* WriterWorkerIndividual::_instance = NULL;
-
-// singleton pattern, get instance for this class
-WriterWorkerIndividual* WriterWorkerIndividual::Instance(BLAST* blast, int query_count, int total_frags, const string& output_file, int send_batch) {
-	if(_instance == NULL) {
-		_instance = new WriterWorkerIndividual(blast, query_count, total_frags, output_file, send_batch);
-	} 
-	
-	return _instance;
-}
-
-WriterWorkerIndividual* WriterWorkerIndividual::Instance() {
-	return _instance;
-}
 
 WriterWorkerStreamline* WriterWorkerStreamline::_instance = NULL;
 
@@ -2423,7 +2421,7 @@ void WriterWorkerStreamline::Finalize() {
 
 	MPI_Status probe_status, recv_status;
 	
-	int assign_array[2];
+	int assign_array[3];
 
 	if(output_strategy == MASTER_STREAMLINE || output_strategy == WORKER_STREAMLINE) {
 		while(!_is_finished) {
@@ -2435,7 +2433,7 @@ void WriterWorkerStreamline::Finalize() {
             // use Iproble here to prevent isend from freezing
             MPI_Iprobe(MPI_ANY_SOURCE, ASSIGNMENT_TYPE, group_comm, &flag, &probe_status);
             if(flag) {
-				MPI_Recv(assign_array, 2, MPI_INT, probe_status.MPI_SOURCE, ASSIGNMENT_TYPE, group_comm, &recv_status);
+				MPI_Recv(assign_array, 3, MPI_INT, probe_status.MPI_SOURCE, ASSIGNMENT_TYPE, group_comm, &recv_status);
 
                 if(assign_array[0] != WRITER_EVENT) {
                     throw __FILE__ "WriterWorkerStreamline::Finalize -- illegal assignment";
@@ -2472,10 +2470,9 @@ void WriterWorkerStreamline::Finalize() {
 
 	int event_array[2];
 	event_array[0] = WRITER_FINALIZED;
-	event_array[1] = -1;
+	event_array[1] = int_size;
 	CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-	cssp_event->AddData(&event_array[0], int_size);
-	cssp_event->AddData(&event_array[1], int_size);
+	cssp_event->AddData(&event_array[0], 2*int_size);
 	cssp_event->SendData(group_comm, writer_process, EVENT_TYPE);
 	delete cssp_event;
 
@@ -2521,9 +2518,16 @@ void WriterWorker::SendPartialOutputs(int start_query, int end_query, int pack_t
 			  + int_size  // fragment id
 			  + int_size; // number of queries results
 
+	// HL-debug-open:
+	if(dump_raw_output) {
+		fprintf(dbgfp, "Sending output for query %d, fragment %d, num_records=%d\n", start_query, frag_id, _tmp_output_vec[start_query].size());
+	}
+
 	for(int i=start_query; i<end_query; i++) {
-		// debug
-		//_output_vec[i]->DebugPrint(stderr);
+
+		// if(dump_raw_output) { // print accumulated results for this query
+		//	_output_vec[i]->DebugPrint(dbgfp);
+		//}
 
 		if(blast_align_view < 10) { // not asn
 			msg_size += int_size  // query_id
@@ -2561,6 +2565,12 @@ void WriterWorker::SendPartialOutputs(int start_query, int end_query, int pack_t
 		int num_records = _tmp_output_vec[i].size();
 		cssp->AddData(&num_records, int_size); // number of records
 		
+		_pending_offsets.insert(start_query); // duplication will be handled by set insert
+
+		if(_pending_offsets.size() > peak_pending_offsets) {
+			peak_pending_offsets = _pending_offsets.size();
+		}
+
 		int tmp_size=0;
 		if(blast_align_view < 10) {// not asn
 			//description header and footer are stored in _output_vec
@@ -2599,6 +2609,11 @@ void WriterWorker::SendPartialOutputs(int start_query, int end_query, int pack_t
 		
 		for(int j=0; j<_tmp_output_vec[i].size(); j++) {
 			pack_record(pack_type, _tmp_output_vec[i][j], cssp);
+
+			// HL-debug-open:
+			if(dump_raw_output) {
+				print_output_record(dbgfp, _tmp_output_vec[i][j]);
+			}
 		}
 	}
 
@@ -2610,10 +2625,9 @@ void WriterWorker::SendPartialOutputs(int start_query, int end_query, int pack_t
 	// send event first
 	int event_array[2];
 	event_array[0] = tag;
-	event_array[1] = -1;
+	event_array[1] = (int)(cssp->GetSize());
 	CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-	cssp_event->AddData(&event_array[0], int_size);
-	cssp_event->AddData(&event_array[1], int_size);
+	cssp_event->AddData(&event_array[0], 2*int_size);
 
 	if(sync_comm) {
 		double track_time = MPI_Wtime();
@@ -2643,6 +2657,11 @@ void WriterWorker::SendPartialOutputs(int start_query, int end_query, int pack_t
 		_results_send.AddPendingSend(cssp);
 	}
 
+	// prune unqualified output for this query
+    for(int i=start_query; i<end_query; i++) {
+		_output_vec[i]->PruneOutputList();
+	}
+
     // clean up tmp send vector
     for(int i=start_query; i<end_query; i++) {
         _tmp_output_vec[i].clear();
@@ -2654,92 +2673,6 @@ void WriterWorker::SendPartialOutputs(int start_query, int end_query, int pack_t
 }
 
 WriterWorkerCollective* WriterWorkerCollective::_instance = NULL;
-
-// singleton pattern, get instance for this class
-WriterWorkerCollective* WriterWorkerCollective::Instance(BLAST* blast, int query_count, int total_frags, const string& output_file, int send_batch) {
-	if(_instance == NULL) {
-		_instance = new WriterWorkerCollective(blast, query_count, total_frags, output_file, send_batch);
-	} 
-	
-	return _instance;
-}
-
-WriterWorkerCollective* WriterWorkerCollective::Instance() {
-	return _instance;
-}
-
-int WriterWorkerCollective::HandleMessages(MPI_Status &event_status, int* event_array) {
-
-	_comm_send.CheckPendingSends();
-	_results_send.CheckPendingSends();
-
-    MPI_Status probe_status;
-    MPI_Probe( event_status.MPI_SOURCE, event_array[0], group_comm, &probe_status );
-
-	int msg_size;
-	MPI_Get_count(&probe_status, MPI_BYTE, &msg_size);
-	CommRecvStruct* crsp = new CommRecvStruct(msg_size);
-	crsp->RecvData(group_comm, probe_status.MPI_SOURCE, probe_status.MPI_TAG);
-	
-	switch (probe_status.MPI_TAG) {
-		case OUTPUT_OFFSETS:
-			// receive output offsets for local buffered records
-			ReceiveOutputOffsets(crsp);
-			
-			break;
-		default:
-            throw __FILE__ " WriterWorkerCollective::HandleMessages -- don't know how to process this tag";
-	}
-
-	delete crsp;
-	
-	return 0;
-}
-
-void WriterWorkerCollective::Finalize() {
-	if(debug_msg) {
-		LOG_MSG << "WriterWorker start finalizaing" <<endl;
-	}	
-
-	_results_send.WaitPendingSends();
-	
-	MPI_Status probe_status, recv_status;
-	
-	int assign_array[2];
-	// finish outputting the rest of query results
-	while( _last_written_query < _query_count) {
-		_comm_send.CheckPendingSends();
-		MPI_Probe( MPI_ANY_SOURCE, ASSIGNMENT_TYPE, group_comm, &probe_status );
-		MPI_Recv(assign_array, 2, MPI_INT, probe_status.MPI_SOURCE, ASSIGNMENT_TYPE, group_comm, &recv_status);
-
-		if(assign_array[0] != WRITER_EVENT) {
-			throw __FILE__ "WriterWorkerIndividual::Finalize -- illegal assignment";
-		}
-
-		HandleMessages(probe_status, &(assign_array[1]));
-	}
-
-	_comm_send.WaitPendingSends();
-	
-	int event_array[2];
-	event_array[0] = WRITER_FINALIZED;
-	event_array[1] = -1;
-	CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-	cssp_event->AddData(&event_array[0], int_size);
-	cssp_event->AddData(&event_array[1], int_size);
-	cssp_event->SendData(group_comm, writer_process, EVENT_TYPE);
-	delete cssp_event;
-
-	// only need a tag here, the content is not important
-	MPI_Send(event_array, 1, MPI_INT, writer_process, WRITER_FINALIZED, group_comm);
-
-	delete _fw;
-
-	if(debug_msg) {
-		LOG_MSG << "WriterWorker end finalizaing" <<endl;
-	}	
-	
-}
 
 // process query results, send size and scores to master writer
 void WriterWorker::ProcessResults(bool is_search_end, int frag_id) {
@@ -2798,6 +2731,10 @@ void WriterWorker::ReceiveOutputOffsets(CommRecvStruct* crsp) {
 		if(debug_msg) {
 			LOG_MSG << "Output offsets of query " << query_id <<endl;
 		}
+
+		InitQueryOutput(0, query_id);
+
+		_pending_offsets.erase(query_id);
 
 		MPI_Offset num_records;
 		crsp->ExtractData(&num_records, offset_size);
@@ -2876,14 +2813,15 @@ void WriterWorker::ReceiveOutputOffsets(CommRecvStruct* crsp) {
 			// tell writer master I am ready to write
 			int event_array[2];
 			event_array[0] = COLLECTIVE_READY;
-			event_array[1] = -1;
+			event_array[1] = int_size;
 			CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-			cssp_event->AddData(&event_array[0], int_size);
-			cssp_event->AddData(&event_array[1], int_size);
+			cssp_event->AddData(&event_array[0], 2*int_size);
 			cssp_event->SendData(group_comm, writer_process, EVENT_TYPE);
 			delete cssp_event;
 
-			MPI_Send(&query_id, 1, MPI_INT, writer_process, COLLECTIVE_READY, group_comm);
+			// don't send query_id, it has MPI_Offset type
+			event_array[0] = query_id;
+			MPI_Send(event_array, 1, MPI_INT, writer_process, COLLECTIVE_READY, group_comm);
 
 			if(dump_raw_output) {
 				_fw->DumpWriteRequests(dbgfp);
@@ -2901,14 +2839,17 @@ void WriterWorker::ReceiveOutputOffsets(CommRecvStruct* crsp) {
 			// !!!! this if block seems never to be true 
 			if(_output_vec[query_id]->_stliner->IsProcessed()) {
 				// clean up the buffered output for this query
-				delete _output_vec[query_id];
-				_output_vec[query_id] = NULL;
+				// delete _output_vec[query_id];
+				// _output_vec[query_id] = NULL;
+				UnloadQuery(query_id);
+				
 				_last_output_query = query_id + 1;
 			}
 		} else {
 			// clean up the buffered output for this query
-			delete _output_vec[query_id];
-			_output_vec[query_id] = NULL;
+			//  delete _output_vec[query_id];
+			// _output_vec[query_id] = NULL;
+			UnloadQuery(query_id);
 
 			_last_output_query = query_id + 1;
 		}
@@ -2917,86 +2858,6 @@ void WriterWorker::ReceiveOutputOffsets(CommRecvStruct* crsp) {
 	if(debug_msg) {
 		LOG_MSG << "End receiving output offsets" <<endl;
 	}
-}
-
-int WriterWorkerIndividual::HandleMessages(MPI_Status &event_status, int* event_array) {
-
-	_comm_send.CheckPendingSends();
-	_results_send.CheckPendingSends();
-
-    MPI_Status probe_status;
-    MPI_Probe( event_status.MPI_SOURCE, event_array[0], group_comm, &probe_status );
-
-	int msg_size;
-	MPI_Get_count(&probe_status, MPI_BYTE, &msg_size);
-	CommRecvStruct* crsp = new CommRecvStruct(msg_size);
-	crsp->RecvData(group_comm, probe_status.MPI_SOURCE, probe_status.MPI_TAG);
-	
-	switch (probe_status.MPI_TAG) {
-		case OUTPUT_OFFSETS:
-			// receive output offsets for local buffered records
-			ReceiveOutputOffsets(crsp);
-			
-			if(dump_raw_output) {
-				_fw->DumpWriteRequests(dbgfp);
-			}
-			
-			// print output according to received offsets
-			_fw->Write();
-			
-			break;
-		default:
-            throw __FILE__ " WriterWorkerIndividual::HandleMessages -- don't know how to process this tag";
-	}
-
-	delete crsp;
-	
-	return 0;
-}
-
-void WriterWorkerIndividual::Finalize() {
-	if(debug_msg) {
-		LOG_MSG << "WriterWorker start finalizaing" <<endl;
-	}	
-	
-	_results_send.WaitPendingSends();
-	
-	MPI_Status probe_status, recv_status;
-	
-	int assign_array[2];
-	// finish outputting the rest of query results
-	while( _last_processed_query > 0 && _last_output_query < _last_processed_query) {
-		_comm_send.CheckPendingSends();
-		MPI_Probe( MPI_ANY_SOURCE, ASSIGNMENT_TYPE, group_comm, &probe_status );
-		MPI_Recv(assign_array, 2, MPI_INT, probe_status.MPI_SOURCE, ASSIGNMENT_TYPE, group_comm, &recv_status);
-
-		if(assign_array[0] != WRITER_EVENT) {
-			throw __FILE__ "WriterWorkerIndividual::Finalize -- illegal assignment";
-		}
-
-		HandleMessages(probe_status, &(assign_array[1]));
-	}
-
-	_comm_send.WaitPendingSends();
-	
-	int event_array[2];
-	event_array[0] = WRITER_FINALIZED;
-	event_array[1] = -1;
-	CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-	cssp_event->AddData(&event_array[0], int_size);
-	cssp_event->AddData(&event_array[1], int_size);
-	cssp_event->SendData(group_comm, writer_process, EVENT_TYPE);
-	delete cssp_event;
-
-	// only need a tag here, the content is not important
-	MPI_Send(event_array, 1, MPI_INT, writer_process, WRITER_FINALIZED, group_comm);
-
-	delete _fw;
-
-	if(debug_msg) {
-		LOG_MSG << "WriterWorker end finalizaing" <<endl;
-	}	
-	
 }
 
 void Streamliner::SendOutputData(int dst, int query_id, Writer* wtrp) {
@@ -3322,11 +3183,6 @@ void Streamliner::GatherOutputsForAWrite(FileWriter* fwp) {
         int curr_query;
         crsp->ExtractData(&curr_query, int_size);
 
-		// debug !!!!
-		if( output_strategy == WORKER_STREAMLINE && curr_query != writing_query) {
-			throw __FILE__ "received illeage write data";
-		}
-
         // debug
         //fprintf(dbgfp, "received from nodes %d\n", _pend_recv_nodes[i]);
         //fprintf(dbgfp, "current_query = %d\n", curr_query);
@@ -3370,15 +3226,6 @@ void Streamliner::ShiftLeader(int query_id, Writer* wtrp) {
 	//     ....
 	
 	// send event message first
-	int assign_array[2];
-	assign_array[0] = WRITER_EVENT;
-	assign_array[1] = SHIFT_WRITE_LEADER;
-	CommSendStruct* cssp_event = new CommSendStruct(2*int_size);
-	cssp_event->AddData(&assign_array[0], int_size);
-	cssp_event->AddData(&assign_array[1], int_size);
-	cssp_event->IsendData(group_comm, dst, ASSIGNMENT_TYPE);
-	wtrp->AddCommSend(cssp_event);
-	
 	// calculate buffer size
 	MPI_Offset buf_size = 0;
 	int num_entries = 0;
@@ -3415,6 +3262,15 @@ void Streamliner::ShiftLeader(int query_id, Writer* wtrp) {
 	int num_workers = _workers_with_output.size();
 	buf_size += num_workers * num_write_segments * int_size;
 
+	int assign_array[3];
+	assign_array[0] = WRITER_EVENT;
+	assign_array[1] = SHIFT_WRITE_LEADER;
+	assign_array[2] = (int)buf_size;
+	CommSendStruct* cssp_event = new CommSendStruct(3*int_size);
+	cssp_event->AddData(&assign_array[0], 3 * int_size);
+	cssp_event->IsendData(group_comm, dst, ASSIGNMENT_TYPE);
+	wtrp->AddCommSend(cssp_event);
+	
 	CommSendStruct* cssp;	
 	cssp = new CommSendStruct(buf_size);
 	cssp->AddData(&query_id, int_size);
@@ -3513,6 +3369,8 @@ void Streamliner::PrepareCommWriteData() {
 }
 
 void Streamliner::InitAWrite(int query_id, int write_segment_id) {
+	_query_id = query_id;
+	
 	if(_write_status[write_segment_id] > -1) { // already initialized
 		return;
 	}
@@ -3685,7 +3543,7 @@ int Streamliner::WaitAWrite(int write_segment_id, FileWriter* fwp) {
 			LOG_MSG << "Wait for " << count << " pending non-blocking MPI communication ops" << endl;
 		}
 
-		MPI_Waitall(count, req_array, MPI_STATUS_IGNORE);
+		MPI_Waitall(count, req_array, MPI_STATUSES_IGNORE);
 
 		if(!_isend_list[write_segment_id].empty()) {
 			// check isend
@@ -3923,6 +3781,7 @@ void Streamliner::DumpMessageSizes(FILE* fp) {
 
 // provide a C wrapper function for result processing so it can be called from blast_hooks.c
 void cProcessLocalOutputs(int query_id, int frag_id, ValNodePtr orplist, QueryOutputInfoPtr qoip, ByteStorePtr bs_ptr) {
+	double track_time = MPI_Wtime();
 	WriterWorker* writer_w;
 	if(output_strategy == WORKER_INDIVIDUAL || output_strategy == WORKER_SPLIT) {
 		writer_w = WriterWorkerIndividual::Instance();
@@ -3935,6 +3794,7 @@ void cProcessLocalOutputs(int query_id, int frag_id, ValNodePtr orplist, QueryOu
 	writer_w->AddLocalOutputs(query_id, frag_id, orplist, qoip, bs_ptr);
 	
 	writer_w->ProcessResults(false, frag_id);
+	process_output_time += MPI_Wtime() - track_time;
 }
 
 // C wrapper function for WriterMaster::UpdateQueryOutputInfo

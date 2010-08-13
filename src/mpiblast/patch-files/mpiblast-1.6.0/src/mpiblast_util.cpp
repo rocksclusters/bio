@@ -1,7 +1,7 @@
 /*************************************************************************
-** Copyright 2008 by Virginia Polytechnic Institute and State University. 
-** All rights reserved. Virginia Polytechnic Institute and State 
-** University (Virginia Tech) owns the mpiBLAST software and its
+** Copyright 2009 by Virginia Polytechnic Institute and State
+** University. All rights reserved. Virginia Polytechnic Institute and
+** State University (Virginia Tech) owns the mpiBLAST software and its
 ** associated documentation ("Software"). You should carefully read the
 ** following terms and conditions before using this software. Your use
 ** of this Software indicates your acceptance of this license agreement
@@ -34,10 +34,9 @@
 ** 
 ** This file is part of mpiBLAST.
 ** 
-** mpiBLAST is free software: you can redistribute it and/or modify it
-** under the terms of the GNU General Public License as published by the
-** Free Software Foundation, either version 2 of the License, or (at
-** your option) any later version of the GNU General Public License.
+** mpiBLAST is free software: you can redistribute it and/or modify it 
+** under the terms of the GNU General Public License version 2 as published 
+** by the Free Software Foundation. 
 ** 
 ** Accordingly, mpiBLAST is distributed in the hope that it will be
 ** useful, but WITHOUT ANY WARRANTY; without even the implied warranty
@@ -46,7 +45,7 @@
 ** 
 ** You should have received a copy of the GNU General Public License
 ** along with mpiBLAST. If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+***************************************************************************/
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -85,30 +84,39 @@ double prog_start;		/* Given value after MPI_Init and MPE defs */
 double prog_end ;		/* Given value right before MPI_Finalize */
 
 // process roles:
-// jobs are assigned by a scheduler process and results are
-// written by a writer process.  The workers need to know which
-// rank each of these processes have.
 int scheduler_process = 0;
 int writer_process = 0;
 int super_master_process = 0;
-int max_write_buffer = 4 * 1024 * 1024; // maximum data volume allowed for a streamlined write operation
+
+int max_write_buffer = 16 * 1024 * 1024; // maximum data volume allowed for a streamlined write operation
 bool fast_evalue_approximation = false;
 int parallel_evalue_adjust = 1;  // 0-false, 1-true
 int output_strategy = 0; // MASTER_STREAMLINE
 int io_function = 0;
 int ncpus = 1; // specify how many processors per compute node
 int concurrent_write = 0;
-int query_segment_size = 1;
+int query_segment_size = 5;
+int max_segment_size = 1000;
+double init_assign_percent = -1.0;
 bool dump_raw_output = false;
 int use_brief_report = 1;
 bool disable_posix_lock = false;
 bool sync_comm = false;
 bool use_real_dblen = false;
+int use_query_map = 1;
 int query_in_mem = 0;
+int preload_query = 0;
 int num_query_segments = 0;
 int num_pending_writes = 25;
+int num_threads = 0;
+int num_reserved_events = 10;
+int max_query_load = 0;
 MPI_Comm group_write_comm = MPI_COMM_WORLD;
 MPI_Comm group_comm;
+
+const int int_size = sizeof(int);
+const int float_size = sizeof(Nlm_FloatHi);
+const int offset_size = sizeof(MPI_Offset);
 
 // debug
 FILE* dbgfp;
@@ -132,28 +140,19 @@ double wait_write_time = 0;
 double receive_msg_time = 0;
 double receive_msg_size = 0;
 double db_distribute_time = 0;
+double acquire_segement_time = 0;
+double load_queries_time = 0;
+double default_output_time = 0;
+double process_output_time = 0;
+double curr_process_output_time = 0;
+
+double scheduler_called = 0;
 int max_num_write = 0;
+int peak_pending_offsets = 0; // the peak number of pending offsets, only used by workers
 
-/*
-int MPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status) {
-	int flag;
-	flag = 0;
-	int pool_count = 0;
-	while(!flag) {
-		MPI_Iprobe( source, tag, comm, &flag, status );
-		if(flag) {
-			break;
-		}
+int max_pending_offsets = 50; // the maximum number of pending offsets, only used by workers
 
-		if(pool_count++ > 100) {
-			sleep(1);
-			pool_count = 0;
-		}
-	}
-
-	return 0;
-}
-*/
+GroupManager* GroupManager::_instance = NULL;
 
 int IsWorker(int src) {
 	if(src == scheduler_process || src == writer_process) {
@@ -321,7 +320,7 @@ void broadcastFile( string& b_filename ){
 		LOG_MSG << "broadcasting file size of " << b_filesize << endl;
 	}
 	
-	MPI_Bcast( &b_filesize, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD );
+	MPI_Bcast( &b_filesize, 1, MPI_UNSIGNED, super_master_process, MPI_COMM_WORLD );
 	
 	if( debug_msg ){
 		LOG_MSG << "file size broadcasted\n";
@@ -352,7 +351,7 @@ void broadcastFile( string& b_filename ){
 			LOG_MSG << "broadcasting file\n";
 		}
 		
-		MPI_Bcast( b_buf, b_read, MPI_BYTE, 0, MPI_COMM_WORLD );
+		MPI_Bcast( b_buf, b_read, MPI_BYTE, super_master_process, MPI_COMM_WORLD );
 		
 		if( debug_msg ){
 			LOG_MSG << "file broadcasted\n";
@@ -381,7 +380,7 @@ void recvBroadcastFile( string& b_filename ){
 	
 	uint b_filesize;
 	
-	MPI_Bcast( &b_filesize, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD );
+	MPI_Bcast( &b_filesize, 1, MPI_UNSIGNED, super_master_process, MPI_COMM_WORLD );
 	
 	if( debug_msg ){
 		LOG_MSG << "received file size broadcast of " << b_filesize << endl;
@@ -410,7 +409,7 @@ void recvBroadcastFile( string& b_filename ){
 		LOG_MSG << "receiving file to " << b_filename << endl;
 	}
 	
-	MPI_Bcast( b_buf, b_filesize, MPI_BYTE, 0, MPI_COMM_WORLD );
+	MPI_Bcast( b_buf, b_filesize, MPI_BYTE, super_master_process, MPI_COMM_WORLD );
 	
 	if( debug_msg ){
 		LOG_MSG << "received file broadcast\n";
@@ -508,3 +507,63 @@ int getlock (int fd, int cmd, int type) {
 		return 0;
 }
 #endif
+
+GroupManager::GroupManager(int group_size, int num_frags) {
+	// initialize groups
+	_group_size = group_size;
+
+	std::vector <int> proc_pool;
+
+	for(int proc_id=0; proc_id<node_count; proc_id++) {
+		if(proc_id == super_master_process) {
+			continue;
+		}
+		proc_pool.push_back(proc_id);
+	}
+	
+	_num_groups = (node_count - 1) / _group_size;
+	int remain = (node_count - 1) % _group_size;
+
+	int i = 0;
+	for(int group_id=0; group_id<_num_groups; group_id++) {
+		_actual_group_size.push_back(0);
+		for(int j=0; j<group_size; j++) {
+			_proc_group[proc_pool[i++]] = group_id;
+			_actual_group_size[group_id]++;
+		}
+	}
+	
+	if( remain > 0 ) {
+		int last_group = -1; 
+
+		if(remain >= num_frags) {
+			_num_groups++;
+			_actual_group_size.push_back(0);
+		}
+
+		last_group = _num_groups - 1;
+		
+		for(; i<proc_pool.size(); i++) {
+			_proc_group[proc_pool[i]] = last_group;
+			_actual_group_size[last_group]++;
+		}
+	}
+}
+
+void GroupManager::PrintGroupMap(std::ostream& os) {
+	std::vector < std::vector <int> > group_procs(_num_groups, std::vector<int>());
+
+	std::map <int, int>::iterator mit;
+	for(mit=_proc_group.begin(); mit!=_proc_group.end(); mit++) {
+		group_procs[mit->second].push_back(mit->first);
+	}
+
+	for(int i=0; i<_num_groups; i++) {
+		os << "Partition " << i << " has " <<  _actual_group_size[i] << " processes: ";
+		copy(group_procs[i].begin(), group_procs[i].end(), std::ostream_iterator<int>(os, " "));
+		os << std::endl;
+	}
+
+	return;
+}
+

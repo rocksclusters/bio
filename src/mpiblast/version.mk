@@ -1,6 +1,6 @@
 NAME = mpiblast
-VERSION	= 1.5.0
-RELEASE = pio
+VERSION	= 1.6.0
+RELEASE = 1
 ARCHIVE = mpiBLAST
 NCBI=ncbi
-PATCH_DATE=Mar2007
+PATCHNAME=ncbi.8Aug2009.patch

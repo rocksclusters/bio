@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.18 2009/05/01 19:07:11 mjk Exp $
+# $Id: Makefile,v 1.19 2010/08/13 18:50:14 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,10 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.19  2010/08/13 18:50:14  anoop
+# Upgraded mpiblast to the latest stable version.
+# mpiBlast now uses it's own version of ncbi
+#
 # Revision 1.18  2009/05/01 19:07:11  mjk
 # chimi con queso
 #
@@ -137,25 +141,11 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 patch:
-	gunzip -c $(ARCHIVE)-$(VERSION)-$(RELEASE).tgz | $(TAR) -xf -
+	gunzip -c $(ARCHIVE)-$(VERSION).tgz | $(TAR) -xf -
 	(\
-		cd $(NAME)-$(VERSION)-$(RELEASE); \
-		rm -rf ncbi;\
-		gunzip -c $(REDHAT.ROOT)/src/ncbi-blast/$(NCBI).tar.gz | $(TAR) -xf -; \
-	)
-	(\
-		cd $(NAME)-$(VERSION)-$(RELEASE)/ncbi;\
-		$(PATCH) -p1 < ../patches/ncbi_Oct2006_evalue_pio.patch;\
-	)
-	(\
-		i=$(CURDIR);\
-		cd $(REDHAT.ROOT)/src/ncbi-blast/patch-files/;\
-		find ncbi -type f | grep -v CVS | cpio -pudv $$i/$(NAME)-$(VERSION)-$(RELEASE);\
-	)
-	(\
-		cd patch-files; \
+		cd patch-files/$(NAME)-$(VERSION); \
 		find . -type f | grep -v CVS | \
-			cpio -pudv ../$(NAME)-$(VERSION)-$(RELEASE);\
+			cpio -pudv ../../$(NAME)-$(VERSION);\
 	)
 	
 build:
@@ -163,20 +153,21 @@ MPICC	= $(MPIROOT)/bin/mpicc
 MPICXX	= $(MPIROOT)/bin/mpicxx
 build: patch
 	( \
-		cd $(NAME)-$(VERSION)-$(RELEASE); \
+		cd $(NAME)-$(VERSION); \
 		./configure CC=$(MPICC) CXX=$(MPICXX)\
 		CONFIG_LIBC=$(CONFIG_LIBC)	\
 		--with-mpi=$(MPIROOT) \
 		--prefix=$(PKGROOT); \
+		$(MAKE) ncbi; \
 		$(MAKE); \
 	)
 	
 install::
 	( \
-		cd $(NAME)-$(VERSION)-$(RELEASE); \
+		cd $(NAME)-$(VERSION); \
 		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
 	)
 
 clean::
 	rm -f $(NAME).spec.in
-	rm -rf $(NAME)-$(VERSION)-$(RELEASE)
+	rm -rf $(NAME)-$(VERSION)

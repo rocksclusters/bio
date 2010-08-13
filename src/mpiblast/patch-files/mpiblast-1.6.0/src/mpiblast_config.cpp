@@ -1,7 +1,7 @@
 /*************************************************************************
-** Copyright 2008 by Virginia Polytechnic Institute and State University. 
-** All rights reserved. Virginia Polytechnic Institute and State 
-** University (Virginia Tech) owns the mpiBLAST software and its
+** Copyright 2009 by Virginia Polytechnic Institute and State
+** University. All rights reserved. Virginia Polytechnic Institute and
+** State University (Virginia Tech) owns the mpiBLAST software and its
 ** associated documentation ("Software"). You should carefully read the
 ** following terms and conditions before using this software. Your use
 ** of this Software indicates your acceptance of this license agreement
@@ -34,10 +34,9 @@
 ** 
 ** This file is part of mpiBLAST.
 ** 
-** mpiBLAST is free software: you can redistribute it and/or modify it
-** under the terms of the GNU General Public License as published by the
-** Free Software Foundation, either version 2 of the License, or (at
-** your option) any later version of the GNU General Public License.
+** mpiBLAST is free software: you can redistribute it and/or modify it 
+** under the terms of the GNU General Public License version 2 as published 
+** by the Free Software Foundation. 
 ** 
 ** Accordingly, mpiBLAST is distributed in the hope that it will be
 ** useful, but WITHOUT ANY WARRANTY; without even the implied warranty
@@ -46,7 +45,7 @@
 ** 
 ** You should have received a copy of the GNU General Public License
 ** along with mpiBLAST. If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+***************************************************************************/
 
 #include "mpiblast_config.hpp"
 #include "file_util.hpp"
@@ -66,7 +65,6 @@ extern "C"{
 #include "ncbi.h"
 //#include "ncbiwin.h"
 }
-
 
 MpiBlastConfig::MpiBlastConfig( const string& filename ) {
 	
@@ -92,6 +90,7 @@ MpiBlastConfig::MpiBlastConfig( const string& filename ) {
 		// read local path
 		FindPath( "ncbi", "mpiBLAST", "Local", path_buffer, PATH_MAX );
 		local_db_path = path_buffer;
+
 		if( local_db_path.length() != 0 && 
 			!checkCreateMultiDir( local_db_path ) && 
 			(tmp_path = getenv( "MPIBLAST_LOCAL" )) != NULL ){
@@ -236,6 +235,63 @@ MpiBlastConfig& MpiBlastConfig::operator=( const MpiBlastConfig& mbc )
   return *this;
 }
 
+MpiBlastConfig::MpiBlastConfig( const string& local, const string& shared )
+{
+	local_db_path = local;
+	shared_db_path = shared;
+
+	char* tmp_path;
+	if( local_db_path.length() != 0 && 
+		!checkCreateMultiDir( local_db_path ) && 
+		(tmp_path = getenv( "MPIBLAST_LOCAL" )) != NULL ){
+		cerr << "Warning:  local db path given as " << local_db_path << " in .ncbirc is unreadable.  Trying MPIBLAST_LOCAL environment variable.\n";
+		local_db_path = tmp_path;
+	}
+	if( local_db_path.length() == 0 && 
+		(tmp_path = getenv( "MPIBLAST_LOCAL" )) != NULL ){
+		local_db_path = tmp_path;
+	}
+
+	if( local_db_path.length() != 0 && 
+		!checkCreateMultiDir( local_db_path ) && 
+		(tmp_path = getenv( "TMPDIR" )) != NULL ){
+		cerr << "Warning:  local db path given as " << local_db_path << " in .ncbirc is unreadable.  Trying $TMPDIR/mpiBLAST_local_db.\n";
+		local_db_path = tmp_path + PATH_SEPARATOR + "mpiBLAST_local_db";
+	}
+
+	// try setting it to $TMPDIR/mpiBLAST_local_db and print a warning
+	if( local_db_path.length() == 0 && 
+		(tmp_path = getenv( "TMPDIR" )) != NULL ){
+		local_db_path = tmp_path + PATH_SEPARATOR + "mpiBLAST_local_db";
+		cerr << "Warning: mpiBLAST local storage path unspecified in either .ncbirc or the environment, defaulting to " << local_db_path << endl;
+	}
+	// finally default to /tmp/mpiBLAST_local_db on unix
+	if( local_db_path.length() == 0  ){
+		local_db_path = "/tmp/mpiBLAST_local_db";
+		cerr << "Warning: mpiBLAST local storage path unspecified in either .ncbirc or the environment, defaulting to " << local_db_path << endl;
+	}
+	// if it still wasn't found then throw an exception!
+	if( local_db_path.length() == 0 )
+		throw "Unable to read mpiBLAST local storage path from either .ncbirc or the MPIBLAST_LOCAL environment variable.\nThe mpiBLAST configuration in .ncbirc should look like:\n[mpiBLAST]\nShared=/path/to/shared/storage\nLocal=/path/to/local/storage";
+	
+	if( !checkCreateMultiDir( local_db_path ) ){
+		string* error_msg = new string("The local storage directory " + local_db_path + " does not exist\n");
+		throw error_msg->c_str();
+	}
+	
+	if( !checkDirWritePerms( local_db_path ) ){
+		string* error_msg = new string("The local storage directory " + local_db_path + " appears to be write-protected\n");
+		throw error_msg->c_str();
+	}
+
+	// ensure that the last character is a path separator
+	if( shared_db_path.substr( shared_db_path.size() - 1 ) != PATH_SEPARATOR )
+		shared_db_path += PATH_SEPARATOR;
+	if( local_db_path.substr( local_db_path.size() - 1 ) != PATH_SEPARATOR )
+		local_db_path += PATH_SEPARATOR;
+
+	return;
+}
 
 string MpiBlastConfig::defaultConfigFileName()
 {

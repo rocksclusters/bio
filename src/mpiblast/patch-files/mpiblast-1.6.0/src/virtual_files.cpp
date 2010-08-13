@@ -1,7 +1,7 @@
 /*************************************************************************
-** Copyright 2008 by Virginia Polytechnic Institute and State University. 
-** All rights reserved. Virginia Polytechnic Institute and State 
-** University (Virginia Tech) owns the mpiBLAST software and its
+** Copyright 2009 by Virginia Polytechnic Institute and State
+** University. All rights reserved. Virginia Polytechnic Institute and
+** State University (Virginia Tech) owns the mpiBLAST software and its
 ** associated documentation ("Software"). You should carefully read the
 ** following terms and conditions before using this software. Your use
 ** of this Software indicates your acceptance of this license agreement
@@ -34,10 +34,9 @@
 ** 
 ** This file is part of mpiBLAST.
 ** 
-** mpiBLAST is free software: you can redistribute it and/or modify it
-** under the terms of the GNU General Public License as published by the
-** Free Software Foundation, either version 2 of the License, or (at
-** your option) any later version of the GNU General Public License.
+** mpiBLAST is free software: you can redistribute it and/or modify it 
+** under the terms of the GNU General Public License version 2 as published 
+** by the Free Software Foundation. 
 ** 
 ** Accordingly, mpiBLAST is distributed in the hope that it will be
 ** useful, but WITHOUT ANY WARRANTY; without even the implied warranty
@@ -46,7 +45,7 @@
 ** 
 ** You should have received a copy of the GNU General Public License
 ** along with mpiBLAST. If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+***************************************************************************/
 #include "virtual_files.hpp"
 #include "mpiblast_util.hpp"
 #include "mpiblast_writer.hpp"
@@ -60,7 +59,11 @@ extern NlmMFILEPtr LIBCALL NlmCloseMFILEVirtual (NlmMFILEPtr mfp);
 NlmMFILEPtr VFMFileOpen(char* afilename);
 }
 
+#if defined(ARCH_BGL) || defined(ARCH_BGP)
+int use_virtual_frags = 1;
+#else
 int use_virtual_frags = 0;
+#endif
 
 VFile::~VFile() {
 	if(vf_fp!=NULL) {
@@ -92,6 +95,10 @@ NlmMFILEPtr VFM::InsertMapFile(const string& afilename, int amode, Int4 asize) {
 	VFMAPIT it=vfm_map.find(afilename);
 	if(it!=vfm_map.end()) {
 		throw __FILE__ "Cannot insert duplicate file";
+	}
+
+	if(debug_msg) {
+		LOG_MSG << "Inserting virtul file: " << afilename <<  endl;
 	}
 	
 	NlmMFILEPtr mfp=NULL;
@@ -181,7 +188,8 @@ int VFM::LoadVirtualFile(const string& src, const string& dest) {
 	uint64 file_len = statFileSize(src.c_str());
 
 	if(file_len == 0) {
-		throw __FILE__ "VFM::LoadVirtualFile - Cannot load empty file";
+		// throw __FILE__ "VFM::LoadVirtualFile - Cannot load empty file";
+		return 0;
 	}
 
 	NlmMFILEPtr mfp = InsertMapFile(dest, MAPVIRTUAL, file_len);
@@ -213,6 +221,23 @@ int VFM::LoadVirtualFile(const string& src, const string& dest) {
 		return -1;
 	}
 
+	return 0;
+}
+
+int VFM::DumpVirtualFile(const string& filename) {
+	VFMAPIT it = vfm_map.find(filename);
+	if(it == vfm_map.end()) {
+		throw __FILE__ "VFM::DumpVirtualFile -- invalid filename";
+	}
+
+	NlmMFILEPtr mfp = (NlmMFILEPtr)(it->second->GetPointer());
+	Nlm_Int8 file_length = mfp->mem_mapp->file_size;
+	ofstream ofs(filename.c_str()); 
+	if(!ofs.is_open()) {
+		throw __FILE__ "VFM::DumpVirtualFile -- cannot open file for write";
+	}
+	
+	ofs.write((char*)mfp->mmp_begin, file_length);
 	return 0;
 }
 
