@@ -1,3 +1,3 @@
 NAME = fasta
-VERSION = 35.4.9
+VERSION = 36.2.6
 RELEASE = 1
