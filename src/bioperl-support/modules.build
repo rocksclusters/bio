@@ -2,8 +2,10 @@ GD::SVG
 Graph
 GraphViz
 MLDBM
+Text::Iconv
 XML::LibXSLT
-XML::Parser
+XML::RegExp
+--skiptest XML::Parser
 Math::Random
 Algorithm::Munkres
 Array::Compare
