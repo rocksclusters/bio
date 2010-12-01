@@ -9,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.68  2010/12/01 18:35:58  bruno
+	make sure to run ldconfig after any file is added to /etc/ld.so.conf.d
+	
 	Revision 1.67  2010/08/04 00:33:21  anoop
 	MPIBlast fails if database.mbf file is not readable by user running
 	the job. So use a user specific location instead of a common location on the
@@ -408,6 +411,8 @@ endif
 /opt/bio/tigr/obj/
 /opt/bio/wgs/lib
 </file>
+
+/sbin/ldconfig
 </post>
 
 <post os="sunos">
