@@ -1,10 +1,13 @@
 <!-- 
-$Id: installing.sgml,v 1.2 2006/09/21 04:17:12 mjk Exp $
+$Id: installing.sgml,v 1.3 2011/02/11 20:12:08 mjk Exp $
 
 @Copyright@
 @Copyright@
 
 $Log: installing.sgml,v $
+Revision 1.3  2011/02/11 20:12:08  mjk
+builds again
+
 Revision 1.2  2006/09/21 04:17:12  mjk
 major doc refresh
 
@@ -15,7 +18,7 @@ major doc refresh
 
 <title>Installing</title>
 
-&source_roll-installing-standard;
-&source_roll-installing-onthefly;
+&source-roll-installing-standard;
+&source-roll-installing-onthefly;
 
 </chapter>

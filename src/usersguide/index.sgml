@@ -16,13 +16,13 @@
 		</mediaobject>
 	</msgtext>
 	</subtitle>
-	<edition>Version &document_version;</edition>
+	<edition>Version &document-version;</edition>
 
-	<pubdate>&document_pubdate;</pubdate>
+	<pubdate>&document-pubdate;</pubdate>
 
 	<copyright id="copyright" xreflabel="copyright">
-		<year>&document_year;</year>
-		<holder>&document_copyright;</holder>
+		<year>&document-year;</year>
+		<holder>&document-copyright;</holder>
 	</copyright>
 
 	<releaseinfo>
@@ -39,10 +39,10 @@
 
 </bookinfo>
 
-&source_preface;
-&source_roll-overview;
-&source_installing;
-&source_using;
-&source_appendix;
+&source-preface;
+&source-roll-overview;
+&source-installing;
+&source-using;
+&source-appendix;
 
 </book>
