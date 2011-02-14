@@ -6,7 +6,7 @@
 <book>
 <bookinfo>
 
-	<title> Bio Roll: Users Guide </title>
+	<title> &roll-bio; Users Guide </title>
 	<subtitle>
 	<msgtext>
 		<mediaobject>
@@ -16,7 +16,7 @@
 		</mediaobject>
 	</msgtext>
 	</subtitle>
-	<edition>Version &document-version;</edition>
+	<edition>&document-version;</edition>
 
 	<pubdate>&document-pubdate;</pubdate>
 
@@ -31,7 +31,7 @@
 
         <legalnotice>
                 <para>
-                This document is subject to the Rocks License 
+                This document is subject to the &rocks; License 
                 (see <xref linkend="rocks-copyright">).
                 </para>
         </legalnotice>
