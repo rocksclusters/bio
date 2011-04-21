@@ -1,3 +1,3 @@
 NAME = gromacs
-VERSION	= 4.0.5
+VERSION	= 4.5.3
 RELEASE = 1

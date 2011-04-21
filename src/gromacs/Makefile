@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.12 2011/04/21 19:19:00 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.12  2011/04/21 19:19:00  anoop
+# Refresh gromacs
+#
 # Revision 1.11  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -138,6 +141,7 @@ build:
 			CPPFLAGS="-I/opt/rocks/include -I$(MPIROOT)/include"\
 			LDFLAGS="-L/opt/rocks/lib -L$(MPIROOT)/lib"\
 			MPICC=$(MPIROOT)/bin/mpicc \
+			CC=gcc44	\
 			--prefix=$(PKGROOT) \
 			--enable-mpi; \
 		$(MAKE); \
