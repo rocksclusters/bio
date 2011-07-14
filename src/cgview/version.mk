@@ -1,3 +1,3 @@
 NAME = cgview
-VERSION	= 1.0
+VERSION	= 2.0
 RELEASE = 1

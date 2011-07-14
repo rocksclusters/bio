@@ -1,2 +1,2 @@
 SRCDIRS = `find * -prune -type d \
-	  ! -name CVS ! -name .	`
+	  ! -name CVS ! -name .	! -name bioperl\*`

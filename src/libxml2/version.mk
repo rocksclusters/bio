@@ -1,4 +1,4 @@
 NAME	=	bio_libxml2
-VERSION	=	2.7.6
+VERSION	=	2.7.8
 RELEASE	=	1
 ARCHIVENAME=	libxml2

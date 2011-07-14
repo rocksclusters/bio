@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.10 2011/07/14 02:27:05 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,11 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.10  2011/07/14 02:27:05  anoop
+# Refreshed the Bio roll.
+#
+# Disabled bioperl temporarily while kinks in perl are worked out
+#
 # Revision 1.9  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -128,7 +133,9 @@ build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	( \
 		cd $(NAME)-$(VERSION); \
-		./configure --prefix=$(PKGROOT) --enable-threads --enable-float ; \
+		./configure --prefix=$(PKGROOT) \
+		CFLAGS="-fPIC"		\
+		--enable-threads --enable-float ; \
 		$(MAKE); \
 	)
 

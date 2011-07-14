@@ -1,6 +1,6 @@
 #!/bin/csh -f
 #
-# $Id: makedis.csh,v 1.3 2009/04/30 20:32:55 anoop Exp $
+# $Id: makedis.csh,v 1.4 2011/07/14 02:27:36 anoop Exp $
 #
 ##                            PUBLIC DOMAIN NOTICE                          
 #               National Center for Biotechnology Information
@@ -54,7 +54,7 @@ if ( "X$tar_file" != "X" && "$tar_file" != "-") then
 	endif
 
 	ls -l $tar_file
-	tar xvf $tar_file
+	tar xf $tar_file
 else
 	# make sure that ncbi/build directory exists
 	if ( ! -d "ncbi/build" ) then
@@ -151,7 +151,7 @@ case GNU/Linux:
 	gcc -v
 	switch (`uname -m`)
 	case "ia64":
-		if (-e `which ecc`) then
+		if (-e `which icc`) then
 			set platform=linux_ecc
 		else
 			set platform=linux
@@ -227,7 +227,7 @@ case FreeBSD:
 	set platform=freebsd
 	set HAVE_MOTIF=0
 	foreach i (/usr/X11R6/include /usr/X11R6/include/X11 /usr/include \
-		/usr/include/X11 )
+		/usr/include/X11 /usr/local/include )
 		if (-d $i/Xm) then
 			set HAVE_MOTIF=1
 			echo Motif found at $i/Xm
@@ -453,7 +453,7 @@ EoF
 endif
 
 set CMD='make $MFLG -f makedemo.unx CFLAGS1=\"$NCBI_OPTFLAG $NCBI_CFLAGS1\" \
-   LDFLAGS1=\"$NCBI_LDFLAGS1\" SHELL=\"$NCBI_MAKE_SHELL\" \
+   LDFLAGS1=\"$NCBI_LDFLAGS1\" SHELL=\"$NCBI_MAKE_SHELL\" OTHERLIBS=\"$NCBI_OTHERLIBS\" \
    LCL=\"$NCBI_DEFAULT_LCL\" RAN=\"$NCBI_RANLIB\" AR=\"$NCBI_AR\" CC=\"$NCBI_CC\" $DEMO_VIB'
 eval echo $CMD
 eval echo $CMD | sh 
@@ -472,7 +472,7 @@ rm -f $mtapps
 
 
 set CMD='make $MFLG -f makedemo.unx CFLAGS1=\"$NCBI_OPTFLAG $NCBI_CFLAGS1\" \
-   LDFLAGS1=\"$NCBI_LDFLAGS1\" SHELL=\"$NCBI_MAKE_SHELL\" \
+   LDFLAGS1=\"$NCBI_LDFLAGS1\" SHELL=\"$NCBI_MAKE_SHELL\" OTHERLIBS=\"$NCBI_OTHERLIBS\" \
    LCL=\"$NCBI_DEFAULT_LCL\" RAN=\"$NCBI_RANLIB\" AR=\"$NCBI_AR\" CC=\"$NCBI_CC\"  \
    THREAD_OBJ=$NCBI_THREAD_OBJ THREAD_OTHERLIBS=\"$NCBI_MT_OTHERLIBS\" \
    $DEMO_VIB $mtapps'

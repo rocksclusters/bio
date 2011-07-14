@@ -1,4 +1,5 @@
-NAME = ReportLab
-VERSION	= 2.3
+NAME = reportlab
+VERSION	= 2.5
 RELEASE = 1
-ARCHIVE_NAME=ReportLab_2_3
+ARCHIVE_NAME=$(NAME)-$(VERSION)
+PY.PATH=/opt/python/bin/python

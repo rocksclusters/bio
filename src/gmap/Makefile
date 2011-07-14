@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.6 2011/07/14 02:27:05 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,11 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.6  2011/07/14 02:27:05  anoop
+# Refreshed the Bio roll.
+#
+# Disabled bioperl temporarily while kinks in perl are worked out
+#
 # Revision 1.5  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -127,18 +132,18 @@ include Rules.mk
 build:
 	gunzip -c $(ARCHIVE).tar.gz | $(TAR) -xf -
 	( \
-		cd $(ARCHIVE); \
+		cd $(SRCDIR); \
 		./configure --prefix=$(PKGROOT); \
 		$(MAKE); \
 	)
 
 install::
 	( \
-		cd $(ARCHIVE); \
+		cd $(SRCDIR); \
 		find ./ -name CVS -type d | xargs rm -rf;\
 		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
 	)
 
 clean::
 	rm -f $(NAME).spec.in
-	rm -rf $(ARCHIVE)
+	rm -rf $(SRCDIR)

@@ -1,3 +1,3 @@
 NAME	=	autodocksuite
-VERSION	=	4.2.2.1
+VERSION	=	4.2.3
 RELEASE	=	1

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.12 2011/04/21 19:19:00 anoop Exp $
+# $Id: Makefile,v 1.13 2011/07/14 02:27:06 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,11 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.13  2011/07/14 02:27:06  anoop
+# Refreshed the Bio roll.
+#
+# Disabled bioperl temporarily while kinks in perl are worked out
+#
 # Revision 1.12  2011/04/21 19:19:00  anoop
 # Refresh gromacs
 #
@@ -141,7 +146,7 @@ build:
 			CPPFLAGS="-I/opt/rocks/include -I$(MPIROOT)/include"\
 			LDFLAGS="-L/opt/rocks/lib -L$(MPIROOT)/lib"\
 			MPICC=$(MPIROOT)/bin/mpicc \
-			CC=gcc44	\
+			CC=gcc44 \
 			--prefix=$(PKGROOT) \
 			--enable-mpi; \
 		$(MAKE); \

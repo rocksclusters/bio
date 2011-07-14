@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.11 2011/07/14 02:27:03 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,11 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.11  2011/07/14 02:27:03  anoop
+# Refreshed the Bio roll.
+#
+# Disabled bioperl temporarily while kinks in perl are worked out
+#
 # Revision 1.10  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -100,7 +105,7 @@
 #
 #
 
-PKGROOT = /opt/Bio/
+PKGROOT = /opt/$(ROLLNAME)/
 REDHAT.ROOT = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -109,6 +114,8 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	cat $(NAME).tar.gz | (cd $(ROOT)/$(PKGROOT); tar -xzf -)
+	unzip -qq $(NAME).zip
 	chown -R root.root $(ROOT)/$(PKGROOT)
 
+clean::
+	rm -rf $(NAME)

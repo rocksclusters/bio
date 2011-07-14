@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.18 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.19 2011/07/14 02:27:07 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,11 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.19  2011/07/14 02:27:07  anoop
+# Refreshed the Bio roll.
+#
+# Disabled bioperl temporarily while kinks in perl are worked out
+#
 # Revision 1.18  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -122,16 +127,16 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 build:
-	gunzip -c $(NAME).tar.gz | $(TAR) -xf -
+	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	( \
-		cd $(NAME); \
+		cd $(NAME)-$(VERSION); \
 		./configure --prefix=$(PKGROOT) --enable-threads; \
 		$(MAKE); \
 	)
 
 install::
 	( \
-		cd $(NAME); \
+		cd $(NAME)-$(VERSION); \
 		find ./ -name CVS -type d | xargs rm -rf;\
 		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
 		$(INSTALL) -m0444 Userguide.pdf $(ROOT)/$(PKGROOT);\
@@ -141,4 +146,4 @@ install::
 
 clean::
 	rm -f $(NAME).spec.in
-	rm -rf $(NAME)
+	rm -rf $(NAME)-$(VERSION)
