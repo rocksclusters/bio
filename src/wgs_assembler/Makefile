@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2010/09/07 23:53:12 bruno Exp $
+# $Id: Makefile,v 1.3 2011/07/14 22:47:53 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.3  2011/07/14 22:47:53  anoop
+# Remove unnecessary dependency requirements
+#
 # Revision 1.2  2010/09/07 23:53:12  bruno
 # star power for gb
 #
@@ -63,6 +66,9 @@
 #
 
 REDHAT.ROOT = $(CURDIR)/../..
+
+RPM.EXTRAS += "AutoReq: no"
+
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
