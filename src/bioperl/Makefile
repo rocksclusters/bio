@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.8 2011/07/21 18:38:22 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.8  2011/07/21 18:38:22  anoop
+# Hallelujah!! Finally it builds!!!
+#
 # Revision 1.7  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -74,7 +77,7 @@ include Rules.mk
 
 bootstrap:
 	cat modules.build | while read line; do \
-		/opt/rocks/bin/cpan \
+		/opt/perl/bin/cpan \
 		$$line < /dev/null; \
 		done
 
@@ -83,18 +86,11 @@ bootstrap:
 # make sure we add all the modules that it provides to 
 # the modules.ignore file so that they don't get rebuilt
 build:
-	cp modules.ignore modules.ignore.tmp
-	cat modules.build | while read line; do 	\
-		/opt/rocks/bin/cpan2dist		\
-		--format CPANPLUS::Dist::Rocks		\
-		--ignorelist modules.ignore.tmp --force	\
-		--buildprereq --skiptest --install --verbose	\
-		$$line < /dev/null;		\
-		( find . -type f -name \*.rpm ! -name \*.src.rpm \
-		  -exec rpm -qp --provides {} \; | grep ^perl\(  \
-		  | cut -f1 -d' ' | sed -e 's/^perl(/^/g' -e 's/)$$/$$/g' \
-		  && cat modules.ignore ) | sort | uniq > modules.ignore.tmp; \
-	done
+	/opt/perl/bin/cpan2dist			\
+	--format CPANPLUS::Dist::Rocks		\
+	--ignorelist modules.ignore --force	\
+	--buildprereq --skiptest --install 	\
+	--modulelist modules.build --verbose
 
 rpm:: build
 	if [ ! -d $(REDHAT.ROOT)/RPMS ]; then mkdir -p $(REDHAT.ROOT)/RPMS; fi
