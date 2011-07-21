@@ -9,6 +9,10 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.69  2011/07/21 18:38:54  anoop
+	Bioperl back in.
+	ReportLab now called reportlab
+	
 	Revision 1.68  2010/12/01 18:35:58  bruno
 	make sure to run ldconfig after any file is added to /etc/ld.so.conf.d
 	
@@ -207,7 +211,7 @@
 	<package os="linux">ncbi</package>
 	<package os="linux">mpiblast</package>
 	<package os="linux">biopython</package>
-	<package os="linux">ReportLab</package>
+	<package os="linux">reportlab</package>
 	<package os="linux">clustalw</package>
 	<package os="linux">mrbayes</package>
 	<package os="linux">tcoffee</package>
@@ -231,7 +235,7 @@
 	<package os="sunos">ROCKSncbi</package>
 	<package os="sunos">ROCKSmpiblast</package>
 	<package os="sunos">ROCKSbiopython</package>
-	<package os="sunos">ROCKSReportLab</package>
+	<package os="sunos">ROCKSreportlab</package>
 	<package os="sunos">ROCKSmrbayes</package>
 	<package os="sunos">ROCKStcoffee</package>
 	<package os="sunos">ROCKSphylip</package>

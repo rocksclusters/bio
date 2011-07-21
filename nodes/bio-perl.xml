@@ -9,6 +9,10 @@
 
 	<changelog>
 	$Log: bio-perl.xml,v $
+	Revision 1.3  2011/07/21 18:38:54  anoop
+	Bioperl back in.
+	ReportLab now called reportlab
+	
 	Revision 1.2  2009/11/20 03:34:57  anoop
 	BioPerl and supporting infrastructure
 	
@@ -17,77 +21,79 @@
 	
 	</changelog>
 
-	<package os="linux">foundation-perl-DBI</package>
-	<package os="linux">foundation-perl-Text-Iconv</package>
-	<package os="linux">foundation-perl-Parse-RecDescent</package>
-	<package os="linux">foundation-perl-bioperl-ext</package>
-	<package os="linux">foundation-perl-bioperl-db</package>
-	<package os="linux">foundation-perl-Data-Stag</package>
-	<package os="linux">foundation-perl-GD</package>
-	<package os="linux">foundation-perl-XML-LibXML</package>
-	<package os="linux">foundation-perl-Digest-SHA1</package>
-	<package os="linux">foundation-perl-Class-MOP</package>
-	<package os="linux">foundation-perl-Math-Random</package>
-	<package os="linux">foundation-perl-Sub-Name</package>
-	<package os="linux">foundation-perl-DBD-mysql</package>
-	<package os="linux">foundation-perl-bioperl-run</package>
-	<package os="linux">foundation-perl-Devel-GlobalDestruction</package>
-	<package os="linux">foundation-perl-AcePerl</package>
-	<package os="linux">foundation-perl-XML-Parser</package>
-	<package os="linux">foundation-perl-Clone</package>
-	<package os="linux">foundation-perl-XML-LibXSLT</package>
-	<package os="linux">foundation-perl-Test-Exception</package>
-	<package os="linux">foundation-perl-Algorithm-Munkres</package>
-	<package os="linux">foundation-perl-XML-Twig</package>
-	<package os="linux">foundation-perl-Tie-Hash-MultiValue</package>
-	<package os="linux">foundation-perl-BioPerl</package>
-	<package os="linux">foundation-perl-Class-AutoClass</package>
-	<package os="linux">foundation-perl-Sub-Uplevel</package>
-	<package os="linux">foundation-perl-MLDBM</package>
-	<package os="linux">foundation-perl-libxml-perl</package>
-	<package os="linux">foundation-perl-SOAP-Lite</package>
-	<package os="linux">foundation-perl-Set-Scalar</package>
-	<package os="linux">foundation-perl-OLE-Storage_Lite</package>
-	<package os="linux">foundation-perl-XML-XPathEngine</package>
-	<package os="linux">foundation-perl-SVG-Graph</package>
-	<package os="linux">foundation-perl-XML-Writer</package>
-	<package os="linux">foundation-perl-Text-Shellwords</package>
-	<package os="linux">foundation-perl-Tree-DAG_Node</package>
-	<package os="linux">foundation-perl-Tie-ToObject</package>
-	<package os="linux">foundation-perl-XML-Simple</package>
-	<package os="linux">foundation-perl-Try-Tiny</package>
-	<package os="linux">foundation-perl-SVG</package>
-	<package os="linux">foundation-perl-XML-NamespaceSupport</package>
-	<package os="linux">foundation-perl-XML-Filter-BufferText</package>
-	<package os="linux">foundation-perl-XML-RegExp</package>
-	<package os="linux">foundation-perl-IPC-Run</package>
-	<package os="linux">foundation-perl-IO-String</package>
-	<package os="linux">foundation-perl-Hash-AutoHash</package>
-	<package os="linux">foundation-perl-Spreadsheet-ParseExcel</package>
-	<package os="linux">foundation-perl-Test-Deep</package>
-	<package os="linux">foundation-perl-IO-stringy</package>
-	<package os="linux">foundation-perl-Module-Build</package>
-	<package os="linux">foundation-perl-Scope-Guard</package>
-	<package os="linux">foundation-perl-Task-Weaken</package>
-	<package os="linux">foundation-perl-GraphViz</package>
-	<package os="linux">foundation-perl-GD-SVG</package>
-	<package os="linux">foundation-perl-Array-Compare</package>
-	<package os="linux">foundation-perl-Test-NoWarnings</package>
-	<package os="linux">foundation-perl-Graph</package>
-	<package os="linux">foundation-perl-Error</package>
-	<package os="linux">foundation-perl-Cache-Cache</package>
-	<package os="linux">foundation-perl-MRO-Compat</package>
-	<package os="linux">foundation-perl-Math-Derivative</package>
-	<package os="linux">foundation-perl-XML-SAX-Writer</package>
-	<package os="linux">foundation-perl-XML-DOM-XPath</package>
-	<package os="linux">foundation-perl-Moose</package>
-	<package os="linux">foundation-perl-Statistics-Descriptive</package>
-	<package os="linux">foundation-perl-Test-Tester</package>
-	<package os="linux">foundation-perl-Hash-AutoHash-Args</package>
-	<package os="linux">foundation-perl-Test-use-ok</package>
-	<package os="linux">foundation-perl-Math-Spline</package>
-	<package os="linux">foundation-perl-XML-SAX</package>
-	<package os="linux">foundation-perl-XML-DOM</package>
-	<package os="linux">foundation-perl-Inline</package>
+	<package os="linux">opt-perl-Devel-GlobalDestruction</package>
+	<package os="linux">opt-perl-Moose</package>
+	<package os="linux">opt-perl-Parse-RecDescent</package>
+	<package os="linux">opt-perl-DBD-mysql</package>
+	<package os="linux">opt-perl-XML-LibXSLT</package>
+	<package os="linux">opt-perl-Data-Stag</package>
+	<package os="linux">opt-perl-Digest-SHA1</package>
+	<package os="linux">opt-perl-Text-Iconv</package>
+	<package os="linux">opt-perl-Sub-Name</package>
+	<package os="linux">opt-perl-XML-LibXML</package>
+	<package os="linux">opt-perl-Math-Random</package>
+	<package os="linux">opt-perl-GD</package>
+	<package os="linux">opt-perl-XML-Parser</package>
+	<package os="linux">opt-perl-Clone</package>
+	<package os="linux">opt-perl-Package-Stash-XS</package>
+	<package os="linux">opt-perl-AcePerl</package>
+	<package os="linux">opt-perl-DBI</package>
+	<package os="linux">opt-perl-GD-SVG</package>
+	<package os="linux">opt-perl-Package-Stash</package>
+	<package os="linux">opt-perl-XML-XPathEngine</package>
+	<package os="linux">opt-perl-Hash-AutoHash-Args</package>
+	<package os="linux">opt-perl-SOAP-Lite</package>
+	<package os="linux">opt-perl-Try-Tiny</package>
+	<package os="linux">opt-perl-Array-Compare</package>
+	<package os="linux">opt-perl-Set-Scalar</package>
+	<package os="linux">opt-perl-Crypt-RC4</package>
+	<package os="linux">opt-perl-Tree-DAG_Node</package>
+	<package os="linux">opt-perl-Math-Derivative</package>
+	<package os="linux">opt-perl-XML-SAX</package>
+	<package os="linux">opt-perl-GraphViz</package>
+	<package os="linux">opt-perl-Task-Weaken</package>
+	<package os="linux">opt-perl-Test-Warn</package>
+	<package os="linux">opt-perl-XML-RegExp</package>
+	<package os="linux">opt-perl-Algorithm-Munkres</package>
+	<package os="linux">opt-perl-Error</package>
+	<package os="linux">opt-perl-OLE-Storage_Lite</package>
+	<package os="linux">opt-perl-Sub-Uplevel</package>
+	<package os="linux">opt-perl-XML-Filter-BufferText</package>
+	<package os="linux">opt-perl-Tie-Hash-MultiValue</package>
+	<package os="linux">opt-perl-XML-Simple</package>
+	<package os="linux">opt-perl-XML-NamespaceSupport</package>
+	<package os="linux">opt-perl-libxml-perl</package>
+	<package os="linux">opt-perl-Spreadsheet-ParseExcel</package>
+	<package os="linux">opt-perl-Package-DeprecationManager</package>
+	<package os="linux">opt-perl-Class-Inspector</package>
+	<package os="linux">opt-perl-IO-stringy</package>
+	<package os="linux">opt-perl-XML-Writer</package>
+	<package os="linux">opt-perl-XML-DOM-XPath</package>
+	<package os="linux">opt-perl-Test-use-ok</package>
+	<package os="linux">opt-perl-Test-Requires</package>
+	<package os="linux">opt-perl-Hash-AutoHash</package>
+	<package os="linux">opt-perl-Dist-CheckConflicts</package>
+	<package os="linux">opt-perl-Statistics-Descriptive</package>
+	<package os="linux">opt-perl-Text-Shellwords</package>
+	<package os="linux">opt-perl-Tie-ToObject</package>
+	<package os="linux">opt-perl-Inline</package>
+	<package os="linux">opt-perl-IO-String</package>
+	<package os="linux">opt-perl-Eval-Closure</package>
+	<package os="linux">opt-perl-Test-Deep</package>
+	<package os="linux">opt-perl-Test-NoWarnings</package>
+	<package os="linux">opt-perl-MLDBM</package>
+	<package os="linux">opt-perl-Digest-Perl-MD5</package>
+	<package os="linux">opt-perl-BioPerl</package>
+	<package os="linux">opt-perl-XML-Twig</package>
+	<package os="linux">opt-perl-SVG-Graph</package>
+	<package os="linux">opt-perl-XML-SAX-Writer</package>
+	<package os="linux">opt-perl-XML-DOM</package>
+	<package os="linux">opt-perl-Graph</package>
+	<package os="linux">opt-perl-Math-Spline</package>
+	<package os="linux">opt-perl-Cache-Cache</package>
+	<package os="linux">opt-perl-Test-Tester</package>
+	<package os="linux">opt-perl-Class-AutoClass</package>
+	<package os="linux">opt-perl-SVG</package>
+	<package os="linux">opt-perl-Test-Fatal</package>
 
 </kickstart>
