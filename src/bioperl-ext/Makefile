@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.3 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.4 2011/07/21 23:35:08 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,39 +54,41 @@
 # @Copyright@
 
 # $Log: Makefile,v $
-# Revision 1.3  2010/09/07 23:53:11  bruno
-# star power for gb
-#
-# Revision 1.2  2010/03/24 21:47:57  anoop
-# Update bioperl-ext
-#
-# Revision 1.1  2009/11/20 03:34:57  anoop
-# BioPerl and supporting infrastructure
+# Revision 1.4  2011/07/21 23:35:08  anoop
+# Bioperl-ext now is interpreted as bioperl-extentions. Contains
+# BioPerl-DB, BioPerl-Run, and BioPerl-Network. Build from tar.gz
+# sources, rather than directly from CPAN. This is because those
+# utils are not present in CPAN as single modules.
 #
 
-REDHAT.ROOT=$(CURDIR)/../..
+REDHAT.ROOT = $(CURDIR)/../../
+MAKE.iscontrib = 1
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
 build:
-	gunzip -c $(ARCHIVE_NAME)-$(VERSION).tar.gz | $(TAR) xf -
-	-(cd patch-files; \
-	  find $(ARCHIVE_NAME)-$(VERSION) -type f | \
-		grep -v CVS | cpio -pudv ../)
-	(cd $(ARCHIVE_NAME)-$(VERSION); \
-	 IOLIB_INC="/opt/rocks/include -I/opt/rocks/include/io_lib" \
-	 IOLIB_LIB="/opt/rocks/lib" $(PERL) Makefile.PL < /dev/null;\
-	 $(MAKE))
+	cat modules.build | while read line; do	\
+	/opt/perl/bin/cpan2dist			\
+	--format CPANPLUS::Dist::Rocks		\
+	--ignorelist modules.ignore --force	\
+	--buildprereq --skiptest --verbose 	\
+	$$line < /dev/null; done
 
-install::
-	(cd $(ARCHIVE_NAME)-$(VERSION); \
-	$(MAKE) install DESTDIR=$(ROOT);)
-	(cd $(ARCHIVE_NAME)-$(VERSION)/Bio/SeqIO/staden; \
-	$(PERL) Makefile.PL < /dev/null;\
-	$(MAKE) install DESTDIR=$(ROOT);)
-	(cd $(ARCHIVE_NAME)-$(VERSION)/Bio/Ext/Align; \
-	$(PERL) Makefile.PL < /dev/null;\
-	$(MAKE) install DESTDIR=$(ROOT);)
+rpm:: build
+	if [ ! -d $(REDHAT.ROOT)/RPMS ]; then mkdir -p $(REDHAT.ROOT)/RPMS; fi
+	for i in `find . -type f -name \*.rpm ! -name \*.src.rpm`; do \
+		rpmname=`basename $$i`; \
+		arch=`echo $$rpmname | awk -F. '{print $$(NF-1);}'`; \
+		echo $$arch; \
+		if [ ! -d $(REDHAT.ROOT)/RPMS/$$arch ]; then \
+			mkdir -p $(REDHAT.ROOT)/RPMS/$$arch; fi; \
+		cp -rvf $$i $(REDHAT.ROOT)/RPMS/$$arch; \
+	done
 	
 clean::
-	rm -rf $(ARCHIVE_NAME)-$(VERSION)
+	find * -prune ! -name Makefile		\
+		-a ! -name modules.build	\
+		-a ! -name modules.ignore	\
+		-a ! -name sources		\
+		-a ! -name CVS -exec rm -rf {} \;
+	-rm -rf .gnupg

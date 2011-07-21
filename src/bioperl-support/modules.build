@@ -41,3 +41,5 @@ XML::Twig
 XML::Writer
 Inline::C
 Inline::MakeMaker
+Algorithm::Diff
+File::Sort

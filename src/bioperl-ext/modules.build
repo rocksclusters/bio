@@ -1,0 +1,3 @@
+--skiptest --archive sources/BioPerl-DB-1.006900.tar.gz
+--skiptest --archive sources/BioPerl-Network-1.006900.tar.gz
+--skiptest --archive sources/BioPerl-Run-1.006900.tar.gz
