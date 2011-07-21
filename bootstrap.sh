@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.18 2010/09/07 23:53:10 bruno Exp $
+# $Id: bootstrap.sh,v 1.19 2011/07/21 18:40:21 anoop Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +58,9 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.19  2011/07/21 18:40:21  anoop
+# *** empty log message ***
+#
 # Revision 1.18  2010/09/07 23:53:10  bruno
 # star power for gb
 #
@@ -124,8 +127,7 @@
 
 install_os_packages bio-req
 
-compile reportlab
-install ReportLab
+compile_and_install reportlab
 
 compile_and_install fftw
 
