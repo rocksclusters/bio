@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 2010/09/07 23:53:11 bruno Exp $
+# $Id: Makefile,v 1.6 2011/07/21 18:13:41 anoop Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,10 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.6  2011/07/21 18:13:41  anoop
+# Add SVG as a custom source, because cpan2dist does not like
+# it if you specify prerequisites without version numbers
+#
 # Revision 1.5  2010/09/07 23:53:11  bruno
 # star power for gb
 #
@@ -78,7 +82,7 @@ include Rules.mk
 bootstrap:
 	cat modules.build | while read line; do \
 		XMLPREFIX=/opt/bio XSLTPREFIX=/opt/bio	\
-		/opt/rocks/bin/cpan \
+		/opt/perl/bin/cpan \
 		$$line < /dev/null; \
 		done
 
@@ -90,15 +94,18 @@ build:
 	cp modules.ignore modules.ignore.tmp
 	cat modules.build | while read line; do 	\
 		XMLPREFIX=/opt/bio XSLTPREFIX=/opt/bio	\
-		/opt/rocks/bin/cpan2dist		\
+		/opt/perl/bin/cpan2dist		\
 		--format CPANPLUS::Dist::Rocks		\
 		--ignorelist modules.ignore.tmp --force	\
 		--buildprereq --install --verbose	\
 		$$line < /dev/null;			\
-		( find . -type f -name \*.rpm ! -name \*.src.rpm \
-		  -exec rpm -qp --provides {} \; | grep ^perl\(  \
-		  | cut -f1 -d' ' | sed -e 's/^perl(/^/g' -e 's/)$$/$$/g' \
-		  && cat modules.ignore ) | sort | uniq > modules.ignore.tmp; \
+		( find . -type f -name \*.rpm ! 	\
+		  -name \*.src.rpm -exec rpm -qp 	\
+		  --provides {} \; | grep -E "^perl\(" |\
+		  sed -r -e 's/^perl\(/^/' 		\
+		  -e 's/\)[ \t]*(=[ \t]*[.0-9]+)*$$/$$/'\
+	  	  && cat modules.ignore ) | sort | uniq \
+		> modules.ignore.tmp; \
 	done
 
 rpm:: build
@@ -116,5 +123,6 @@ clean::
 	find * -prune ! -name Makefile		\
 		-a ! -name modules.build	\
 		-a ! -name modules.ignore	\
+		-a ! -name custom-sources	\
 		-a ! -name CVS -exec rm -rf {} \;
 	-rm -rf .gnupg

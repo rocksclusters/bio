@@ -1,15 +1,26 @@
+--archive custom-sources/SVG-2.50.tar.gz
 GD::SVG
 Graph
 GraphViz
 MLDBM
 Text::Iconv
+XML::NamespaceSupport
 XML::LibXSLT
 XML::RegExp
 --skiptest XML::Parser
 Math::Random
 Algorithm::Munkres
+Test::Fatal
+Test::NoWarnings
+Test::Requires
+Test::Tester
+Test::Deep
+Try::Tiny
+Dist::CheckConflicts
+Package::DeprecationManager
+Package::Stash::XS
 Array::Compare
-Ace
+--skiptest Ace
 Class::AutoClass
 Clone
 Data::Stag::Writer
@@ -17,7 +28,7 @@ DBI
 DBD::mysql
 Graph::Directed
 Set::Scalar
-SOAP::Lite
+--skiptest SOAP::Lite
 Spreadsheet::ParseExcel
 Storable
 SVG::Graph
