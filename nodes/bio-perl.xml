@@ -9,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-perl.xml,v $
+	Revision 1.4  2011/07/22 01:49:56  anoop
+	Added bioperl extentions
+	
 	Revision 1.3  2011/07/21 18:38:54  anoop
 	Bioperl back in.
 	ReportLab now called reportlab
@@ -95,5 +98,7 @@
 	<package os="linux">opt-perl-Class-AutoClass</package>
 	<package os="linux">opt-perl-SVG</package>
 	<package os="linux">opt-perl-Test-Fatal</package>
-
+	<package os="linux">opt-perl-BioPerl-DB</package>
+	<package os="linux">opt-perl-BioPerl-Network</package>
+	<package os="linux">opt-perl-BioPerl-Run</package>
 </kickstart>

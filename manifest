@@ -96,3 +96,6 @@ opt-perl-Test-Tester
 opt-perl-Class-AutoClass
 opt-perl-SVG
 opt-perl-Test-Fatal
+opt-perl-BioPerl-DB
+opt-perl-BioPerl-Network
+opt-perl-BioPerl-Run
