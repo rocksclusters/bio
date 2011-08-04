@@ -10,6 +10,10 @@
 
 	<changelog>
 	$Log: bio-head.xml,v $
+	Revision 1.11  2011/08/04 19:15:03  anoop
+	- Remove tcoffee html link.
+	- login appliance now gets bio roll env
+	
 	Revision 1.10  2009/11/20 03:36:45  anoop
 	Moved the roll from /opt/Bio to /opt/bio
 	
@@ -74,14 +78,6 @@ mkdir -m0755 -p /export/bio/hmmer/db
 echo "ALL     ALL=(ALL)       NOPASSWD: /bin/su - biouser" >> /etc/sudoers
 
 <!--
- 	Here we setup the t_coffee directory and
-	the t_coffee cgi script
- -->
-
-ln -s /opt/bio/tcoffee/html /var/www/html/t_coffee
-chmod a+x /opt/bio/tcoffee/html/t_coffee4html.cgi
-
-<!--
 	Here we setup the ncbi blast web utilities.
 	A lot of setup is required for this to function
 	correctly. The database directories should be 
@@ -109,6 +105,7 @@ chmod +x /var/www/html/blast/config_setup.pl
 chown -R biouser /export/bio
 
 /opt/rocks/bin/rocks set appliance attr compute bio true
+/opt/rocks/bin/rocks set appliance attr login bio true
 
 </post>
 
