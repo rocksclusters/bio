@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.22 2011/07/23 02:30:54 phil Exp $
+# $Id: Makefile,v 1.23 2011/08/04 19:14:00 anoop Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.23  2011/08/04 19:14:00  anoop
+# Use /opt/perl/bin/perl instead of /opt/rocks/bin/perl
+#
 # Revision 1.22  2011/07/23 02:30:54  phil
 # Viper Copyright
 #
@@ -153,7 +156,7 @@ include Rules.mk
 build:
 	gunzip -c $(NAME).tar.gz | $(TAR) -xf -
 	(cd patch-files; find . -type f | grep -v CVS | cpio -pudv ../; )
-	-find $(NAME)/ -name *.pl | xargs sed -i -e 's/usr.*.bin.perl/opt\/rocks\/bin\/perl/g'
+	-find $(NAME)/ -name *.pl | xargs sed -i -e 's/usr.*.bin.perl/opt\/perl\/bin\/perl/g'
 	$(NAME)/make/makedis.csh
 
 install::
