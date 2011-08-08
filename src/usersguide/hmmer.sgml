@@ -19,20 +19,14 @@ directory containing the hmmer databases. By default, this is set
 to $HOME/bio/hmmer/db/. 
 </para>
 <para>HMMER has many modes of execution. For a description of all
-the executables that come with HMMER.Please run</para>
-<screen>
-$ man hmmer
-</screen>
-<para>You may also refer to the Users Guide present <ulink
-url="ftp://selab.janelia.org/pub/software/hmmer/CURRENT/Userguide.pdf">
-here</ulink>. This guide is also available on your rocks
+the executables that come with HMMER, please refer to the
+<ulink url="ftp://selab.janelia.org/pub/software/hmmer/CURRENT/Userguide.pdf">
+current HMMER online userguide</ulink>. This guide is also available on your rocks
 installation at /opt/bio/hmmer/Userguide.pdf
 </para>
 <para>There is also a tutorial available on your cluster at
 /opt/bio/hmmer/tutorial/ . The description of how to use the
 tutorial is given in the Userguide.pdf file. 
-</para>
-<para>
 </para>
 </section>
 </section>
