@@ -16,9 +16,8 @@ same variables that are available for NCBI-Blast.</para>
 <listitem><para>Download a FASTA database to $BLASTDB. For this example we
 will download the ecoli nucleotide database.</para>
 <screen>
-[nostromo@xxx ~]$ sudo su - biouser
--bash-3.00$ cd $BLASTDB
--bash-3.00$ wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/ecoli.nt.gz
+[nostromo@xxx ~]$ cd $BLASTDB
+[nostromo@xxx ~]$ wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/ecoli.nt.gz
 --17:06:23--  ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/ecoli.nt.gz
            => `ecoli.nt.gz'
 Resolving ftp.ncbi.nlm.nih.gov... 165.112.7.10
@@ -38,19 +37,18 @@ Length: 1,438,199 (1.4M) (unauthoritative)
 <listitem><para>Format the database using mpiformatdb as follows. A good rule
 is to format the database to atleast 4 processors, as follows.</para>
 <screen>
--bash-3.00$ gunzip ecoli.nt.gz 
--bash-3.00$ ls
+[nostromo@xxx ~]$ gunzip ecoli.nt.gz 
+[nostromo@xxx ~]$ ls
 ecoli.nt
--bash-3.00$ mpiformatdb --nfrags=4 -i ecoli.nt -pF --quiet
+[nostromo@xxx ~]$ mpiformatdb --nfrags=4 -i ecoli.nt -pF --quiet
 Reading input file
 Done, read 58882 lines
 Reordering 400 sequence entries
 Breaking ecoli.nt into 4 fragments
-Executing: formatdb -p F -i /tmp/reorderncq8B1 -N 4 -n /share/bio/ncbi/db/ecoli.nt -o T 
+Executing: formatdb -p F -i /tmp/reorderncq8B1 -N 4 -n /home/nostromo/bio/ncbi/db/ecoli.nt -o T 
 Removed /tmp/reorderncq8B1
 Created 4 fragments.
-Changing permissions of /share/bio/ncbi/db//ecoli.nt.mbf
--bash-3.00$ ls
+[nostromo@xxx ~]$ ls
 ecoli.nt          ecoli.nt.000.nsq  ecoli.nt.001.nsq  ecoli.nt.002.nsq  ecoli.nt.003.nsq
 ecoli.nt.000.nhr  ecoli.nt.001.nhr  ecoli.nt.002.nhr  ecoli.nt.003.nhr  ecoli.nt.mbf
 ecoli.nt.000.nin  ecoli.nt.001.nin  ecoli.nt.002.nin  ecoli.nt.003.nin  ecoli.nt.nal
@@ -60,7 +58,7 @@ ecoli.nt.000.nsd  ecoli.nt.001.nsd  ecoli.nt.002.nsd  ecoli.nt.003.nsd
 ecoli.nt.000.nsi  ecoli.nt.001.nsi  ecoli.nt.002.nsi  ecoli.nt.003.nsi
 </screen>
 </listitem>
-<listitem><para>Now, as a normal user, create a test sequence file and run mpiblast on the
+<listitem><para>Now create a test sequence file and run mpiblast on the
 sequence against the formatted database.</para>
 <screen>
 [nostromo@xxx ~]$ cat > test.txt
@@ -74,7 +72,7 @@ GTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGTGTTGCCGATATTCTGGAAAGCAATGCC
 AGGCAGGGGCAGGTGGCCACCGTCCTCTCTGCCCCCGCCAAAATCACCAACCACCTGGTGGCGATGATTG
 AAAAAACCATTAGCGGCCAGGATGCTTTACCCAATATCAGCGATGCCGAACGTATTTTTGCCGAACTTTT
 
-[nostromo@xxx mpiblast]$ /opt/openmpi/bin/mpirun -np 4 /opt/Bio/mpiblast/bin/mpiblast -d ecoli.nt -i $HOME/test.txt -p blastn -o $HOME/result.txt
+[nostromo@xxx mpiblast]$ /opt/openmpi/bin/mpirun -np 4 /opt/bio/mpiblast/bin/mpiblast -d ecoli.nt -i $HOME/test.txt -p blastn -o $HOME/result.txt
 </screen>
 <para>After mpirun terminates, result.txt contains the result of your computation.</para>
 </listitem>
@@ -93,11 +91,11 @@ AAAAAACCATTAGCGGCCAGGATGCTTTACCCAATATCAGCGATGCCGAACGTATTTTTGCCGAACTTTT
 #$ -S /bin/bash
 
 export MPI_DIR=/opt/openmpi/
-export BLASTDB=/share/bio/ncbi/db/
-export BLASTMAT=/opt/Bio/ncbi/data/
+export BLASTDB=$HOME/bio/ncbi/db/
+export BLASTMAT=/opt/bio/ncbi/data/
 
 $MPI_DIR/bin/mpirun -np $NSLOTS \
-	/opt/Bio/mpiblast/bin/mpiblast \
+	/opt/bio/mpiblast/bin/mpiblast \
 	-d ecoli.nt -i $HOME/test.txt \
 	-p blastn -o $HOME/result.txt
 </screen>
