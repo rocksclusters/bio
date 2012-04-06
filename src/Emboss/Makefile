@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2011/07/23 02:30:53 phil Exp $
+# $Id: Makefile,v 1.15 2012/04/06 16:34:06 phil Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.15  2012/04/06 16:34:06  phil
+# Clean up config files
+#
 # Revision 1.14  2011/07/23 02:30:53  phil
 # Viper Copyright
 #
@@ -129,6 +132,10 @@ install::
 		cd $(NAME)-$(VERSION); \
 		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
 	)
+
+	find $(ROOT) -name runJemboss.sh -exec /bin/sed -i "s%$(ROOT)%%g" {} \;
+	find $(ROOT) -name runJemboss.csh -exec /bin/sed -i "s%$(ROOT)%%g" {} \;
+	find $(ROOT) -name jemboss.properties -exec /bin/sed -i "s%$(ROOT)%%g" {} \;
 
 clean::
 	rm -f $(NAME).spec.in
