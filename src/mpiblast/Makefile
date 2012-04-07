@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.21 2011/07/23 02:30:54 phil Exp $
+# $Id: Makefile,v 1.22 2012/04/07 04:11:50 phil Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.22  2012/04/07 04:11:50  phil
+# use mpi module
+#
 # Revision 1.21  2011/07/23 02:30:54  phil
 # Viper Copyright
 #
@@ -160,6 +163,7 @@ MPICXX	= $(MPIROOT)/bin/mpicxx
 build: patch
 	( \
 		cd $(NAME)-$(VERSION); \
+		module load rocks-openmpi; \
 		./configure CC=$(MPICC) CXX=$(MPICXX)\
 		CONFIG_LIBC=$(CONFIG_LIBC)	\
 		--with-mpi=$(MPIROOT) \
