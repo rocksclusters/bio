@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2011/07/23 02:30:54 phil Exp $
+# $Id: Makefile,v 1.15 2012/04/12 04:26:39 phil Exp $
 #
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.15  2012/04/12 04:26:39  phil
+# Build with environment modules. Correct gcc
+#
 # Revision 1.14  2011/07/23 02:30:54  phil
 # Viper Copyright
 #
@@ -140,16 +143,22 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
+ifeq ($(VERSION.MAJOR),5)
+USECC=gcc44
+else
+USECC=gcc
+endif
 
 build:
 	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
 	( \
+		module load rocks-openmpi; \
 		cd $(NAME)-$(VERSION); \
 		./configure \
 			CPPFLAGS="-I/opt/rocks/include -I$(MPIROOT)/include"\
 			LDFLAGS="-L/opt/rocks/lib -L$(MPIROOT)/lib"\
 			MPICC=$(MPIROOT)/bin/mpicc \
-			CC=gcc44 \
+			CC=$(USECC) \
 			--prefix=$(PKGROOT) \
 			--enable-mpi; \
 		$(MAKE); \
