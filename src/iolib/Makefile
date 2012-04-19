@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.6 2011/07/23 02:30:54 phil Exp $
+# $Id: Makefile,v 1.7 2012/04/19 01:32:41 phil Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.7  2012/04/19 01:32:41  phil
+# rpmbuild complained about buildroot in installed files
+#
 # Revision 1.6  2011/07/23 02:30:54  phil
 # Viper Copyright
 #
@@ -89,8 +92,11 @@ build:
 
 install::
 	(\
+		if [ ! -d  $(ROOT)$(PKGROOT) ]; then mkdir -p $(ROOT)$(PKGROOT);  fi ;\
+		/bin/mount --bind $(ROOT)$(PKGROOT) $(PKGROOT); \
 		cd $(ARCHIVE_NAME)-$(VERSION);	\
-		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
+		$(MAKE) prefix=$(PKGROOT) install; \
+		/bin/umount $(PKGROOT) \
 	);
 
 clean::
