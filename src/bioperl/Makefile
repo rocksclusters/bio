@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 2011/07/23 02:30:53 phil Exp $
+# $Id: Makefile,v 1.10 2012/04/25 17:19:00 phil Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,10 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.10  2012/04/25 17:19:00  phil
+# Even though build is supposed to be non-interactive, the custom bioperl
+# installer now requires answers.
+#
 # Revision 1.9  2011/07/23 02:30:53  phil
 # Viper Copyright
 #
@@ -93,7 +97,7 @@ build:
 	--format CPANPLUS::Dist::Rocks		\
 	--ignorelist modules.ignore --force	\
 	--buildprereq --skiptest --install 	\
-	--modulelist modules.build --verbose
+	--modulelist modules.build --verbose < answerfile
 
 rpm:: build
 	if [ ! -d $(REDHAT.ROOT)/RPMS ]; then mkdir -p $(REDHAT.ROOT)/RPMS; fi
