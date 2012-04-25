@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2012/04/25 17:19:00 phil Exp $
+# $Id: Makefile,v 1.11 2012/04/25 17:21:24 phil Exp $
 
 # @Copyright@
 # 
@@ -54,6 +54,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.11  2012/04/25 17:21:24  phil
+# Don't remove answerfile on clean
+#
 # Revision 1.10  2012/04/25 17:19:00  phil
 # Even though build is supposed to be non-interactive, the custom bioperl
 # installer now requires answers.
@@ -114,5 +117,6 @@ clean::
 	find * -prune ! -name Makefile		\
 		-a ! -name modules.build	\
 		-a ! -name modules.ignore	\
+		-a ! -name answerfile		\
 		-a ! -name CVS -exec rm -rf {} \;
 	-rm -rf .gnupg
