@@ -9,6 +9,9 @@
 
 	<changelog>
 	$Log: bio-base.xml,v $
+	Revision 1.70  2012/05/02 21:10:15  phil
+	move bio.csh bio.sh to the rocks-bio-profile package
+	
 	Revision 1.69  2011/07/21 18:38:54  anoop
 	Bioperl back in.
 	ReportLab now called reportlab
@@ -244,6 +247,7 @@
 	<package os="sunos">ROCKSgmap</package>
 	<package os="sunos">ROCKStigr</package>
 
+	<package>rocks-bio-profile</package>
 <post>
 
 <!--
@@ -270,140 +274,7 @@ MANPATH /opt/bio/ncbi/doc/man/
 MANPATH /opt/bio/hmmer/man
 MANPATH /opt/bio/gromacs/man
 </file>
-<!--
-	Create the login scripts
- -->
 
-<file name="/etc/profile.d/bio.sh" perm="0755">
-# Put the bin directories of all the applications into the path.
-export BIOROLL=/opt/bio
-
-# NCBI Blast and MPI Blast
-export PATH=$PATH:$BIOROLL/ncbi/bin:$BIOROLL/mpiblast/bin/
-
-# HMMER
-export PATH=$PATH:$BIOROLL/hmmer/bin
-
-# EMBOSS
-export PATH=$PATH:$BIOROLL/EMBOSS/bin
-
-# ClustalW
-export PATH=$PATH:$BIOROLL/clustalw/bin
-
-# t_coffee
-export PATH=$PATH:$BIOROLL/tcoffee/bin
-
-# Phylip
-export PATH=$PATH:$BIOROLL/phylip/exe
-
-# Mr.Bayes
-export PATH=$PATH:$BIOROLL/mrbayes
-
-# fasta
-export PATH=$PATH:$BIOROLL/fasta
-
-# glimmer
-export PATH=$PATH:$BIOROLL/glimmer/bin:/$BIOROLL/glimmer/scripts
-
-# gromacs
-export PATH=$PATH:$BIOROLL/gromacs/bin
-
-# gmap
-export PATH=$PATH:$BIOROLL/gmap/bin
-
-# TIGR
-export PATH=$PATH:$BIOROLL/tigr/bin
-
-# Autodock Suite
-export PATH=$PATH:$BIOROLL/autodocksuite/bin
-
-# WGS Assembler
-export PATH=$PATH:$BIOROLL/wgs/bin
-
-# NCBI
-export BLASTDB=$HOME/bio/ncbi/db
-export BLASTMAT=/opt/bio/ncbi/data
-export HMMER_DB=$HOME/bio/hmmer/db
-
-# Create the ncbirc file as necessary
-if [ ! -e $HOME/.ncbirc ]; then
-cat &gt; $HOME/.ncbirc &lt;&lt; eof
-[NCBI]
-Data=/opt/bio/ncbi/data/
-
-[mpiBLAST]
-Shared=$HOME/bio/ncbi/db/
-Local=/tmp/$USER/db/
-
-eof
-fi
-
-if [ ! -e $HOME/bio/ncbi/db ]; then
-	mkdir -p $HOME/bio/ncbi/db/
-fi
-
-# Create a bio directory to hold HMMER databases
-if [ ! -e $HOME/bio/hmmer/db ]; then
-	mkdir -p $HOME/bio/hmmer/db/
-fi
-
-# Create a .t_coffee directory
-if [ ! -e $HOME/.t_coffee/tmp/ ]; then
-	mkdir -p $HOME/.t_coffee/tmp
-fi
-</file>
-
-<file name="/etc/profile.d/bio.csh" perm="0755">
-
-setenv BIOROLL /opt/bio
-
-set path = ( $path \
-	$BIOROLL/ncbi/bin \
-	$BIOROLL/mpiblast/bin/ \
-	$BIOROLL/EMBOSS/bin \
-	$BIOROLL/clustalw/bin \
-	$BIOROLL/t_coffee/bin \
-	$BIOROLL/phylip/exe \
-	$BIOROLL/mrbayes \
-	$BIOROLL/fasta \
-	$BIOROLL/glimmer/bin \
-	$BIOROLL/glimmer/scripts \
-	$BIOROLL/gmap/bin \
-	$BIOROLL/gromacs/bin \
-	$BIOROLL/autodocksuite/bin \
-	$BIOROLL/wgs/bin )
-
-setenv BLASTDB  $HOME/bio/ncbi/db
-setenv BLASTMAT $BIOROLL/ncbi/data
-setenv HMMER_DB $HOME/bio/hmmer/db
-
-if ( ! -e $HOME/.ncbirc ) then
-cat &gt; $HOME/.ncbirc &lt;&lt; eof
-[NCBI]
-Data=/opt/bio/ncbi/data/
-
-[mpiBLAST]
-Shared=$HOME/bio/ncbi/db/
-Local=/tmp/$USER/db/
-
-eof
-endif
-
-# Create a bio directory to hold NCBI databases
-if ( ! -e $HOME/bio/ncbi/db ) then
-	mkdir -p $HOME/bio/ncbi/db/
-endif
-
-# Create a bio directory to hold HMMER databases
-if ( ! -e $HOME/bio/hmmer/db ) then
-	mkdir -p $HOME/bio/hmmer/db/
-endif
-
-if ( ! -e $HOME/.t_coffee/tmp/ ) then
-    mkdir -p $HOME/.t_coffee/tmp/
-endif
-
-</file>
 </post>
 
 <post os="linux">
