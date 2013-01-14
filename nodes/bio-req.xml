@@ -15,7 +15,7 @@
 	<package os="linux">openmotif-devel</package>
 	<package os="linux">libXp</package>
 	<package os="linux">libXp-devel</package>
-	<package os="linux">fftw</package>
+	<package os="linux">opt-fftw</package>
 
 	<package os="linux">gcc44</package>
 

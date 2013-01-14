@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.13 2012/11/27 00:48:52 phil Exp $
+# $Id: Makefile,v 1.14 2013/01/14 17:11:02 clem Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.14  2013/01/14 17:11:02  clem
+# rename fftw into opt-fftw so it does not collide with redhat fftw package
+#
 # Revision 1.13  2012/11/27 00:48:52  phil
 # Copyright Storm for Emerald Boa
 #
@@ -140,9 +143,9 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 build:
-	gunzip -c $(NAME)-$(VERSION).tar.gz | $(TAR) -xf -
+	gunzip -c fftw-$(VERSION).tar.gz | $(TAR) -xf -
 	( \
-		cd $(NAME)-$(VERSION); \
+		cd fftw-$(VERSION); \
 		./configure --prefix=$(PKGROOT) \
 		CFLAGS="-fPIC"		\
 		--enable-threads --enable-float ; \
@@ -151,10 +154,10 @@ build:
 
 install::
 	( \
-		cd $(NAME)-$(VERSION); \
+		cd fftw-$(VERSION); \
 		$(MAKE) prefix=$(ROOT)/$(PKGROOT) install; \
 	)
 
 clean::
-	rm -f $(NAME).spec.in
-	rm -rf $(NAME)-$(VERSION)
+	rm -f opt-fftw.spec.in
+	rm -rf fftw-$(VERSION)
