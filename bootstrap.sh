@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.22 2012/11/27 00:48:52 phil Exp $
+# $Id: bootstrap.sh,v 1.23 2013/02/04 05:42:11 phil Exp $
 #
 # @Copyright@
 # 
@@ -59,6 +59,9 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.23  2013/02/04 05:42:11  phil
+# fftw is now opt-fftw. Fix bootstrap and manifest
+#
 # Revision 1.22  2012/11/27 00:48:52  phil
 # Copyright Storm for Emerald Boa
 #
@@ -139,7 +142,8 @@ install_os_packages bio-req
 
 compile_and_install reportlab
 
-compile_and_install fftw
+compile fftw
+install opt-fftw
 
 if [ `./_os` == "linux" ]; then
 	compile_and_install iolib

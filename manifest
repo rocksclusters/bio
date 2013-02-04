@@ -2,7 +2,6 @@ biopython
 cgview
 clustalw
 EMBOSS
-fasta
 fftw
 glimmer
 gmap
@@ -12,6 +11,7 @@ iolib
 mpiblast
 mrbayes
 ncbi
+opt-fftw
 phylip
 reportlab
 roll-bio-kickstart
