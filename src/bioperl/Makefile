@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2013/02/05 00:11:02 clem Exp $
+# $Id: Makefile,v 1.15 2013/02/05 00:12:40 clem Exp $
 
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.15  2013/02/05 00:12:40  clem
+# do not remove version.mk on clean
+#
 # Revision 1.14  2013/02/05 00:11:02  clem
 # bump release number of bioperl
 #
@@ -136,5 +139,6 @@ clean::
 		-a ! -name modules.build	\
 		-a ! -name modules.ignore	\
 		-a ! -name answerfile		\
+		-a ! -name version.mk		\
 		-a ! -name CVS -exec rm -rf {} \;
 	-rm -rf .gnupg
