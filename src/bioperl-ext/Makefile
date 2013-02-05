@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 2012/11/27 00:48:52 phil Exp $
+# $Id: Makefile,v 1.8 2013/02/05 00:16:33 clem Exp $
 
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.8  2013/02/05 00:16:33  clem
+# bump release number to 2
+#
 # Revision 1.7  2012/11/27 00:48:52  phil
 # Copyright Storm for Emerald Boa
 #
@@ -75,6 +78,14 @@ REDHAT.ROOT = $(CURDIR)/../../
 MAKE.iscontrib = 1
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
+
+# 
+# You can use now RocksReleaseVersion to set the release version of the RPMs
+# builded by cpan see below..
+#
+ifdef RELEASE
+RocksReleaseVersion = $(RELEASE)
+endif
 
 build:
 	cat modules.build | while read line; do	\
@@ -100,5 +111,6 @@ clean::
 		-a ! -name modules.build	\
 		-a ! -name modules.ignore	\
 		-a ! -name sources		\
+		-a ! -name version.mk		\
 		-a ! -name CVS -exec rm -rf {} \;
 	-rm -rf .gnupg
