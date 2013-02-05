@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 2012/11/27 00:48:52 phil Exp $
+# $Id: Makefile,v 1.10 2013/02/05 00:21:43 clem Exp $
 
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.10  2013/02/05 00:21:43  clem
+# do not rebuild the packages we already have built
+#
 # Revision 1.9  2012/11/27 00:48:52  phil
 # Copyright Storm for Emerald Boa
 #
@@ -104,15 +107,12 @@ build:
 	cp modules.ignore modules.ignore.tmp
 	cat modules.build | while read line; do 	\
 		XMLPREFIX=/opt/bio XSLTPREFIX=/opt/bio	\
-		/opt/perl/bin/cpan2dist		\
-		--format CPANPLUS::Dist::Rocks		\
-		--ignorelist modules.ignore.tmp --force	\
-		--buildprereq --install --verbose	\
-		$$line < /dev/null;			\
-		( find . -type f -name \*.rpm ! 	\
-		  -name \*.src.rpm -exec rpm -qp 	\
-		  --provides {} \; | grep -E "^perl\(" |\
-		  sed -r -e 's/^perl\(/^/' 		\
+		/opt/perl/bin/cpan2dist --format CPANPLUS::Dist::Rocks	\
+		--ignorelist modules.ignore.tmp --buildprereq --force	\
+		--install --verbose $$line < /dev/null;			\
+		( find . -type f -name \*.rpm ! -name \*.src.rpm \
+		-exec rpm -qlp {} \; |/usr/lib/rpm/find-provides \
+		| grep -E "^perl\(" | sed -r -e 's/^perl\(/^/' 	 \
 		  -e 's/\)[ \t]*(=[ \t]*[.0-9]+)*$$/$$/'\
 	  	  && cat modules.ignore ) | sort | uniq \
 		> modules.ignore.tmp; \
