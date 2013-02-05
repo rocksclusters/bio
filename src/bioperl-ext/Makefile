@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 2013/02/05 00:16:33 clem Exp $
+# $Id: Makefile,v 1.9 2013/02/05 18:29:56 clem Exp $
 
 # @Copyright@
 # 
@@ -55,6 +55,12 @@
 # @Copyright@
 
 # $Log: Makefile,v $
+# Revision 1.9  2013/02/05 18:29:56  clem
+# last fix to properly set the release number
+#
+# in makefile you need to expicitly export a variable to make it visible to the
+# subshells
+#
 # Revision 1.8  2013/02/05 00:16:33  clem
 # bump release number to 2
 #
@@ -84,7 +90,7 @@ include Rules.mk
 # builded by cpan see below..
 #
 ifdef RELEASE
-RocksReleaseVersion = $(RELEASE)
+export RocksReleaseVersion = $(RELEASE)
 endif
 
 build:
