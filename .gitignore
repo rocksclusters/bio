@@ -1,0 +1,63 @@
+
+# build directory
+BUILD/
+RPMS/
+SOURCES/
+SPECS/
+
+
+*.pyc
+
+_os
+_arch
+_distribution
+
+# ignore version.mk
+rocks-version.mk
+rocks-version-common.mk
+
+# ignore python.mk
+python.mk
+
+# ignore Rules files
+Rules-install.mk
+Rules-linux-centos.mk
+Rules-linux.mk
+Rules-rcfiles.mk
+Rules-scripts.mk
+Rules.mk
+Rolls.mk
+
+# --- BEGIN --- binaries files
+src/autodock/autodocksuite-4.2.3-src.tar.gz
+src/bioperl-ext/sources/BioPerl-DB-1.006900.tar.gz
+src/bioperl-ext/sources/BioPerl-Network-1.006900.tar.gz
+src/bioperl-ext/sources/BioPerl-Run-1.006900.tar.gz
+src/bioperl-support/custom-sources/SVG-2.50.tar.gz
+src/biopython/biopython-1.60.tar.gz
+src/cgview/cgview.zip
+src/clustalw/clustalw-2.1.tar.gz
+src/Emboss/EMBOSS-6.3.1.tar.gz
+src/fasta/fasta-36.3.5a.tar.gz
+src/fftw/fftw-3.2.2.tar.gz
+src/glimmer/ELPH-1.0.1.tar.gz
+src/glimmer/glimmer302.tar.gz
+src/glimmer/patch-files/sample-run/from-scratch.detail
+src/glimmer/patch-files/sample-run/from-training.detail
+src/glimmer/patch-files/sample-run/iterated.detail
+src/glimmer/patch-files/sample-run/iterated.run1.detail
+src/gmap/gmap-gsnap-2011-03-28.tar.gz
+src/gromacs/gromacs-4.5.4.tar.gz
+src/hmmer/hmmer-3.0.tar.gz
+src/iolib/io_lib-1.12.5.tar.gz
+src/libxml2/libxml2-2.7.8.tar.gz
+src/libxslt/libxslt-1.1.28.tar.gz
+src/mpiblast/mpiBLAST-1.6.0.tgz
+src/mrbayes/mrbayes-3.1.2.tar.gz
+src/ncbi-blast/ncbi.tar.gz
+src/phylip/phylip-3.69.tar.gz
+src/reportlab/reportlab-2.5.tar.gz
+src/t_coffee/T-COFFEE_distribution_Version_8.99.tar.gz
+src/tigr/TIGR_Assembler_v2.tar.gz
+src/wgs_assembler/wgs-6.1.tar.bz2
+# --- END ---
